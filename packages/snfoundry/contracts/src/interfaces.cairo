@@ -12,16 +12,35 @@ pub trait IERC20<TState> {
     fn allowance(self: @TState, owner: ContractAddress, spender: ContractAddress) -> u256;
 }
 
-// ========== Vesu vToken (ERC-4626 style) ==========
+// ========== Vesu vToken - Full ERC-4626 / SNIP-22 interface ==========
+// Each asset in a Vesu V2 pool has a corresponding vToken contract
+// Depositing via vToken is the recommended simple path
 #[starknet::interface]
 pub trait IVToken<TState> {
-    fn deposit(ref self: TState, assets: u256, receiver: ContractAddress) -> u256;
-    fn withdraw(
-        ref self: TState, assets: u256, receiver: ContractAddress, owner: ContractAddress,
-    ) -> u256;
+    // ERC-4626 core
+    fn asset(self: @TState) -> ContractAddress;
     fn total_assets(self: @TState) -> u256;
     fn convert_to_shares(self: @TState, assets: u256) -> u256;
     fn convert_to_assets(self: @TState, shares: u256) -> u256;
+    fn max_deposit(self: @TState, receiver: ContractAddress) -> u256;
+    fn preview_deposit(self: @TState, assets: u256) -> u256;
+    fn max_withdraw(self: @TState, owner: ContractAddress) -> u256;
+    fn preview_withdraw(self: @TState, assets: u256) -> u256;
+    fn max_redeem(self: @TState, owner: ContractAddress) -> u256;
+    fn preview_redeem(self: @TState, shares: u256) -> u256;
+
+    // Mutating
+    fn deposit(ref self: TState, assets: u256, receiver: ContractAddress) -> u256;
+    fn mint(ref self: TState, shares: u256, receiver: ContractAddress) -> u256;
+    fn withdraw(
+        ref self: TState, assets: u256, receiver: ContractAddress, owner: ContractAddress,
+    ) -> u256;
+    fn redeem(
+        ref self: TState, shares: u256, receiver: ContractAddress, owner: ContractAddress,
+    ) -> u256;
+
+    // Vesu-specific
+    fn pool_contract(self: @TState) -> ContractAddress;
 }
 
 // ========== Strategy interface ==========
