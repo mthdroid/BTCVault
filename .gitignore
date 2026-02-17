@@ -1,0 +1,28 @@
+.vscode/**
+node_modules
+package-lock.json
+.idea
+
+# yarn / eslint
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.eslintcache
+.DS_Store
+.vercel
+
+**/.env*
+!**/.env.example
+
+# Scarb
+target/
+Scarb.lock
+
+# Build artifacts
+*.zip
+
+# Hackathon planning docs (keep private)
+HACKATHON_CONTEXT.md
