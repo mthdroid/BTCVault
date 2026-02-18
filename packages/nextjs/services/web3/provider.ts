@@ -36,7 +36,7 @@ export const getRpcUrl = (networkName: string): string => {
     case "mainnet":
       rpcUrl =
         mainnetRpcUrl ||
-        "https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_10/_hKu4IgnPgrF8O82GLuYU";
+        "https://free-rpc.nethermind.io/mainnet-juno/";
       break;
     default:
       rpcUrl = "http://127.0.0.1:5050";

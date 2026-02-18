@@ -5,7 +5,7 @@ import { useXverseWallet } from "~~/hooks/useXverseWallet";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
 
 const LAYERSWAP_URL =
-  "https://layerswap.io/app/?from=BITCOIN_MAINNET&to=STARKNET_MAINNET&fromAsset=BTC&lockFrom=true&lockTo=true&actionButtonText=Bridge%20BTC%20to%20Starknet";
+  "https://layerswap.io/app/?from=BITCOIN_MAINNET&to=STARKNET_MAINNET&lockFrom=true&lockTo=true&fromAsset=BTC&toAsset=WBTC&actionButtonText=Bridge+BTC+to+Starknet&destAddress=0x013221b418c779b5fbeab1dc0c08fc47e268bc0c2bd5cba6572cb7189ff5bf1e";
 
 const BridgePage = () => {
   const { address: starknetAddr, status } = useAccount();
@@ -38,35 +38,41 @@ const BridgePage = () => {
             <h2 className="font-semibold">Connect Wallets</h2>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-base-200 rounded-xl p-4 border border-base-300/50 flex flex-col">
-              <p className="text-xs font-medium opacity-40 uppercase tracking-wider mb-3">Bitcoin Wallet</p>
+            {/* Bitcoin Wallet Card */}
+            <div className="rounded-2xl p-4 flex flex-col bg-gradient-to-b from-base-200 to-base-200/50 border border-primary/10 hover:border-primary/30 transition-all">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center">
+                  <span className="text-primary text-xs font-bold">&#8383;</span>
+                </div>
+                <p className="text-xs font-semibold uppercase tracking-wider opacity-60">Bitcoin</p>
+              </div>
               <div className="flex-1 flex flex-col justify-center">
                 {xverseConnected ? (
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="w-2 h-2 rounded-full bg-success"></div>
+                      <div className="w-2 h-2 rounded-full bg-success animate-pulse"></div>
                       <p className="text-sm font-medium text-success">Connected</p>
                     </div>
                     {btcAddress && (
-                      <p className="text-xs font-mono opacity-50 truncate">
-                        {btcAddress.address.slice(0, 12)}...{btcAddress.address.slice(-8)}
+                      <p className="text-xs font-mono opacity-50 truncate bg-base-300/50 rounded-lg px-2 py-1">
+                        {btcAddress.address.slice(0, 10)}...{btcAddress.address.slice(-6)}
                       </p>
                     )}
                     {xverseStarknet && (
-                      <p className="text-xs font-mono opacity-50 truncate mt-1">
-                        SN: {xverseStarknet.address.slice(0, 10)}...{xverseStarknet.address.slice(-6)}
+                      <p className="text-xs font-mono opacity-50 truncate mt-1.5 bg-base-300/50 rounded-lg px-2 py-1">
+                        SN: {xverseStarknet.address.slice(0, 8)}...{xverseStarknet.address.slice(-4)}
                       </p>
                     )}
-                    <button className="btn btn-ghost btn-xs mt-2 opacity-50" onClick={disconnectXverse}>Disconnect</button>
+                    <button className="btn btn-ghost btn-xs mt-3 opacity-40 hover:opacity-80" onClick={disconnectXverse}>Disconnect</button>
                   </div>
                 ) : (
                   <div>
                     {providers.length > 1 ? (
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-1.5">
                         {providers.map((p) => (
                           <button
                             key={p.id}
-                            className={`btn btn-primary btn-sm w-full text-white ${isConnecting ? "loading" : ""}`}
+                            className={`btn btn-primary btn-sm w-full text-white rounded-xl ${isConnecting ? "loading" : ""}`}
                             onClick={() => connectXverse(p.id)}
                             disabled={isConnecting}
                           >
@@ -76,29 +82,36 @@ const BridgePage = () => {
                       </div>
                     ) : (
                       <button
-                        className={`btn btn-primary btn-sm w-full text-white ${isConnecting ? "loading" : ""}`}
+                        className={`btn btn-primary btn-sm w-full text-white rounded-xl shadow-md shadow-primary/15 ${isConnecting ? "loading" : ""}`}
                         onClick={() => connectXverse()}
                         disabled={isConnecting}
                       >
-                        {isConnecting ? "Connecting..." : "Connect BTC Wallet"}
+                        {isConnecting ? "Connecting..." : "Connect Bitcoin"}
                       </button>
                     )}
                     {xverseError && <p className="text-xs text-error mt-2">{xverseError}</p>}
-                    <p className="text-xs opacity-30 mt-2 text-center">Xverse, UniSat, or compatible</p>
+                    <p className="text-[10px] opacity-25 mt-2 text-center">Xverse, UniSat, or compatible</p>
                   </div>
                 )}
               </div>
             </div>
-            <div className="bg-base-200 rounded-xl p-4 border border-accent/20 flex flex-col">
-              <p className="text-xs font-medium uppercase tracking-wider mb-3" style={{ color: "#5B8DEF" }}>Starknet</p>
+
+            {/* Starknet Wallet Card */}
+            <div className="rounded-2xl p-4 flex flex-col bg-gradient-to-b from-base-200 to-base-200/50 border border-accent/10 hover:border-accent/30 transition-all">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(91,141,239,0.15)" }}>
+                  <span style={{ color: "#5B8DEF" }} className="text-xs font-bold">S</span>
+                </div>
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#5B8DEF", opacity: 0.8 }}>Starknet</p>
+              </div>
               <div className="flex-1 flex flex-col justify-center">
                 {starknetConnected ? (
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="w-2 h-2 rounded-full bg-success"></div>
+                      <div className="w-2 h-2 rounded-full bg-success animate-pulse"></div>
                       <p className="text-sm font-medium text-success">Connected</p>
                     </div>
-                    <p className="text-xs font-mono opacity-50 truncate">
+                    <p className="text-xs font-mono opacity-50 truncate bg-base-300/50 rounded-lg px-2 py-1">
                       {starknetAddr?.slice(0, 10)}...{starknetAddr?.slice(-6)}
                     </p>
                   </div>
@@ -106,12 +119,12 @@ const BridgePage = () => {
                   <div>
                     <label
                       htmlFor="connect-modal"
-                      className="btn btn-sm w-full text-white cursor-pointer"
-                      style={{ backgroundColor: "#5B8DEF", borderColor: "#5B8DEF" }}
+                      className="btn btn-sm w-full text-white cursor-pointer rounded-xl shadow-md"
+                      style={{ backgroundColor: "#5B8DEF", borderColor: "#5B8DEF", boxShadow: "0 4px 12px rgba(91,141,239,0.15)" }}
                     >
                       Connect Starknet
                     </label>
-                    <p className="text-xs opacity-30 mt-2 text-center">Braavos, ArgentX, or Xverse</p>
+                    <p className="text-[10px] opacity-25 mt-2 text-center">Braavos, ArgentX, or Xverse</p>
                   </div>
                 )}
               </div>
@@ -128,7 +141,7 @@ const BridgePage = () => {
           <p className="text-sm opacity-40 mb-4">Use LayerSwap to bridge native BTC to WBTC on Starknet.</p>
           <div className="flex flex-col gap-2">
             <a
-              href={starknetAddr ? `${LAYERSWAP_URL}&destAddress=${starknetAddr}` : LAYERSWAP_URL}
+              href={LAYERSWAP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary w-full text-white shadow-lg shadow-primary/20"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useReadContract } from "@starknet-react/core";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
 import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
@@ -9,6 +9,16 @@ import { useScaffoldWriteContract } from "~~/hooks/scaffold-stark/useScaffoldWri
 
 const VAULT_ADDRESS = "0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51";
 const WBTC_ADDRESS = "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac";
+
+const WBTC_BALANCE_ABI = [
+  {
+    type: "function",
+    name: "balance_of",
+    inputs: [{ name: "account", type: "core::starknet::contract_address::ContractAddress" }],
+    outputs: [{ type: "core::integer::u256" }],
+    state_mutability: "view",
+  },
+] as const;
 
 const VaultPage = () => {
   const { address, status } = useAccount();
@@ -21,6 +31,19 @@ const VaultPage = () => {
   const { data: userShares } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "shares_of", args: [address ?? "0x0"] });
   const { data: vaultApy } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "get_vault_apy" });
   const { data: allocation } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "get_allocation" });
+
+  // Read user's WBTC balance
+  const { data: wbtcBalanceRaw } = useReadContract({
+    address: WBTC_ADDRESS,
+    abi: WBTC_BALANCE_ABI,
+    functionName: "balance_of",
+    args: [address ?? "0x0"],
+    watch: true,
+    enabled: !!address,
+  });
+
+  const wbtcBalance = wbtcBalanceRaw ? BigInt(wbtcBalanceRaw.toString()) : 0n;
+  const wbtcBalanceStr = wbtcBalance.toString();
 
   const totalAssetsStr = totalAssets ? totalAssets.toString() : "0";
   const userSharesStr = userShares ? userShares.toString() : "0";
@@ -64,6 +87,14 @@ const VaultPage = () => {
   const handleWithdraw = async () => {
     if (!amount || parseFloat(amount) <= 0) return;
     try { await sendWithdraw(); setAmount(""); } catch (err) { console.error("Withdraw failed:", err); }
+  };
+
+  const handleMax = () => {
+    if (activeTab === "deposit") {
+      setAmount(wbtcBalanceStr);
+    } else {
+      setAmount(userSharesStr);
+    }
   };
 
   if (!isConnected) {
@@ -122,19 +153,29 @@ const VaultPage = () => {
 
         {/* Deposit/Withdraw Card */}
         <div className="card-btc">
-          <div className="flex gap-1 mb-5 bg-base-200 rounded-full p-1">
+          <div className="flex gap-1 mb-6 bg-base-200 rounded-full p-1">
             <button
               className={`flex-1 py-2.5 text-sm font-medium rounded-full transition-all ${activeTab === "deposit" ? "bg-primary text-white shadow-sm" : "opacity-50 hover:opacity-80"}`}
-              onClick={() => setActiveTab("deposit")}
+              onClick={() => { setActiveTab("deposit"); setAmount(""); }}
             >
               Deposit
             </button>
             <button
               className={`flex-1 py-2.5 text-sm font-medium rounded-full transition-all ${activeTab === "withdraw" ? "bg-primary text-white shadow-sm" : "opacity-50 hover:opacity-80"}`}
-              onClick={() => setActiveTab("withdraw")}
+              onClick={() => { setActiveTab("withdraw"); setAmount(""); }}
             >
               Withdraw
             </button>
+          </div>
+
+          {/* Balance info */}
+          <div className="flex justify-between items-center mb-2 px-1">
+            <span className="text-xs opacity-40">
+              {activeTab === "deposit" ? "WBTC Balance" : "Your Shares"}
+            </span>
+            <span className="text-xs font-mono opacity-50">
+              {activeTab === "deposit" ? wbtcBalanceStr : userSharesStr} {activeTab === "deposit" ? "sats" : "shares"}
+            </span>
           </div>
 
           <div className="mb-4">
@@ -142,14 +183,22 @@ const VaultPage = () => {
               <label className="text-xs opacity-40 mb-2 block">
                 {activeTab === "deposit" ? "Amount (satoshis)" : "Shares to burn"}
               </label>
-              <input
-                type="number"
-                placeholder={activeTab === "deposit" ? "Min: 100 sats" : "Enter shares amount"}
-                className="w-full bg-transparent text-2xl font-semibold outline-none placeholder:text-base-content/20"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                min={activeTab === "deposit" ? "100" : "1"}
-              />
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  placeholder={activeTab === "deposit" ? "Min: 100 sats" : "Enter shares amount"}
+                  className="w-full bg-transparent text-2xl font-semibold outline-none placeholder:text-base-content/20"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  min={activeTab === "deposit" ? "100" : "1"}
+                />
+                <button
+                  className="btn btn-xs btn-outline border-primary/30 text-primary hover:bg-primary hover:text-white rounded-lg px-3 shrink-0"
+                  onClick={handleMax}
+                >
+                  MAX
+                </button>
+              </div>
             </div>
           </div>
 
@@ -158,6 +207,9 @@ const VaultPage = () => {
               You will receive vault shares proportional to your deposit.
               {parseFloat(amount) < 100 && (
                 <span className="text-error block mt-1">Minimum deposit is 100 satoshis</span>
+              )}
+              {parseFloat(amount) > Number(wbtcBalanceStr) && (
+                <span className="text-error block mt-1">Insufficient WBTC balance</span>
               )}
             </div>
           )}
