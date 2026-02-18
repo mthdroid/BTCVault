@@ -18,21 +18,24 @@ const Home = () => {
           Non-custodial Bitcoin yield on Starknet
         </p>
         <p className="text-base opacity-60 mb-8">
-          Earn optimized yield on your WBTC through automated allocation
-          between Vesu lending and Ekubo LP strategies.
+          Bridge your BTC via Xverse, earn optimized yield through automated
+          allocation between Vesu lending and Ekubo LP strategies.
         </p>
 
         {!isConnected ? (
           <div className="flex flex-col items-center gap-4">
-            <p className="text-sm opacity-70">Connect your Starknet wallet to get started</p>
+            <p className="text-sm opacity-70">Connect your wallet to get started</p>
             <CustomConnectButton />
           </div>
         ) : (
-          <div className="flex justify-center gap-4">
-            <Link href="/vault" className="btn btn-secondary btn-lg">
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/bridge" className="btn btn-secondary btn-lg">
+              Bridge BTC
+            </Link>
+            <Link href="/vault" className="btn btn-outline btn-lg">
               Enter Vault
             </Link>
-            <Link href="/dashboard" className="btn btn-outline btn-lg">
+            <Link href="/dashboard" className="btn btn-ghost btn-lg">
               Dashboard
             </Link>
           </div>
@@ -42,32 +45,37 @@ const Home = () => {
       <div className="bg-container grow w-full mt-16 px-8 py-12">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-8">How it works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col bg-base-100 relative text-sm px-8 py-8 text-center items-center rounded-3xl border border-gradient">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="flex flex-col bg-base-100 relative text-sm px-6 py-8 text-center items-center rounded-3xl border border-gradient">
               <div className="trapeze"></div>
               <div className="text-3xl mb-4">1</div>
-              <h3 className="font-bold text-lg mb-2">Deposit WBTC</h3>
+              <h3 className="font-bold text-lg mb-2">Connect Xverse</h3>
               <p className="opacity-70">
-                Deposit your WBTC into the vault. You receive vault shares
-                representing your position.
+                Connect your Xverse wallet to get both BTC and Starknet addresses in one click.
               </p>
             </div>
-            <div className="flex flex-col bg-base-100 relative text-sm px-8 py-8 text-center items-center rounded-3xl border border-gradient">
+            <div className="flex flex-col bg-base-100 relative text-sm px-6 py-8 text-center items-center rounded-3xl border border-gradient">
               <div className="trapeze"></div>
               <div className="text-3xl mb-4">2</div>
-              <h3 className="font-bold text-lg mb-2">Auto-Allocate</h3>
+              <h3 className="font-bold text-lg mb-2">Bridge BTC</h3>
               <p className="opacity-70">
-                The Router automatically splits funds between Vesu (lending)
-                and Ekubo (LP) based on real-time APY comparison.
+                Bridge native BTC to WBTC on Starknet via LayerSwap or StarkGate.
               </p>
             </div>
-            <div className="flex flex-col bg-base-100 relative text-sm px-8 py-8 text-center items-center rounded-3xl border border-gradient">
+            <div className="flex flex-col bg-base-100 relative text-sm px-6 py-8 text-center items-center rounded-3xl border border-gradient">
               <div className="trapeze"></div>
               <div className="text-3xl mb-4">3</div>
+              <h3 className="font-bold text-lg mb-2">Deposit WBTC</h3>
+              <p className="opacity-70">
+                Deposit into the vault. The Router auto-allocates between Vesu and Ekubo strategies.
+              </p>
+            </div>
+            <div className="flex flex-col bg-base-100 relative text-sm px-6 py-8 text-center items-center rounded-3xl border border-gradient">
+              <div className="trapeze"></div>
+              <div className="text-3xl mb-4">4</div>
               <h3 className="font-bold text-lg mb-2">Earn Yield</h3>
               <p className="opacity-70">
-                Your shares appreciate as yield accrues. Withdraw anytime
-                to get your WBTC + earned yield back.
+                Shares appreciate as yield accrues. Withdraw anytime to get WBTC + earned yield.
               </p>
             </div>
           </div>
@@ -90,6 +98,10 @@ const Home = () => {
                 <span className="opacity-60">Risk</span>
                 <span className="font-semibold text-success">Low</span>
               </div>
+              <div className="flex justify-between text-sm mt-1">
+                <span className="opacity-60">Default Allocation</span>
+                <span className="font-semibold">60%</span>
+              </div>
             </div>
             <div className="bg-base-100 rounded-3xl border border-gradient p-8">
               <h3 className="font-bold text-xl mb-2">Ekubo LP</h3>
@@ -105,8 +117,25 @@ const Home = () => {
                 <span className="opacity-60">Risk</span>
                 <span className="font-semibold text-warning">Medium</span>
               </div>
+              <div className="flex justify-between text-sm mt-1">
+                <span className="opacity-60">Default Allocation</span>
+                <span className="font-semibold">40%</span>
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* Tech Stack */}
+        <div className="max-w-3xl mx-auto mt-16 text-center">
+          <h2 className="text-2xl font-bold mb-6">Built On</h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            {["Starknet", "Cairo", "Vesu V2", "Ekubo", "Xverse", "Scaffold-Stark", "Next.js"].map((tech) => (
+              <span key={tech} className="badge badge-lg badge-outline opacity-70">{tech}</span>
+            ))}
+          </div>
+          <p className="text-xs opacity-40 mt-6">
+            4 smart contracts deployed on Starknet Mainnet | 22 tests passing
+          </p>
         </div>
       </div>
     </div>

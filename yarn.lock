@@ -2487,10 +2487,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:1.8.0, @noble/hashes@npm:^1.2.0, @noble/hashes@npm:^1.4.0, @noble/hashes@npm:^1.8.0, @noble/hashes@npm:~1.8.0":
+"@noble/hashes@npm:1.8.0, @noble/hashes@npm:^1.1.2, @noble/hashes@npm:^1.2.0, @noble/hashes@npm:^1.4.0, @noble/hashes@npm:^1.8.0, @noble/hashes@npm:~1.8.0":
   version: 1.8.0
   resolution: "@noble/hashes@npm:1.8.0"
   checksum: c94e98b941963676feaba62475b1ccfa8341e3f572adbb3b684ee38b658df44100187fa0ef4220da580b13f8d27e87d5492623c8a02ecc61f23fb9960c7918f5
+  languageName: node
+  linkType: hard
+
+"@noble/secp256k1@npm:^1.6.3":
+  version: 1.7.2
+  resolution: "@noble/secp256k1@npm:1.7.2"
+  checksum: 34c80b862996e215b9abb4faa53c30155bbf4338bfb973218f91139fd882dbeff01dde63de3745485664aee539621c13e11fc4ee55c87a462a30e414db6459fc
   languageName: node
   linkType: hard
 
@@ -4154,6 +4161,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sats-connect/core@npm:0.10.0":
+  version: 0.10.0
+  resolution: "@sats-connect/core@npm:0.10.0"
+  dependencies:
+    axios: 1.12.0
+    bitcoin-address-validation: 3.0.0
+    buffer: 6.0.3
+    jsontokens: 4.0.1
+  peerDependencies:
+    valibot: 1.1.0
+  checksum: b856626905ac6b401f3453946dd14eb97bcb76fba17d90a3984be9a87271a40f56ec22ee7f47fd6bcb056f54b55c2203a5368031cc3e551d3d456b45d5c05a3c
+  languageName: node
+  linkType: hard
+
+"@sats-connect/make-default-provider-config@npm:0.0.10":
+  version: 0.0.10
+  resolution: "@sats-connect/make-default-provider-config@npm:0.0.10"
+  dependencies:
+    "@sats-connect/ui": ^0.0.6
+    bowser: ^2.11.0
+  peerDependencies:
+    "@sats-connect/core": "*"
+    typescript: ^5.0.0
+  checksum: cf9858be544eb16fb1701f80dab47585873e8b0628e523d618503f8240c87b60d071a18a97136eacb00ce551ce9dc50e255629b2f50a15703223d8413bc3f873
+  languageName: node
+  linkType: hard
+
+"@sats-connect/ui@npm:0.0.7":
+  version: 0.0.7
+  resolution: "@sats-connect/ui@npm:0.0.7"
+  checksum: 6b2e59157c87b1bbceb8b9d019df268237c40e5d236ac602d8c0182a5b0b4fd0271a79a189cc6ad3bc8f43ea74a48665f517d75cd1a13c39ad9b033571f828a4
+  languageName: node
+  linkType: hard
+
+"@sats-connect/ui@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "@sats-connect/ui@npm:0.0.6"
+  checksum: f3150f891c28f746a47d7f4eae6522e920cd6cddeef298883419c7d1dd9a9973997367258a1fcebdafed7f5d747e05fa6d1cbdb0aa79e84927f68c8736eda148
+  languageName: node
+  linkType: hard
+
 "@scaffold-stark/stark-burner@npm:^0.1.13":
   version: 0.1.13
   resolution: "@scaffold-stark/stark-burner@npm:0.1.13"
@@ -4263,6 +4311,7 @@ __metadata:
     react-copy-to-clipboard: ^5.1.0
     react-dom: 19.0.3
     react-hot-toast: ^2.4.1
+    sats-connect: ^4.2.1
     shx: ^0.4.0
     starknet: ^9.2.1
     tailwindcss: ^4
@@ -6454,6 +6503,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"asynckit@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "asynckit@npm:0.4.0"
+  checksum: 7b78c451df768adba04e2d02e63e2d0bf3b07adcd6e42b4cf665cb7ce899bedd344c69a1dcbce355b5f972d597b25aaa1c1742b52cffd9caccb22f348114f6be
+  languageName: node
+  linkType: hard
+
 "at-least-node@npm:^1.0.0":
   version: 1.0.0
   resolution: "at-least-node@npm:1.0.0"
@@ -6474,6 +6530,17 @@ __metadata:
   version: 4.11.1
   resolution: "axe-core@npm:4.11.1"
   checksum: 92b3c79af3695bcebac0e7f3f90f4bc11d2b39ccdc670937290e8dacbc943473713cc06b771dea0563c66d57d93d940ed89e082bfdecccf9dd70782d4bb243c0
+  languageName: node
+  linkType: hard
+
+"axios@npm:1.12.0":
+  version: 1.12.0
+  resolution: "axios@npm:1.12.0"
+  dependencies:
+    follow-redirects: ^1.15.6
+    form-data: ^4.0.4
+    proxy-from-env: ^1.1.0
+  checksum: f2a109efea16711907ae86acc46434d52da28e889bf1d2fc2b66844e82c9908f6d96d988ad9043b37d4146abc182e67d61abd87367152bbbc1cd73afa3c5de71
   languageName: node
   linkType: hard
 
@@ -6558,7 +6625,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.3.1":
+"base58-js@npm:^3.0.2":
+  version: 3.0.3
+  resolution: "base58-js@npm:3.0.3"
+  checksum: 62bad85b233290102ec3acdd47f604a3f657e20c1cb8a2de960c645f5f34d4a15806ece82e0fec75af5c66ea020d37be3c9daa00b92652570b7c43c4ecf7224a
+  languageName: node
+  linkType: hard
+
+"base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -6578,6 +6652,13 @@ __metadata:
   version: 1.1.4
   resolution: "bech32@npm:1.1.4"
   checksum: 0e98db619191548390d6f09ff68b0253ba7ae6a55db93dfdbb070ba234c1fd3308c0606fbcc95fad50437227b10011e2698b89f0181f6e7f845c499bd14d0f4b
+  languageName: node
+  linkType: hard
+
+"bech32@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "bech32@npm:2.0.0"
+  checksum: fa15acb270b59aa496734a01f9155677b478987b773bf701f465858bf1606c6a970085babd43d71ce61895f1baa594cb41a2cd1394bd2c6698f03cc2d811300e
   languageName: node
   linkType: hard
 
@@ -6635,6 +6716,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bitcoin-address-validation@npm:3.0.0":
+  version: 3.0.0
+  resolution: "bitcoin-address-validation@npm:3.0.0"
+  dependencies:
+    base58-js: ^3.0.2
+    bech32: ^2.0.0
+    sha256-uint8array: ^0.10.3
+  checksum: 3703f27501ea9c3bebad2c5a0448850a5c13f4d2df419ae72bfc458ff658283d29cc24e4cb34b99d5c6b5dec4bb58b3897456934213efd7b6f758bc87c81293b
+  languageName: node
+  linkType: hard
+
 "blo@npm:^1.1.1":
   version: 1.2.0
   resolution: "blo@npm:1.2.0"
@@ -6653,6 +6745,13 @@ __metadata:
   version: 5.2.2
   resolution: "bn.js@npm:5.2.2"
   checksum: 4384d35fef785c757eb050bc1f13d60dd8e37662ca72392ae6678b35cfa2a2ae8f0494291086294683a7d977609c7878ac3cff08ecca7f74c3ca73f3acbadbe8
+  languageName: node
+  linkType: hard
+
+"bowser@npm:^2.11.0":
+  version: 2.14.1
+  resolution: "bowser@npm:2.14.1"
+  checksum: 5a8b6272c5300b6de416b8508930479cb9028fda597fe3b77f3adbb3959c6bb58ac92b3398c9e9d3652c71e46bce3d6083a611c60c82e9cbaa8ce9698bc9c7af
   languageName: node
   linkType: hard
 
@@ -6749,7 +6848,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^6.0.3":
+"buffer@npm:6.0.3, buffer@npm:^6.0.3":
   version: 6.0.3
   resolution: "buffer@npm:6.0.3"
   dependencies:
@@ -7078,6 +7177,15 @@ __metadata:
   version: 2.0.20
   resolution: "colorette@npm:2.0.20"
   checksum: 0c016fea2b91b733eb9f4bcdb580018f52c0bc0979443dad930e5037a968237ac53d9beb98e218d2e9235834f8eebce7f8e080422d6194e957454255bde71d3d
+  languageName: node
+  linkType: hard
+
+"combined-stream@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "combined-stream@npm:1.0.8"
+  dependencies:
+    delayed-stream: ~1.0.0
+  checksum: 49fa4aeb4916567e33ea81d088f6584749fc90c7abec76fd516bf1c5aa5c79f3584b5ba3de6b86d26ddd64bae5329c4c7479343250cfe71c75bb366eae53bb7c
   languageName: node
   linkType: hard
 
@@ -7452,6 +7560,13 @@ daisyui@latest:
   version: 4.4.1
   resolution: "delay@npm:4.4.1"
   checksum: 97b001126a3979a398b6c5f33e437d78acda3b19731d9e6f991a05e2e09e7a410d655b8fdcaedc05743928bb533c0ac9401826cccb2af71c81d2cab50e199351
+  languageName: node
+  linkType: hard
+
+"delayed-stream@npm:~1.0.0":
+  version: 1.0.0
+  resolution: "delayed-stream@npm:1.0.0"
+  checksum: 46fe6e83e2cb1d85ba50bd52803c68be9bd953282fa7096f51fc29edd5d67ff84ff753c51966061e5ba7cb5e47ef6d36a91924eddb7f3f3483b1c560f77a0020
   languageName: node
   linkType: hard
 
@@ -8895,6 +9010,16 @@ daisyui@latest:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.15.6":
+  version: 1.15.11
+  resolution: "follow-redirects@npm:1.15.11"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 20bf55e9504f59e6cc3743ba27edb2ebf41edea1baab34799408f2c050f73f0c612728db21c691276296d2795ea8a812dc532a98e8793619fcab91abe06d017f
+  languageName: node
+  linkType: hard
+
 "for-each@npm:^0.3.3, for-each@npm:^0.3.5":
   version: 0.3.5
   resolution: "for-each@npm:0.3.5"
@@ -8911,6 +9036,19 @@ daisyui@latest:
     cross-spawn: ^7.0.6
     signal-exit: ^4.0.1
   checksum: b2c1a6fc0bf0233d645d9fefdfa999abf37db1b33e5dab172b3cbfb0662b88bfbd2c9e7ab853533d199050ec6b65c03fcf078fc212d26e4990220e98c6930eef
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.4":
+  version: 4.0.5
+  resolution: "form-data@npm:4.0.5"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.8
+    es-set-tostringtag: ^2.1.0
+    hasown: ^2.0.2
+    mime-types: ^2.1.12
+  checksum: af8328413c16d0cded5fccc975a44d227c5120fd46a9e81de8acf619d43ed838414cc6d7792195b30b248f76a65246949a129a4dadd148721948f90cd6d4fb69
   languageName: node
   linkType: hard
 
@@ -10372,6 +10510,17 @@ daisyui@latest:
   languageName: node
   linkType: hard
 
+"jsontokens@npm:4.0.1":
+  version: 4.0.1
+  resolution: "jsontokens@npm:4.0.1"
+  dependencies:
+    "@noble/hashes": ^1.1.2
+    "@noble/secp256k1": ^1.6.3
+    base64-js: ^1.5.1
+  checksum: 5396294d1b24acb9f7a3b3501ed25bc8ea2e8730a2e371c3b8886c1691829e7114dbeb856c14b88ea8379796f2572661f3175562e2ee3d40c42dbd70dc769427
+  languageName: node
+  linkType: hard
+
 "jsx-ast-utils@npm:^2.4.1 || ^3.0.0, jsx-ast-utils@npm:^3.3.5":
   version: 3.3.5
   resolution: "jsx-ast-utils@npm:3.3.5"
@@ -10825,7 +10974,7 @@ daisyui@latest:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.27":
+"mime-types@npm:^2.1.12, mime-types@npm:^2.1.27":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -12084,6 +12233,13 @@ daisyui@latest:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
+  languageName: node
+  linkType: hard
+
 "pump@npm:^3.0.0":
   version: 3.0.3
   resolution: "pump@npm:3.0.3"
@@ -12740,6 +12896,18 @@ daisyui@latest:
   languageName: node
   linkType: hard
 
+"sats-connect@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "sats-connect@npm:4.2.1"
+  dependencies:
+    "@sats-connect/core": 0.10.0
+    "@sats-connect/make-default-provider-config": 0.0.10
+    "@sats-connect/ui": 0.0.7
+    valibot: 1.1.0
+  checksum: 89dd2c367d348d23e8f8ad8acf2ffb41cc5881722b1b9afde4b674e1280fae2383e412bdc7751641c877a412fcad91684ebb8e5a26695b8f3167944d908df3cc
+  languageName: node
+  linkType: hard
+
 "saxes@npm:^6.0.0":
   version: 6.0.0
   resolution: "saxes@npm:6.0.0"
@@ -12896,6 +13064,13 @@ daisyui@latest:
   bin:
     sha.js: bin.js
   checksum: 9ec0fe39cc402acb33ffb18d261b52013485a2a9569a1873ff1861510a67b9ea2b3ccc78ab8aa09c34e1e85a5f06e18ab83637715509c6153ba8d537bbd2c29d
+  languageName: node
+  linkType: hard
+
+"sha256-uint8array@npm:^0.10.3":
+  version: 0.10.7
+  resolution: "sha256-uint8array@npm:0.10.7"
+  checksum: ff735efd42664ab3d663cbc71a2e5f58a02637e9d57e072c509b5765f5368a2dc34fafefa390e065ef24415946b780ac72fd4582eeeb745ece42256de5b85e94
   languageName: node
   linkType: hard
 
@@ -14489,6 +14664,18 @@ daisyui@latest:
   version: 3.0.1
   resolution: "v8-compile-cache-lib@npm:3.0.1"
   checksum: 78089ad549e21bcdbfca10c08850022b22024cdcc2da9b168bcf5a73a6ed7bf01a9cebb9eac28e03cd23a684d81e0502797e88f3ccd27a32aeab1cfc44c39da0
+  languageName: node
+  linkType: hard
+
+"valibot@npm:1.1.0":
+  version: 1.1.0
+  resolution: "valibot@npm:1.1.0"
+  peerDependencies:
+    typescript: ">=5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: c1b95d4f783cd62713a1c32a7fd25eb42b588037135dbc2cf2b4788acc720306374f831576d29e91da42f716a497503842c457a3332a04dab92c00cb2fa3227a
   languageName: node
   linkType: hard
 
