@@ -169,7 +169,7 @@ export const Header = () => {
               alt="SE2 logo"
               className="cursor-pointer"
               fill
-              src="/logo.svg"
+              src="/btcvault-removebg-preview.png"
             />
           </div>
           <div className="flex flex-col">

@@ -1,23 +1,17 @@
 {
-  "name": "Scaffold Stark",
-  "short_name": "Scaffold",
-  "description": "Fast track your starknet journey",
+  "name": "BTCVault",
+  "short_name": "BTCVault",
+  "description": "Non-custodial Bitcoin yield vault on Starknet",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#0C0C4F",
+  "theme_color": "#F7931A",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/logo.ico",
-      "sizes": "64x64",
-      "type": "image/x-icon",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/logo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/btcvault-removebg-preview.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],

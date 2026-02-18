@@ -73,7 +73,7 @@ export const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <Image src="/logo.svg" alt="BTCVault" width={32} height={32} />
+              <Image src="/btcvault-removebg-preview.png" alt="BTCVault" width={32} height={32} />
               <span className="font-bold text-lg">
                 <span className="text-primary">BTC</span>Vault
               </span>

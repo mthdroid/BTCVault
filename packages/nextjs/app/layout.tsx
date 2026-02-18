@@ -6,7 +6,7 @@ import { ThemeProvider } from "~~/components/ThemeProvider";
 export const metadata: Metadata = {
   title: "BTCVault - Bitcoin Yield on Starknet",
   description: "Non-custodial Bitcoin yield vault powered by Vesu & Ekubo on Starknet",
-  icons: "/logo.ico",
+  icons: "/btcvault-removebg-preview.png",
 };
 
 const ScaffoldStarkApp = ({ children }: { children: React.ReactNode }) => {
