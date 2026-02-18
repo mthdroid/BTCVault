@@ -180,7 +180,7 @@ export const Header = () => {
       </div>
       <div className="navbar-end grow mr-2 gap-4">
         {status === "connected" && !isDeployed ? (
-          <span className="bg-[#8a45fc] text-[9px] p-1 text-white">
+          <span className="bg-primary text-[9px] p-1 text-white rounded">
             Wallet Not Deployed
           </span>
         ) : null}

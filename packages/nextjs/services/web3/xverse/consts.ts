@@ -1,0 +1,4 @@
+export const xverseWalletId = "xverse";
+export const xverseWalletName = "Xverse";
+export const xverseWalletIcon =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+PHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyOCIgZmlsbD0iI0VFN0EzMCIvPjxwYXRoIGQ9Ik0zNiAzNkw1NiA2NEwzNiA5Mkg1Mkw2NCA3Mkw3NiA5Mkg5Mkw3MiA2NEw5MiAzNkg3Nkw2NCA1Nkw1MiAzNkgzNloiIGZpbGw9IndoaXRlIi8+PC9zdmc+";

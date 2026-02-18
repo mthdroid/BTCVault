@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount, useSendTransaction } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
 import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
@@ -117,8 +117,10 @@ const VaultPage = () => {
   if (!isConnected) {
     return (
       <div className="flex flex-col items-center justify-center grow pt-20">
-        <h1 className="text-3xl font-bold mb-4">BTCVault</h1>
-        <p className="opacity-70 mb-6">Connect your wallet to access the vault</p>
+        <h1 className="text-3xl font-bold mb-4">
+          <span className="text-primary">BTC</span>Vault
+        </h1>
+        <p className="opacity-50 mb-6 text-sm">Connect your wallet to access the vault</p>
         <CustomConnectButton />
       </div>
     );
@@ -126,86 +128,106 @@ const VaultPage = () => {
 
   return (
     <div className="flex flex-col items-center grow pt-10 px-4">
-      <div className="max-w-lg w-full">
-        <h1 className="text-3xl font-bold text-center mb-2">BTCVault</h1>
-        <p className="text-center opacity-60 mb-8">Deposit & Withdraw WBTC</p>
-
+      <div className="max-w-md w-full">
         {/* Vault Stats */}
-        <div className="bg-base-100 rounded-3xl border border-gradient p-6 mb-6">
+        <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold text-lg">
+              <span className="text-primary">BTC</span>Vault
+            </h2>
+            <span className="text-sm font-semibold text-success bg-success/10 px-3 py-1 rounded-full">
+              {apyStr}% APY
+            </span>
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs opacity-50 uppercase">Total Assets</p>
-              <p className="text-xl font-bold">{totalAssetsStr} sats</p>
+              <p className="text-xs opacity-40 mb-1">Total Assets</p>
+              <p className="text-lg font-bold">{totalAssetsStr} <span className="text-xs opacity-50">sats</span></p>
             </div>
             <div>
-              <p className="text-xs opacity-50 uppercase">Vault APY</p>
-              <p className="text-xl font-bold text-success">{apyStr}%</p>
-            </div>
-            <div>
-              <p className="text-xs opacity-50 uppercase">Your Shares</p>
-              <p className="text-lg font-semibold">{userSharesStr}</p>
-            </div>
-            <div>
-              <p className="text-xs opacity-50 uppercase">Your Position</p>
-              <p className="text-lg font-semibold">{userAssetsStr} sats</p>
+              <p className="text-xs opacity-40 mb-1">Total Shares</p>
+              <p className="text-lg font-bold">{totalSharesStr}</p>
             </div>
           </div>
         </div>
 
-        {/* Allocation Bar */}
-        <div className="bg-base-100 rounded-3xl border border-gradient p-6 mb-6">
-          <p className="text-xs opacity-50 uppercase mb-3">Strategy Allocation</p>
-          <div className="flex rounded-full overflow-hidden h-4 mb-2">
+        {/* Strategy Allocation */}
+        <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
+          <p className="text-xs font-medium opacity-50 mb-3">Strategy Allocation</p>
+          <div className="flex rounded-full overflow-hidden h-3 mb-3">
             <div
-              className="bg-secondary"
+              className="bg-primary transition-all"
               style={{ width: `${vesuAlloc}%` }}
             />
             <div
-              className="bg-accent"
+              className="bg-accent transition-all"
               style={{ width: `${ekuboAlloc}%` }}
             />
           </div>
           <div className="flex justify-between text-xs">
-            <span>Vesu {vesuAlloc}%</span>
-            <span>Ekubo {ekuboAlloc}%</span>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-primary"></div>
+              <span className="opacity-60">Vesu {vesuAlloc}%</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-accent"></div>
+              <span className="opacity-60">Ekubo {ekuboAlloc}%</span>
+            </div>
           </div>
         </div>
 
-        {/* Deposit/Withdraw Tabs */}
-        <div className="bg-base-100 rounded-3xl border border-gradient p-6">
-          <div className="flex gap-2 mb-6">
+        {/* Your Position */}
+        {(userSharesStr !== "0") && (
+          <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
+            <p className="text-xs font-medium opacity-50 mb-3">Your Position</p>
+            <div className="flex justify-between">
+              <div>
+                <p className="text-xs opacity-40 mb-1">Shares</p>
+                <p className="font-semibold">{userSharesStr}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs opacity-40 mb-1">Value</p>
+                <p className="font-semibold">{userAssetsStr} <span className="text-xs opacity-50">sats</span></p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Deposit/Withdraw Card */}
+        <div className="bg-base-100 rounded-2xl shadow-sm p-6">
+          <div className="flex gap-1 mb-5 bg-base-200 rounded-full p-1">
             <button
-              className={`flex-1 btn btn-sm ${activeTab === "deposit" ? "btn-secondary" : "btn-ghost"}`}
+              className={`flex-1 py-2 text-sm font-medium rounded-full transition-all ${activeTab === "deposit" ? "bg-primary text-white shadow-sm" : "opacity-60 hover:opacity-80"}`}
               onClick={() => setActiveTab("deposit")}
             >
               Deposit
             </button>
             <button
-              className={`flex-1 btn btn-sm ${activeTab === "withdraw" ? "btn-secondary" : "btn-ghost"}`}
+              className={`flex-1 py-2 text-sm font-medium rounded-full transition-all ${activeTab === "withdraw" ? "bg-primary text-white shadow-sm" : "opacity-60 hover:opacity-80"}`}
               onClick={() => setActiveTab("withdraw")}
             >
               Withdraw
             </button>
           </div>
 
-          <div className="form-control mb-4">
-            <label className="label">
-              <span className="label-text text-xs opacity-60">
+          <div className="mb-4">
+            <div className="bg-base-200 rounded-xl p-4">
+              <label className="text-xs opacity-40 mb-2 block">
                 {activeTab === "deposit" ? "Amount (satoshis)" : "Shares to burn"}
-              </span>
-            </label>
-            <input
-              type="number"
-              placeholder={activeTab === "deposit" ? "Min: 100 sats" : "Enter shares amount"}
-              className="input input-bordered w-full bg-input"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              min={activeTab === "deposit" ? "100" : "1"}
-            />
+              </label>
+              <input
+                type="number"
+                placeholder={activeTab === "deposit" ? "Min: 100 sats" : "Enter shares amount"}
+                className="w-full bg-transparent text-2xl font-semibold outline-none placeholder:text-base-content/20"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                min={activeTab === "deposit" ? "100" : "1"}
+              />
+            </div>
           </div>
 
-          {activeTab === "deposit" && amount && (
-            <div className="text-xs opacity-60 mb-4">
+          {activeTab === "deposit" && amount && parseFloat(amount) > 0 && (
+            <div className="text-xs opacity-50 mb-4 px-1">
               You will receive vault shares proportional to your deposit.
               {parseFloat(amount) < 100 && (
                 <span className="text-error block mt-1">Minimum deposit is 100 satoshis</span>
@@ -214,7 +236,7 @@ const VaultPage = () => {
           )}
 
           <button
-            className={`btn btn-secondary w-full ${isLoading ? "loading" : ""}`}
+            className={`btn btn-primary w-full text-white text-base ${isLoading ? "loading" : ""}`}
             onClick={activeTab === "deposit" ? handleDeposit : handleWithdraw}
             disabled={isLoading || !amount || parseFloat(amount) <= 0 || (activeTab === "deposit" && parseFloat(amount) < 100)}
           >
@@ -226,10 +248,10 @@ const VaultPage = () => {
           </button>
         </div>
 
-        {/* Info */}
-        <div className="text-center mt-6 text-xs opacity-40">
-          <p>Contract: {VAULT_ADDRESS.slice(0, 10)}...</p>
-          <p>Network: Starknet Mainnet</p>
+        {/* Footer info */}
+        <div className="text-center mt-4 text-xs opacity-30">
+          <p className="font-mono">{VAULT_ADDRESS.slice(0, 14)}...{VAULT_ADDRESS.slice(-8)}</p>
+          <p>Starknet Mainnet</p>
         </div>
       </div>
     </div>

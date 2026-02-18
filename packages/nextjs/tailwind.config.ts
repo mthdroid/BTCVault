@@ -11,65 +11,65 @@ module.exports = {
   themes: [
     {
       light: {
-        primary: "#93BBFB",
-        "primary-content": "#2A3655",
-        secondary: "#8B45FD",
-        "secondary-content": "#7800FF",
-        accent: "#93BBFB",
-        "accent-content": "#212638",
-        neutral: "#212638",
+        primary: "#F7931A",
+        "primary-content": "#ffffff",
+        secondary: "#0C0C4F",
+        "secondary-content": "#ffffff",
+        accent: "#29296E",
+        "accent-content": "#ffffff",
+        neutral: "#1a1a2e",
         "neutral-content": "#ffffff",
         "base-100": "#ffffff",
-        "base-200": "#f4f8ff",
-        "base-300": "#ffffff",
-        "base-content": "#212638",
-        info: "#93BBFB",
-        success: "#34EEB6",
-        warning: "#FFCF72",
-        error: "#FF8863",
+        "base-200": "#F7F8FA",
+        "base-300": "#E8ECFB",
+        "base-content": "#1a1a2e",
+        info: "#29296E",
+        success: "#27AE60",
+        warning: "#F7931A",
+        error: "#EB5757",
         ".bg-gradient-modal": {
           "background-image":
-            "linear-gradient(270deg, #A7ECFF -17.42%, #E8B6FF 109.05%)",
+            "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
         },
         ".bg-modal": {
           background:
-            "linear-gradient(270deg, #ece9fb -17.42%, #e3f4fd 109.05%)",
+            "linear-gradient(135deg, #ffffff 0%, #F7F8FA 100%)",
         },
         ".modal-border": {
-          border: "1px solid #5c4fe5",
+          border: "1px solid #E8ECFB",
         },
         ".bg-gradient-nav": {
-          background: "#000000",
+          background: "#0C0C4F",
         },
         ".bg-main": {
-          background: "#FFFFFF",
+          background: "#F7F8FA",
         },
         ".bg-underline": {
           background:
-            "linear-gradient(270deg, #A7ECFF -17.42%, #E8B6FF 109.05%)",
+            "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
         },
         ".bg-container": {
           background: "transparent",
         },
         ".bg-btn-wallet": {
           "background-image":
-            "linear-gradient(270deg, #A7ECFF -17.42%, #E8B6FF 109.05%)",
+            "linear-gradient(135deg, #F7931A 0%, #E8820E 100%)",
         },
         ".bg-input": {
-          background: "rgba(0, 0, 0, 0.07)",
+          background: "#F7F8FA",
         },
         ".bg-component": {
-          background: "rgba(255, 255, 255, 0.55)",
+          background: "rgba(255, 255, 255, 0.85)",
         },
         ".bg-function": {
           background:
-            "linear-gradient(270deg, #A7ECFF -17.42%, #E8B6FF 109.05%)",
+            "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
         },
         ".text-function": {
-          color: "#3C1DFF",
+          color: "#0C0C4F",
         },
         ".text-network": {
-          color: "#7800FF",
+          color: "#F7931A",
         },
         "--rounded-btn": "9999rem",
 
@@ -89,63 +89,62 @@ module.exports = {
     },
     {
       dark: {
-        primary: "#212638",
-        "primary-content": "#DAE8FF",
-        secondary: "#8b45fd",
-        "secondary-content": "#0FF",
+        primary: "#F7931A",
+        "primary-content": "#ffffff",
+        secondary: "#29296E",
+        "secondary-content": "#ffffff",
         accent: "#4969A6",
         "accent-content": "#F9FBFF",
         neutral: "#F9FBFF",
-        "neutral-content": "#385183",
-        "base-100": "#1C223B",
-        "base-200": "#2A3655",
-        "base-300": "#141a30",
+        "neutral-content": "#8B92A5",
+        "base-100": "#191B1F",
+        "base-200": "#212429",
+        "base-300": "#2C2F36",
         "base-content": "#F9FBFF",
-        info: "#385183",
-        success: "#34EEB6",
-        warning: "#FFCF72",
-        error: "#FF8863",
+        info: "#4969A6",
+        success: "#27AE60",
+        warning: "#F7931A",
+        error: "#EB5757",
         ".bg-gradient-modal": {
-          background: "#385183",
+          background: "#2C2F36",
         },
         ".bg-modal": {
-          background: "linear-gradient(90deg, #2B2243 0%, #253751 100%)",
+          background: "linear-gradient(135deg, #212429 0%, #2C2F36 100%)",
         },
         ".modal-border": {
-          border: "1px solid #4f4ab7",
+          border: "1px solid #40444F",
         },
         ".bg-gradient-nav": {
           "background-image":
-            "var(--gradient, linear-gradient(90deg, #42D2F1 0%, #B248DD 100%))",
+            "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
         },
         ".bg-main": {
-          background: "#141A31",
+          background: "#191B1F",
         },
         ".bg-underline": {
-          background: "#5368B4",
+          background: "#40444F",
         },
         ".bg-container": {
-          background: "#141a30",
+          background: "#191B1F",
         },
         ".bg-btn-wallet": {
           "background-image":
-            "linear-gradient(180deg, #3457D1 0%, #8A45FC 100%)",
+            "linear-gradient(135deg, #F7931A 0%, #E8820E 100%)",
         },
         ".bg-input": {
-          background: "rgba(255, 255, 255, 0.07)",
+          background: "#2C2F36",
         },
         ".bg-component": {
-          background:
-            "linear-gradient(113deg,rgba(43, 34, 67, 0.6) 20.48%,rgba(37, 55, 81, 0.6) 99.67%)",
+          background: "#212429",
         },
         ".bg-function": {
-          background: "rgba(139, 69, 253, 0.37)",
+          background: "rgba(247, 147, 26, 0.15)",
         },
         ".text-function": {
-          color: "#1DD6FF",
+          color: "#F7931A",
         },
         ".text-network": {
-          color: "#D0A6FF",
+          color: "#F7931A",
         },
 
         "--rounded-btn": "9999rem",
@@ -161,8 +160,7 @@ module.exports = {
           opacity: "80%",
         },
         ".contract-content": {
-          background:
-            "linear-gradient(113.34deg, rgba(43, 34, 67, 0.6) 20.48%, rgba(37, 55, 81, 0.6) 99.67%)",
+          background: "#212429",
         },
       },
     },
@@ -178,13 +176,13 @@ module.exports = {
       },
       backgroundImage: {
         "gradient-light":
-          "linear-gradient(270deg, #A7ECFF -17.42%, #E8B6FF 109.05%)",
+          "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
         "gradient-dark":
-          "var(--gradient, linear-gradient(90deg, #42D2F1 0%, #B248DD 100%))",
+          "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
         "gradient-vertical":
-          "linear-gradient(180deg, #3457D1 0%, #8A45FC 100%)",
+          "linear-gradient(135deg, #F7931A 0%, #E8820E 100%)",
         "gradient-icon":
-          "var(--gradient, linear-gradient(90deg, #42D2F1 0%, #B248DD 100%))",
+          "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
       },
     },
   },

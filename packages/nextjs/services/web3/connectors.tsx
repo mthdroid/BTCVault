@@ -4,6 +4,7 @@ import { BurnerConnector } from "@scaffold-stark/stark-burner";
 import scaffoldConfig from "~~/scaffold.config";
 import { LAST_CONNECTED_TIME_LOCALSTORAGE_KEY } from "~~/utils/Constants";
 import { KeplrConnector } from "./keplr";
+import { XverseConnector } from "./xverse";
 
 const targetNetworks = getTargetNetworks();
 
@@ -30,6 +31,7 @@ function getConnectors() {
   );
 
   if (!isDevnet) {
+    connectors.push(new XverseConnector());
     connectors.push(new KeplrConnector());
   } else {
     const burnerConnector = new BurnerConnector();
@@ -38,7 +40,7 @@ function getConnectors() {
     connectors.push(burnerConnector as unknown as InjectedConnector);
   }
 
-  return connectors.sort(() => Math.random() - 0.5).map(withDisconnectWrapper);
+  return connectors.map(withDisconnectWrapper);
 }
 
 export const appChains = targetNetworks;

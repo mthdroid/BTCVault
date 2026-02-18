@@ -11,28 +11,28 @@ const Home = () => {
   return (
     <div className="flex items-center flex-col grow pt-10">
       <div className="px-5 max-w-3xl text-center">
-        <h1 className="text-4xl font-bold mb-4">
-          BTCVault
+        <h1 className="text-5xl font-bold mb-4">
+          <span className="text-primary">BTC</span>Vault
         </h1>
         <p className="text-xl opacity-80 mb-2">
           Non-custodial Bitcoin yield on Starknet
         </p>
-        <p className="text-base opacity-60 mb-8">
+        <p className="text-base opacity-50 mb-8 max-w-xl mx-auto">
           Bridge your BTC via Xverse, earn optimized yield through automated
           allocation between Vesu lending and Ekubo LP strategies.
         </p>
 
         {!isConnected ? (
           <div className="flex flex-col items-center gap-4">
-            <p className="text-sm opacity-70">Connect your wallet to get started</p>
+            <p className="text-sm opacity-60">Connect your wallet to get started</p>
             <CustomConnectButton />
           </div>
         ) : (
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/bridge" className="btn btn-secondary btn-lg">
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/bridge" className="btn btn-primary btn-lg text-white">
               Bridge BTC
             </Link>
-            <Link href="/vault" className="btn btn-outline btn-lg">
+            <Link href="/vault" className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-white btn-lg">
               Enter Vault
             </Link>
             <Link href="/dashboard" className="btn btn-ghost btn-lg">
@@ -45,81 +45,77 @@ const Home = () => {
       <div className="bg-container grow w-full mt-16 px-8 py-12">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-8">How it works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="flex flex-col bg-base-100 relative text-sm px-6 py-8 text-center items-center rounded-3xl border border-gradient">
-              <div className="trapeze"></div>
-              <div className="text-3xl mb-4">1</div>
-              <h3 className="font-bold text-lg mb-2">Connect Xverse</h3>
-              <p className="opacity-70">
-                Connect your Xverse wallet to get both BTC and Starknet addresses in one click.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 relative text-sm px-6 py-8 text-center items-center rounded-3xl border border-gradient">
-              <div className="trapeze"></div>
-              <div className="text-3xl mb-4">2</div>
-              <h3 className="font-bold text-lg mb-2">Bridge BTC</h3>
-              <p className="opacity-70">
-                Bridge native BTC to WBTC on Starknet via LayerSwap or StarkGate.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 relative text-sm px-6 py-8 text-center items-center rounded-3xl border border-gradient">
-              <div className="trapeze"></div>
-              <div className="text-3xl mb-4">3</div>
-              <h3 className="font-bold text-lg mb-2">Deposit WBTC</h3>
-              <p className="opacity-70">
-                Deposit into the vault. The Router auto-allocates between Vesu and Ekubo strategies.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 relative text-sm px-6 py-8 text-center items-center rounded-3xl border border-gradient">
-              <div className="trapeze"></div>
-              <div className="text-3xl mb-4">4</div>
-              <h3 className="font-bold text-lg mb-2">Earn Yield</h3>
-              <p className="opacity-70">
-                Shares appreciate as yield accrues. Withdraw anytime to get WBTC + earned yield.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+            {[
+              { step: "1", title: "Connect Xverse", desc: "Connect your Xverse wallet to get both BTC and Starknet addresses in one click." },
+              { step: "2", title: "Bridge BTC", desc: "Bridge native BTC to WBTC on Starknet via LayerSwap." },
+              { step: "3", title: "Deposit WBTC", desc: "Deposit into the vault. The Router auto-allocates between Vesu and Ekubo." },
+              { step: "4", title: "Earn Yield", desc: "Shares appreciate as yield accrues. Withdraw anytime to get WBTC + earned yield." },
+            ].map((item) => (
+              <div key={item.step} className="flex flex-col bg-base-100 px-6 py-8 text-center items-center rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center text-lg font-bold mb-4">
+                  {item.step}
+                </div>
+                <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+                <p className="text-sm opacity-60">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
 
         <div className="max-w-4xl mx-auto mt-16">
           <h2 className="text-2xl font-bold text-center mb-8">Strategies</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-base-100 rounded-3xl border border-gradient p-8">
-              <h3 className="font-bold text-xl mb-2">Vesu Lending</h3>
-              <p className="text-sm opacity-70 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-base-100 rounded-2xl shadow-sm p-8 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-primary font-bold text-sm">V</span>
+                </div>
+                <h3 className="font-bold text-xl">Vesu Lending</h3>
+              </div>
+              <p className="text-sm opacity-60 mb-4">
                 Deposit WBTC into Vesu V2 vToken pools (ERC-4626).
                 Earn passive lending yield with auto-compounding.
               </p>
-              <div className="flex justify-between text-sm">
-                <span className="opacity-60">Type</span>
-                <span className="font-semibold">Lending / Supply</span>
-              </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span className="opacity-60">Risk</span>
-                <span className="font-semibold text-success">Low</span>
-              </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span className="opacity-60">Default Allocation</span>
-                <span className="font-semibold">60%</span>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="opacity-50">Type</span>
+                  <span className="font-medium">Lending / Supply</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="opacity-50">Risk</span>
+                  <span className="font-medium text-success">Low</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="opacity-50">Allocation</span>
+                  <span className="font-medium text-primary">60%</span>
+                </div>
               </div>
             </div>
-            <div className="bg-base-100 rounded-3xl border border-gradient p-8">
-              <h3 className="font-bold text-xl mb-2">Ekubo LP</h3>
-              <p className="text-sm opacity-70 mb-4">
+            <div className="bg-base-100 rounded-2xl shadow-sm p-8 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
+                  <span className="text-accent font-bold text-sm">E</span>
+                </div>
+                <h3 className="font-bold text-xl">Ekubo LP</h3>
+              </div>
+              <p className="text-sm opacity-60 mb-4">
                 Provide concentrated liquidity in WBTC pairs on Ekubo DEX.
                 Higher yield potential with active management.
               </p>
-              <div className="flex justify-between text-sm">
-                <span className="opacity-60">Type</span>
-                <span className="font-semibold">Liquidity Provision</span>
-              </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span className="opacity-60">Risk</span>
-                <span className="font-semibold text-warning">Medium</span>
-              </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span className="opacity-60">Default Allocation</span>
-                <span className="font-semibold">40%</span>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="opacity-50">Type</span>
+                  <span className="font-medium">Liquidity Provision</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="opacity-50">Risk</span>
+                  <span className="font-medium text-warning">Medium</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="opacity-50">Allocation</span>
+                  <span className="font-medium text-accent">40%</span>
+                </div>
               </div>
             </div>
           </div>
@@ -130,7 +126,7 @@ const Home = () => {
           <h2 className="text-2xl font-bold mb-6">Built On</h2>
           <div className="flex flex-wrap justify-center gap-3">
             {["Starknet", "Cairo", "Vesu V2", "Ekubo", "Xverse", "Scaffold-Stark", "Next.js"].map((tech) => (
-              <span key={tech} className="badge badge-lg badge-outline opacity-70">{tech}</span>
+              <span key={tech} className="px-4 py-1.5 rounded-full text-sm font-medium bg-base-100 shadow-sm opacity-80">{tech}</span>
             ))}
           </div>
           <p className="text-xs opacity-40 mt-6">
