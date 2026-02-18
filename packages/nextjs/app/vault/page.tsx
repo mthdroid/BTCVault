@@ -141,7 +141,7 @@ const VaultPage = () => {
   const isOwner =
     vaultOwner &&
     address &&
-    vaultOwner.toString().toLowerCase() === address.toLowerCase();
+    BigInt(vaultOwner.toString()) === BigInt(address);
 
   const isLoading =
     depositPending ||
