@@ -27,12 +27,14 @@ const VaultPage = () => {
   const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
   const [amount, setAmount] = useState("");
   const [txStatus, setTxStatus] = useState<"idle" | "approving" | "depositing" | "withdrawing" | "success" | "error">("idle");
+  const [adminStatus, setAdminStatus] = useState<"idle" | "pending" | "done">("idle");
 
   const { data: totalAssets } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "total_assets" });
   const { data: totalShares } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "total_shares" });
   const { data: userShares } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "shares_of", args: [address ?? "0x0"] });
   const { data: vaultApy } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "get_vault_apy" });
   const { data: allocation } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "get_allocation" });
+  const { data: vaultOwner } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "owner" });
 
   const { data: wbtcBalanceRaw } = useReadContract({
     address: WBTC_ADDRESS,
@@ -77,6 +79,12 @@ const VaultPage = () => {
   const { sendAsync: sendWithdraw, isPending: withdrawPending } = useScaffoldWriteContract({
     contractName: "BTCVault", functionName: "withdraw", args: [amountBigInt],
   });
+
+  const { sendAsync: sendSetStrategies } = useScaffoldWriteContract({
+    contractName: "BTCVault", functionName: "set_strategies", args: ["0x0", "0x0"],
+  });
+
+  const isOwner = vaultOwner && address && vaultOwner.toString().toLowerCase() === address.toLowerCase();
 
   const isLoading = depositPending || withdrawPending || txStatus === "approving" || txStatus === "depositing" || txStatus === "withdrawing";
 
@@ -125,6 +133,19 @@ const VaultPage = () => {
         : err?.message?.slice(0, 80) || "Transaction failed";
       toast.error(msg, { id: "withdraw-tx", duration: 4000 });
       setTimeout(() => setTxStatus("idle"), 3000);
+    }
+  };
+
+  const handleDisableStrategies = async () => {
+    setAdminStatus("pending");
+    try {
+      toast.loading("Disabling strategy allocation...", { id: "admin-tx" });
+      await sendSetStrategies();
+      setAdminStatus("done");
+      toast.success("Strategies disabled! Deposits now work directly.", { id: "admin-tx", duration: 5000 });
+    } catch (err: any) {
+      setAdminStatus("idle");
+      toast.error(err?.message?.slice(0, 80) || "Admin tx failed", { id: "admin-tx", duration: 4000 });
     }
   };
 
@@ -306,6 +327,23 @@ const VaultPage = () => {
             {getButtonText()}
           </button>
         </div>
+
+        {/* Admin: disable strategies (owner only) */}
+        {isOwner && adminStatus !== "done" && (
+          <div className="card-btc mt-4 border border-warning/30 bg-warning/5">
+            <p className="text-xs font-medium opacity-60 mb-2">Owner Action Required</p>
+            <p className="text-xs opacity-40 mb-3">
+              Vesu strategy needs mainnet whitelisting. Disable strategy allocation so deposits hold WBTC directly in the vault.
+            </p>
+            <button
+              className="btn btn-sm btn-warning w-full text-white"
+              onClick={handleDisableStrategies}
+              disabled={adminStatus === "pending"}
+            >
+              {adminStatus === "pending" ? "Confirming..." : "Disable Strategy Allocation"}
+            </button>
+          </div>
+        )}
 
         <div className="text-center mt-5 mb-12 text-xs opacity-25 font-mono">
           {VAULT_ADDRESS.slice(0, 14)}...{VAULT_ADDRESS.slice(-8)} | <span style={{ color: "#5B8DEF" }}>Starknet Mainnet</span>
