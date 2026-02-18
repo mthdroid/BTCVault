@@ -352,6 +352,24 @@
     border-color: rgba(247, 147, 26, 0.3);
   }
 
+  .card-starknet {
+    background: var(--color-base-100);
+    border: 1px solid rgba(12, 12, 79, 0.15);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .card-starknet:hover {
+    border-color: rgba(91, 141, 239, 0.4);
+  }
+
+  [data-theme="dark"] .card-starknet {
+    border-color: rgba(91, 141, 239, 0.15);
+  }
+  [data-theme="dark"] .card-starknet:hover {
+    border-color: rgba(91, 141, 239, 0.4);
+  }
+
   .bg-modal {
     backdrop-filter: blur(7.449999809265137px);
   }

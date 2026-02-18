@@ -24,7 +24,7 @@ const BridgePage = () => {
     <div className="flex flex-col items-center grow pt-10 px-4">
       <div className="max-w-lg w-full">
         <h1 className="text-3xl font-bold text-center mb-2">
-          <span className="text-primary">Bridge</span>
+          <span className="text-primary">Bridge</span> to <span style={{ color: "#5B8DEF" }}>Starknet</span>
         </h1>
         <p className="text-center text-sm opacity-40 mb-8">
           Bridge your native BTC to Starknet WBTC
@@ -71,8 +71,8 @@ const BridgePage = () => {
                 </div>
               )}
             </div>
-            <div className="bg-base-200 rounded-xl p-4 border border-base-300/50">
-              <p className="text-xs font-medium opacity-40 uppercase tracking-wider mb-3">Starknet</p>
+            <div className="bg-base-200 rounded-xl p-4 border border-accent/20">
+              <p className="text-xs font-medium uppercase tracking-wider mb-3" style={{ color: "#5B8DEF" }}>Starknet</p>
               {starknetConnected ? (
                 <div>
                   <div className="flex items-center gap-2 mb-2">

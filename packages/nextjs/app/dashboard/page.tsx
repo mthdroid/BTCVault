@@ -61,8 +61,8 @@ const DashboardPage = () => {
   return (
     <div className="flex flex-col items-center grow pt-10 px-4">
       <div className="max-w-5xl w-full">
-        <h1 className="text-3xl font-bold mb-1">Dashboard</h1>
-        <p className="opacity-40 text-sm mb-8">Vault overview and strategy performance</p>
+        <h1 className="text-3xl font-bold mb-1"><span className="text-primary">BTC</span>Vault Dashboard</h1>
+        <p className="opacity-40 text-sm mb-8">Vault overview and strategy performance on <span style={{ color: "#5B8DEF" }}>Starknet</span></p>
 
         {/* Top Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
@@ -164,7 +164,7 @@ const DashboardPage = () => {
             </div>
             <div className="bg-primary/10 rounded-xl p-4 border border-primary/20">
               <p className="font-bold text-primary">BTCVault</p>
-              <p className="text-xs opacity-30">ERC-4626 shares</p>
+              <p className="text-xs opacity-30">ERC-4626 on <span style={{ color: "#5B8DEF" }}>Starknet</span></p>
             </div>
             <div className="flex items-center justify-center">
               <span className="text-primary font-bold text-xl">&rarr;</span>
@@ -174,8 +174,8 @@ const DashboardPage = () => {
                 <p className="font-bold text-xs">Vesu Strategy</p>
                 <p className="text-xs opacity-30">Lending yield</p>
               </div>
-              <div className="bg-accent/5 rounded-xl p-3 border border-accent/10">
-                <p className="font-bold text-xs">Ekubo Strategy</p>
+              <div className="bg-accent/10 rounded-xl p-3 border border-accent/20">
+                <p className="font-bold text-xs text-accent">Ekubo Strategy</p>
                 <p className="text-xs opacity-30">LP fees</p>
               </div>
             </div>
@@ -187,7 +187,7 @@ const DashboardPage = () => {
 
         {/* Contract Addresses */}
         <div className="card-btc mb-8">
-          <h2 className="font-bold text-base mb-4">Contracts (Mainnet)</h2>
+          <h2 className="font-bold text-base mb-4">Contracts on <span style={{ color: "#5B8DEF" }}>Starknet Mainnet</span></h2>
           <div className="space-y-2.5">
             {Object.entries(CONTRACTS).map(([name, addr]) => (
               <div key={name} className="flex justify-between items-center">

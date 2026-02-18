@@ -171,7 +171,7 @@ export const Header = () => {
           </div>
           <div className="flex flex-col">
             <span className="font-bold leading-tight">BTCVault</span>
-            <span className="text-xs">Bitcoin Yield on Starknet</span>
+            <span className="text-xs">Bitcoin Yield on <span style={{ color: "#5B8DEF" }}>Starknet</span></span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
