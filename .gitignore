@@ -19,7 +19,6 @@ package-lock.json
 
 # Scarb
 target/
-Scarb.lock
 
 # Build artifacts
 *.zip

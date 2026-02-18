@@ -32,8 +32,7 @@ module.exports = {
             "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
         },
         ".bg-modal": {
-          background:
-            "linear-gradient(135deg, #ffffff 0%, #F7F8FA 100%)",
+          background: "linear-gradient(135deg, #ffffff 0%, #F7F8FA 100%)",
         },
         ".modal-border": {
           border: "1px solid #E8ECFB",
@@ -45,8 +44,7 @@ module.exports = {
           background: "#F7F8FA",
         },
         ".bg-underline": {
-          background:
-            "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
+          background: "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
         },
         ".bg-container": {
           background: "transparent",
@@ -62,8 +60,7 @@ module.exports = {
           background: "rgba(255, 255, 255, 0.85)",
         },
         ".bg-function": {
-          background:
-            "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
+          background: "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
         },
         ".text-function": {
           color: "#5B8DEF",
@@ -175,14 +172,11 @@ module.exports = {
         "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       backgroundImage: {
-        "gradient-light":
-          "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
-        "gradient-dark":
-          "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
+        "gradient-light": "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
+        "gradient-dark": "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
         "gradient-vertical":
           "linear-gradient(135deg, #F7931A 0%, #E8820E 100%)",
-        "gradient-icon":
-          "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
+        "gradient-icon": "linear-gradient(90deg, #F7931A 0%, #29296E 100%)",
       },
     },
   },

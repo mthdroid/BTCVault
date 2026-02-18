@@ -66,9 +66,8 @@ describe("useScaffoldWatchContractEvent", () => {
       provider: {},
     });
 
-    const { useScaffoldWebSocketEvents } = await import(
-      "../useScaffoldWebSocketEvents"
-    );
+    const { useScaffoldWebSocketEvents } =
+      await import("../useScaffoldWebSocketEvents");
     (useScaffoldWebSocketEvents as unknown as any).mockImplementation(() => ({
       isLoading: false,
       error: null,
@@ -82,9 +81,8 @@ describe("useScaffoldWatchContractEvent", () => {
   });
 
   it("calls onLogs when WS events arrive", async () => {
-    const { useScaffoldWebSocketEvents } = await import(
-      "../useScaffoldWebSocketEvents"
-    );
+    const { useScaffoldWebSocketEvents } =
+      await import("../useScaffoldWebSocketEvents");
     (useScaffoldWebSocketEvents as unknown as any).mockImplementationOnce(
       ({ onEvent }: any) => {
         const eventAbi = {
@@ -133,9 +131,8 @@ describe("useScaffoldWatchContractEvent", () => {
   });
 
   it("does not call onLogs if WS doesn't emit", async () => {
-    const { useScaffoldWebSocketEvents } = await import(
-      "../useScaffoldWebSocketEvents"
-    );
+    const { useScaffoldWebSocketEvents } =
+      await import("../useScaffoldWebSocketEvents");
     (useScaffoldWebSocketEvents as unknown as any).mockReturnValueOnce({
       isLoading: false,
       error: null,
@@ -199,9 +196,8 @@ describe("useScaffoldWatchContractEvent", () => {
       data: undefined,
       isLoading: false,
     });
-    const { useScaffoldWebSocketEvents } = await import(
-      "../useScaffoldWebSocketEvents"
-    );
+    const { useScaffoldWebSocketEvents } =
+      await import("../useScaffoldWebSocketEvents");
     (useScaffoldWebSocketEvents as unknown as any).mockReturnValueOnce({
       isLoading: false,
       error: new Error("Contract not found"),

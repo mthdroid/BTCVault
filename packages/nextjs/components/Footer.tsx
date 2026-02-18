@@ -73,13 +73,20 @@ export const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <Image src="/btcvault-removebg-preview.png" alt="BTCVault" width={32} height={32} />
+              <Image
+                src="/btcvault-removebg-preview.png"
+                alt="BTCVault"
+                width={32}
+                height={32}
+              />
               <span className="font-bold text-lg">
                 <span className="text-primary">BTC</span>Vault
               </span>
             </div>
             <p className="text-sm opacity-40 leading-relaxed">
-              Non-custodial Bitcoin yield vault on <span style={{ color: "#5B8DEF" }}>Starknet</span>. Automated DeFi strategies with Vesu & Ekubo.
+              Non-custodial Bitcoin yield vault on{" "}
+              <span style={{ color: "#5B8DEF" }}>Starknet</span>. Automated DeFi
+              strategies with Vesu & Ekubo.
             </p>
           </div>
 
@@ -87,10 +94,30 @@ export const Footer = () => {
           <div>
             <h4 className="font-semibold text-sm mb-3 opacity-60">Product</h4>
             <div className="flex flex-col gap-2">
-              <Link href="/bridge" className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all">Bridge</Link>
-              <Link href="/vault" className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all">Vault</Link>
-              <Link href="/dashboard" className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all">Dashboard</Link>
-              <Link href="/debug" className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all">Debug Contracts</Link>
+              <Link
+                href="/bridge"
+                className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all"
+              >
+                Bridge
+              </Link>
+              <Link
+                href="/vault"
+                className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all"
+              >
+                Vault
+              </Link>
+              <Link
+                href="/dashboard"
+                className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/debug"
+                className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all"
+              >
+                Debug Contracts
+              </Link>
             </div>
           </div>
 
@@ -98,32 +125,97 @@ export const Footer = () => {
           <div>
             <h4 className="font-semibold text-sm mb-3 opacity-60">Resources</h4>
             <div className="flex flex-col gap-2">
-              <a href="https://github.com/mthdroid/BTCVault" target="_blank" rel="noreferrer" className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all">GitHub</a>
-              <a href="https://starkscan.co/contract/0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51" target="_blank" rel="noreferrer" className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all">Starkscan</a>
-              <a href="https://docs.starknet.io" target="_blank" rel="noreferrer" className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all">Starknet Docs</a>
+              <a
+                href="https://github.com/mthdroid/BTCVault"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://starkscan.co/contract/0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all"
+              >
+                Starkscan
+              </a>
+              <a
+                href="https://docs.starknet.io"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm opacity-40 hover:opacity-80 hover:text-primary transition-all"
+              >
+                Starknet Docs
+              </a>
             </div>
           </div>
 
           {/* Powered By */}
           <div>
-            <h4 className="font-semibold text-sm mb-3 opacity-60">Powered by</h4>
+            <h4 className="font-semibold text-sm mb-3 opacity-60">
+              Powered by
+            </h4>
             <div className="flex flex-col gap-3">
-              <a href="https://starknet.io" target="_blank" rel="noreferrer" className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity">
-                <Image src="/starknet-logo.svg" alt="Starknet" width={24} height={24} />
+              <a
+                href="https://starknet.io"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity"
+              >
+                <Image
+                  src="/starknet-logo.svg"
+                  alt="Starknet"
+                  width={24}
+                  height={24}
+                />
                 <span className="text-sm font-medium">Starknet</span>
               </a>
-              <a href="https://www.xverse.app" target="_blank" rel="noreferrer" className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity">
+              <a
+                href="https://www.xverse.app"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity"
+              >
                 <div className="w-6 h-6 bg-[#1a1a2e] rounded flex items-center justify-center">
-                  <Image src="/xverse-logo.svg" alt="Xverse" width={18} height={18} />
+                  <Image
+                    src="/xverse-logo.svg"
+                    alt="Xverse"
+                    width={18}
+                    height={18}
+                  />
                 </div>
                 <span className="text-sm font-medium">Xverse</span>
               </a>
-              <a href="https://vesu.xyz" target="_blank" rel="noreferrer" className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity">
-                <Image src="/vesu-logo.svg" alt="Vesu" width={24} height={24} className="rounded" />
+              <a
+                href="https://vesu.xyz"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity"
+              >
+                <Image
+                  src="/vesu-logo.svg"
+                  alt="Vesu"
+                  width={24}
+                  height={24}
+                  className="rounded"
+                />
                 <span className="text-sm font-medium">Vesu</span>
               </a>
-              <a href="https://ekubo.org" target="_blank" rel="noreferrer" className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity">
-                <Image src="/ekubo-logo.svg" alt="Ekubo" width={24} height={24} className="rounded" />
+              <a
+                href="https://ekubo.org"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity"
+              >
+                <Image
+                  src="/ekubo-logo.svg"
+                  alt="Ekubo"
+                  width={24}
+                  height={24}
+                  className="rounded"
+                />
                 <span className="text-sm font-medium">Ekubo</span>
               </a>
             </div>
@@ -138,17 +230,22 @@ export const Footer = () => {
                 4 contracts on Starknet Mainnet
               </p>
               <span className="text-xs opacity-20">|</span>
-              <p className="text-xs opacity-30">
-                22 tests passing
-              </p>
+              <p className="text-xs opacity-30">22 tests passing</p>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-xs opacity-20">Built with</span>
-              <a href="https://scaffoldstark.com" target="_blank" rel="noreferrer" className="text-xs opacity-30 hover:opacity-60 transition-opacity">
+              <a
+                href="https://scaffoldstark.com"
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs opacity-30 hover:opacity-60 transition-opacity"
+              >
                 Scaffold-Stark
               </a>
               <span className="text-xs opacity-20">|</span>
-              <span className="text-xs opacity-30">Starknet Hackathon 2025</span>
+              <span className="text-xs opacity-30">
+                Starknet Hackathon 2025
+              </span>
             </div>
           </div>
         </div>

@@ -17,7 +17,9 @@ interface WalletProvider {
 
 export function useXverseWallet() {
   const [btcAddress, setBtcAddress] = useState<BtcAddress | null>(null);
-  const [starknetAddress, setStarknetAddress] = useState<BtcAddress | null>(null);
+  const [starknetAddress, setStarknetAddress] = useState<BtcAddress | null>(
+    null,
+  );
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +29,8 @@ export function useXverseWallet() {
   useEffect(() => {
     (async () => {
       try {
-        const { getProviders, removeDefaultProvider } = await import("sats-connect");
+        const { getProviders, removeDefaultProvider } =
+          await import("sats-connect");
         // Clear any stuck default provider (fixes UniSat stuck issue)
         removeDefaultProvider();
         const detected = getProviders();
@@ -37,7 +40,7 @@ export function useXverseWallet() {
               id: p.id ?? "",
               name: p.name ?? "Unknown Wallet",
               icon: p.icon ?? "",
-            }))
+            })),
           );
         }
       } catch {
@@ -50,7 +53,8 @@ export function useXverseWallet() {
     setIsConnecting(true);
     setError(null);
     try {
-      const { request, AddressPurpose, getProviders } = await import("sats-connect");
+      const { request, AddressPurpose, getProviders } =
+        await import("sats-connect");
 
       // If no providerId specified, detect and use first available
       if (!providerId) {
@@ -102,7 +106,11 @@ export function useXverseWallet() {
       }
 
       // Fallback: try window.unisat directly for UniSat wallet
-      if (!connected && typeof window !== "undefined" && (window as any).unisat) {
+      if (
+        !connected &&
+        typeof window !== "undefined" &&
+        (window as any).unisat
+      ) {
         try {
           const accounts = await (window as any).unisat.requestAccounts();
           if (accounts && accounts.length > 0) {
@@ -129,12 +137,14 @@ export function useXverseWallet() {
 
       const payment =
         addresses.find(
-          (a: any) => a.purpose === "payment" || a.purpose === AddressPurpose.Payment,
+          (a: any) =>
+            a.purpose === "payment" || a.purpose === AddressPurpose.Payment,
         ) ?? addresses[0];
 
       const starknet =
         addresses.find(
-          (a: any) => a.purpose === "starknet" || a.purpose === AddressPurpose.Starknet,
+          (a: any) =>
+            a.purpose === "starknet" || a.purpose === AddressPurpose.Starknet,
         ) ?? null;
 
       if (!payment) {
@@ -158,7 +168,8 @@ export function useXverseWallet() {
 
   const disconnect = useCallback(async () => {
     try {
-      const { default: Wallet, removeDefaultProvider } = await import("sats-connect");
+      const { default: Wallet, removeDefaultProvider } =
+        await import("sats-connect");
       removeDefaultProvider();
       await Wallet.disconnect();
     } catch {}

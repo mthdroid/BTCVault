@@ -9,21 +9,21 @@
   color-scheme: dark;
 
   --color-base-content: #f0f0f5;
-  --color-base-100: #1C1E26;
+  --color-base-100: #1c1e26;
   --color-base-200: #252830;
-  --color-base-300: #2E313A;
-  --color-primary: #F7931A;
+  --color-base-300: #2e313a;
+  --color-primary: #f7931a;
   --color-primary-content: #ffffff;
-  --color-secondary: #29296E;
+  --color-secondary: #29296e;
   --color-secondary-content: #ffffff;
-  --color-accent: #4A6CF7;
+  --color-accent: #4a6cf7;
   --color-accent-content: #ffffff;
   --color-neutral: #f0f0f5;
-  --color-neutral-content: #8B92A5;
-  --color-info: #4A6CF7;
-  --color-success: #27AE60;
-  --color-warning: #F7931A;
-  --color-error: #EB5757;
+  --color-neutral-content: #8b92a5;
+  --color-info: #4a6cf7;
+  --color-success: #27ae60;
+  --color-warning: #f7931a;
+  --color-error: #eb5757;
   --rounded-btn: 9999rem;
 }
 
@@ -34,21 +34,21 @@
 
   --color-base-content: #1a1a2e;
   --color-base-100: #ffffff;
-  --color-base-200: #F7F8FA;
-  --color-base-300: #E8ECFB;
+  --color-base-200: #f7f8fa;
+  --color-base-300: #e8ecfb;
   --color-neutral: #1a1a2e;
-  --color-primary: #F7931A;
+  --color-primary: #f7931a;
   --color-primary-content: #ffffff;
-  --color-secondary: #5B8DEF;
+  --color-secondary: #5b8def;
   --color-secondary-content: #ffffff;
-  --color-accent: #5B8DEF;
+  --color-accent: #5b8def;
   --color-accent-content: #ffffff;
   --color-neutral: #1a1a2e;
   --color-neutral-content: #ffffff;
-  --color-info: #5B8DEF;
-  --color-success: #27AE60;
-  --color-warning: #F7931A;
-  --color-error: #EB5757;
+  --color-info: #5b8def;
+  --color-success: #27ae60;
+  --color-warning: #f7931a;
+  --color-error: #eb5757;
   --rounded-btn: 9999rem;
 }
 
@@ -56,48 +56,48 @@
 
 [data-theme="light"] {
   .bg-gradient-modal {
-    background-image: linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%);
+    background-image: linear-gradient(135deg, #fff5e6 0%, #e8ecfb 100%);
   }
 
   .bg-modal {
-    background: linear-gradient(135deg, #ffffff 0%, #F7F8FA 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #f7f8fa 100%);
   }
 
   .modal-border {
-    border: 1px solid #E8ECFB;
+    border: 1px solid #e8ecfb;
   }
 
   .bg-gradient-nav {
-    background: #5B8DEF;
+    background: #5b8def;
   }
 
   .my-btn-z {
-    background-color: #5B8DEF;
-    border-color: #4A7DE0;
+    background-color: #5b8def;
+    border-color: #4a7de0;
   }
   .my-btn-z:hover {
-    background-color: #4A7DE0;
-    border-color: #3A6DD0;
+    background-color: #4a7de0;
+    border-color: #3a6dd0;
   }
 
   .bg-main {
-    background: #F7F8FA;
+    background: #f7f8fa;
   }
 
   .bg-underline {
-    background: linear-gradient(90deg, #F7931A 0%, #29296E 100%);
+    background: linear-gradient(90deg, #f7931a 0%, #29296e 100%);
   }
 
   .bg-container {
-    background: linear-gradient(180deg, #ffffff 0%, #F7F8FA 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f7f8fa 100%);
   }
 
   .bg-btn-wallet {
-    background-image: linear-gradient(135deg, #5B8DEF 0%, #4A7DE0 100%);
+    background-image: linear-gradient(135deg, #5b8def 0%, #4a7de0 100%);
   }
 
   .bg-input {
-    background: #F7F8FA;
+    background: #f7f8fa;
   }
 
   .bg-component {
@@ -105,15 +105,15 @@
   }
 
   .bg-function {
-    background: linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%);
+    background: linear-gradient(135deg, #fff5e6 0%, #e8ecfb 100%);
   }
 
   .text-function {
-    color: #5B8DEF;
+    color: #5b8def;
   }
 
   .text-network {
-    color: #F7931A;
+    color: #f7931a;
   }
 
   .tooltip {
@@ -137,38 +137,38 @@
 
 [data-theme="dark"] {
   .bg-gradient-modal {
-    background: #2C2F36;
+    background: #2c2f36;
   }
 
   .bg-modal {
-    background: linear-gradient(135deg, #212429 0%, #2C2F36 100%);
+    background: linear-gradient(135deg, #212429 0%, #2c2f36 100%);
   }
 
   .modal-border {
-    border: 1px solid #40444F;
+    border: 1px solid #40444f;
   }
 
   .bg-gradient-nav {
-    background: #5B8DEF;
+    background: #5b8def;
   }
 
   .bg-main {
-    background: #12131A;
+    background: #12131a;
   }
 
   .bg-underline {
-    background: #40444F;
+    background: #40444f;
   }
   .bg-container {
-    background: #12131A;
+    background: #12131a;
   }
 
   .bg-btn-wallet {
-    background-image: linear-gradient(135deg, #F7931A 0%, #E8820E 100%);
+    background-image: linear-gradient(135deg, #f7931a 0%, #e8820e 100%);
   }
 
   .bg-input {
-    background: #2C2F36;
+    background: #2c2f36;
   }
 
   .bg-component {
@@ -180,11 +180,11 @@
   }
 
   .text-function {
-    color: #F7931A;
+    color: #f7931a;
   }
 
   .text-network {
-    color: #F7931A;
+    color: #f7931a;
   }
 
   .contract-content {
@@ -194,15 +194,15 @@
 
 @layer utilities {
   [data-theme="light"] .hover\:bg-gradient-nav:hover {
-    background: #5B8DEF;
+    background: #5b8def;
   }
 
   [data-theme="dark"] .hover\:bg-gradient-nav:hover {
-    background: #5B8DEF;
+    background: #5b8def;
   }
 
   .bg-gradient-dark {
-    background: #F7931A;
+    background: #f7931a;
   }
 }
 
@@ -227,8 +227,8 @@
     width: 1rem;
     height: 1rem;
     background: inherit;
-    border-top: 1px solid #F7931A;
-    border-right: 1px solid #F7931A;
+    border-top: 1px solid #f7931a;
+    border-right: 1px solid #f7931a;
     clip-path: polygon(100% 0, 0 0, 100% 100%);
     z-index: 10;
   }
@@ -239,7 +239,7 @@
   height: 6px;
   clip-path: polygon(10% 100%, 90% 100%, 100% 0, 0 0);
   position: relative;
-  background-color: #F7931A;
+  background-color: #f7931a;
   position: absolute;
   top: -1px;
   &::before {
@@ -320,7 +320,7 @@
 
   .circle-gradient {
     border-radius: 630px;
-    background: #F7931A;
+    background: #f7931a;
     filter: blur(229px);
     opacity: 0.15;
     position: absolute;
@@ -329,7 +329,7 @@
 
   .circle-gradient-blue {
     border-radius: 630px;
-    background: #29296E;
+    background: #29296e;
     filter: blur(250px);
     opacity: 0.1;
     position: absolute;
@@ -395,14 +395,14 @@
     top: 0;
     left: 60px;
     border-radius: 630px;
-    background: #F7931A;
+    background: #f7931a;
     filter: blur(229px);
     opacity: 0.08;
   }
 
   .circle-gradient-blue-dark {
     border-radius: 630px;
-    background: #29296E;
+    background: #29296e;
     filter: blur(250px);
     opacity: 0.1;
     position: absolute;

@@ -80,9 +80,7 @@ const main = async (): Promise<void> => {
     console.log(green("WBTC Token: " + WBTC_SEPOLIA));
     console.log(green("WBTC vToken (Vesu): " + WBTC_VTOKEN_SEPOLIA));
     console.log(green("\nPost-deployment setup required:"));
-    console.log(
-      green("  1. BTCVault.set_strategies(vesu_addr, ekubo_addr)")
-    );
+    console.log(green("  1. BTCVault.set_strategies(vesu_addr, ekubo_addr)"));
     console.log(green("  2. BTCVault.set_router(router_addr)"));
     console.log(green("  3. Router.set_strategies(vesu_addr, ekubo_addr)"));
     console.log(green("  4. VesuStrategy.set_vault(vault_addr)"));

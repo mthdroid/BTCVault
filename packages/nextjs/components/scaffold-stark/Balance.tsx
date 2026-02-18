@@ -79,7 +79,13 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
           ) : (
             <div className="flex items-center">
               <span>{parseFloat(strkFormatted).toFixed(1)}</span>
-              <Image src="/starknet-logo.svg" alt="STRK" width={16} height={16} className="ml-1.5" />
+              <Image
+                src="/starknet-logo.svg"
+                alt="STRK"
+                width={16}
+                height={16}
+                className="ml-1.5"
+              />
             </div>
           )}
         </div>
