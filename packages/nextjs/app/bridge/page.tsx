@@ -18,6 +18,7 @@ const BridgePage = () => {
     isConnected: xverseConnected,
     isConnecting,
     error: xverseError,
+    providers,
   } = useXverseWallet();
 
   return (
@@ -38,7 +39,7 @@ const BridgePage = () => {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-base-200 rounded-xl p-4 border border-base-300/50 flex flex-col">
-              <p className="text-xs font-medium opacity-40 uppercase tracking-wider mb-3">Bitcoin (Xverse)</p>
+              <p className="text-xs font-medium opacity-40 uppercase tracking-wider mb-3">Bitcoin Wallet</p>
               <div className="flex-1 flex flex-col justify-center">
                 {xverseConnected ? (
                   <div>
@@ -60,15 +61,30 @@ const BridgePage = () => {
                   </div>
                 ) : (
                   <div>
-                    <button
-                      className={`btn btn-primary btn-sm w-full text-white ${isConnecting ? "loading" : ""}`}
-                      onClick={connectXverse}
-                      disabled={isConnecting}
-                    >
-                      {isConnecting ? "Connecting..." : "Connect Xverse"}
-                    </button>
+                    {providers.length > 1 ? (
+                      <div className="flex flex-col gap-2">
+                        {providers.map((p) => (
+                          <button
+                            key={p.id}
+                            className={`btn btn-primary btn-sm w-full text-white ${isConnecting ? "loading" : ""}`}
+                            onClick={() => connectXverse(p.id)}
+                            disabled={isConnecting}
+                          >
+                            {isConnecting ? "..." : p.name}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <button
+                        className={`btn btn-primary btn-sm w-full text-white ${isConnecting ? "loading" : ""}`}
+                        onClick={() => connectXverse()}
+                        disabled={isConnecting}
+                      >
+                        {isConnecting ? "Connecting..." : "Connect BTC Wallet"}
+                      </button>
+                    )}
                     {xverseError && <p className="text-xs text-error mt-2">{xverseError}</p>}
-                    <p className="text-xs opacity-30 mt-2 text-center">BTC + Starknet in one wallet</p>
+                    <p className="text-xs opacity-30 mt-2 text-center">Xverse, UniSat, or compatible</p>
                   </div>
                 )}
               </div>
