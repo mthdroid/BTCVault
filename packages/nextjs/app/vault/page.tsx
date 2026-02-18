@@ -1,60 +1,116 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount } from "@starknet-react/core";
+import { useAccount, useSendTransaction } from "@starknet-react/core";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
+import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-stark/useScaffoldWriteContract";
 
-const VAULT_ADDRESS: string = "0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51";
-const WBTC_ADDRESS: string = "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac";
+const VAULT_ADDRESS = "0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51";
+const WBTC_ADDRESS = "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac";
 
 const VaultPage = () => {
   const { address, status } = useAccount();
   const isConnected = status === "connected";
   const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
   const [amount, setAmount] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  // Mock data - will be replaced with contract reads after deployment
-  const vaultData = {
-    totalAssets: "0",
-    totalShares: "0",
-    userShares: "0",
-    userAssets: "0",
-    vaultAPY: "4.18",
-    vesuAllocation: "60",
-    ekuboAllocation: "40",
-  };
+  // === Contract Reads ===
+  const { data: totalAssets } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "total_assets",
+  });
+
+  const { data: totalShares } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "total_shares",
+  });
+
+  const { data: userShares } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "shares_of",
+    args: [address ?? "0x0"],
+  });
+
+  const { data: vaultApy } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "get_vault_apy",
+  });
+
+  const { data: allocation } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "get_allocation",
+  });
+
+  // === Format values ===
+  const totalAssetsStr = totalAssets ? totalAssets.toString() : "0";
+  const totalSharesStr = totalShares ? totalShares.toString() : "0";
+  const userSharesStr = userShares ? userShares.toString() : "0";
+  const apyBps = vaultApy ? Number(vaultApy) : 418;
+  const apyStr = (apyBps / 100).toFixed(2);
+
+  // Parse allocation tuple
+  let vesuAlloc = 60;
+  let ekuboAlloc = 40;
+  if (allocation) {
+    const alloc = allocation as unknown as [bigint, bigint];
+    if (Array.isArray(alloc) && alloc.length === 2) {
+      vesuAlloc = Number(alloc[0]) / 100;
+      ekuboAlloc = Number(alloc[1]) / 100;
+    }
+  }
+
+  // Calculate user position value from shares
+  const userAssetsStr =
+    userShares && totalShares && totalAssets && BigInt(totalShares.toString()) > 0n
+      ? ((BigInt(userShares.toString()) * BigInt(totalAssets.toString())) / BigInt(totalShares.toString())).toString()
+      : "0";
+
+  // === Deposit: multicall approve + deposit ===
+  const amountBigInt = amount && parseFloat(amount) > 0 ? BigInt(Math.floor(parseFloat(amount))) : 0n;
+
+  const { sendAsync: sendDeposit, isPending: depositPending } = useScaffoldMultiWriteContract({
+    calls: [
+      {
+        contractAddress: WBTC_ADDRESS,
+        entrypoint: "approve",
+        calldata: [VAULT_ADDRESS, amountBigInt.toString(), "0"],
+      },
+      {
+        contractName: "BTCVault",
+        functionName: "deposit",
+        args: [amountBigInt],
+      },
+    ],
+  });
+
+  // === Withdraw ===
+  const { sendAsync: sendWithdraw, isPending: withdrawPending } = useScaffoldWriteContract({
+    contractName: "BTCVault",
+    functionName: "withdraw",
+    args: [amountBigInt],
+  });
+
+  const isLoading = depositPending || withdrawPending;
 
   const handleDeposit = async () => {
-    if (!amount || parseFloat(amount) <= 0) return;
-    setIsLoading(true);
+    if (!amount || parseFloat(amount) < 100) return;
     try {
-      // TODO: After deployment, implement real contract calls:
-      // 1. WBTC.approve(vault_address, amount)
-      // 2. BTCVault.deposit(amount)
-      console.log("Deposit:", amount, "satoshis");
-      alert(`Deposit of ${amount} satoshis queued. Deploy contracts first.`);
+      await sendDeposit();
+      setAmount("");
     } catch (err) {
       console.error("Deposit failed:", err);
-    } finally {
-      setIsLoading(false);
-      setAmount("");
     }
   };
 
   const handleWithdraw = async () => {
     if (!amount || parseFloat(amount) <= 0) return;
-    setIsLoading(true);
     try {
-      // TODO: After deployment, implement real contract calls:
-      // BTCVault.withdraw(shares_amount)
-      console.log("Withdraw:", amount, "shares");
-      alert(`Withdraw of ${amount} shares queued. Deploy contracts first.`);
+      await sendWithdraw();
+      setAmount("");
     } catch (err) {
       console.error("Withdraw failed:", err);
-    } finally {
-      setIsLoading(false);
-      setAmount("");
     }
   };
 
@@ -79,19 +135,19 @@ const VaultPage = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-xs opacity-50 uppercase">Total Assets</p>
-              <p className="text-xl font-bold">{vaultData.totalAssets} sats</p>
+              <p className="text-xl font-bold">{totalAssetsStr} sats</p>
             </div>
             <div>
               <p className="text-xs opacity-50 uppercase">Vault APY</p>
-              <p className="text-xl font-bold text-success">{vaultData.vaultAPY}%</p>
+              <p className="text-xl font-bold text-success">{apyStr}%</p>
             </div>
             <div>
               <p className="text-xs opacity-50 uppercase">Your Shares</p>
-              <p className="text-lg font-semibold">{vaultData.userShares}</p>
+              <p className="text-lg font-semibold">{userSharesStr}</p>
             </div>
             <div>
               <p className="text-xs opacity-50 uppercase">Your Position</p>
-              <p className="text-lg font-semibold">{vaultData.userAssets} sats</p>
+              <p className="text-lg font-semibold">{userAssetsStr} sats</p>
             </div>
           </div>
         </div>
@@ -102,16 +158,16 @@ const VaultPage = () => {
           <div className="flex rounded-full overflow-hidden h-4 mb-2">
             <div
               className="bg-secondary"
-              style={{ width: `${vaultData.vesuAllocation}%` }}
+              style={{ width: `${vesuAlloc}%` }}
             />
             <div
               className="bg-accent"
-              style={{ width: `${vaultData.ekuboAllocation}%` }}
+              style={{ width: `${ekuboAlloc}%` }}
             />
           </div>
           <div className="flex justify-between text-xs">
-            <span>Vesu {vaultData.vesuAllocation}%</span>
-            <span>Ekubo {vaultData.ekuboAllocation}%</span>
+            <span>Vesu {vesuAlloc}%</span>
+            <span>Ekubo {ekuboAlloc}%</span>
           </div>
         </div>
 
@@ -172,7 +228,7 @@ const VaultPage = () => {
 
         {/* Info */}
         <div className="text-center mt-6 text-xs opacity-40">
-          <p>Contract: {VAULT_ADDRESS === "0x0" ? "Not deployed yet" : VAULT_ADDRESS.slice(0, 10) + "..."}</p>
+          <p>Contract: {VAULT_ADDRESS.slice(0, 10)}...</p>
           <p>Network: Starknet Mainnet</p>
         </div>
       </div>

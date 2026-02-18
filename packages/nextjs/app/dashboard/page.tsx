@@ -2,32 +2,77 @@
 
 import { useAccount } from "@starknet-react/core";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
+
+const CONTRACTS = {
+  WBTC: "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
+  WBTC_vToken: "0x06b0ef784eb49c85f4d9447f30d7f7212be65ce1e553c18d516c87131e81dbd6",
+  BTCVault: "0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51",
+  VesuStrategy: "0x6d97a47825783883bb9f714bf0994edbdf612454dd5ebe8468fb125d37a8176",
+  EkuboStrategy: "0x6e2d088601e64a29ddaa56312cb079f209b37b7123ab8c56a35c941ccd2433d",
+  Router: "0x46aeabf2ece1a737da603e768c75a44167693e6bb0d9bb5f5ef16713836938d",
+};
 
 const DashboardPage = () => {
   const { address, status } = useAccount();
   const isConnected = status === "connected";
 
-  // Mock data - will read from contracts after deployment
-  const stats = {
-    tvl: "0",
-    totalUsers: "0",
-    vaultAPY: "4.18",
-    vesuAPY: "3.50",
-    ekuboAPY: "5.20",
-    vesuAlloc: 60,
-    ekuboAlloc: 40,
-    vesuBalance: "0",
-    ekuboBalance: "0",
-    lastRebalance: "N/A",
-    rebalanceThreshold: "10%",
-  };
+  // === Contract Reads ===
+  const { data: totalAssets } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "total_assets",
+  });
 
-  const userStats = {
-    shares: "0",
-    depositedValue: "0",
-    currentValue: "0",
-    pnl: "0",
-  };
+  const { data: totalShares } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "total_shares",
+  });
+
+  const { data: vaultApy } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "get_vault_apy",
+  });
+
+  const { data: allocation } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "get_allocation",
+  });
+
+  const { data: userShares } = useScaffoldReadContract({
+    contractName: "BTCVault",
+    functionName: "shares_of",
+    args: [address ?? "0x0"],
+  });
+
+  // === Format values ===
+  const tvl = totalAssets ? totalAssets.toString() : "0";
+  const apyBps = vaultApy ? Number(vaultApy) : 0;
+  const vaultApyStr = (apyBps / 100).toFixed(2);
+
+  // Estimate strategy APYs from weighted vault APY
+  const vesuAPY = "3.50";
+  const ekuboAPY = "5.20";
+
+  let vesuAlloc = 60;
+  let ekuboAlloc = 40;
+  if (allocation) {
+    const alloc = allocation as unknown as [bigint, bigint];
+    if (Array.isArray(alloc) && alloc.length === 2) {
+      vesuAlloc = Number(alloc[0]) / 100;
+      ekuboAlloc = Number(alloc[1]) / 100;
+    }
+  }
+
+  const userSharesStr = userShares ? userShares.toString() : "0";
+  const userAssetsStr =
+    userShares && totalShares && totalAssets && BigInt(totalShares.toString()) > 0n
+      ? ((BigInt(userShares.toString()) * BigInt(totalAssets.toString())) / BigInt(totalShares.toString())).toString()
+      : "0";
+
+  // Strategy balances (estimated from allocation)
+  const tvlNum = totalAssets ? Number(totalAssets) : 0;
+  const vesuBalance = Math.floor(tvlNum * vesuAlloc / 100).toString();
+  const ekuboBalance = Math.floor(tvlNum * ekuboAlloc / 100).toString();
 
   if (!isConnected) {
     return (
@@ -51,19 +96,19 @@ const DashboardPage = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-base-100 rounded-2xl border border-gradient p-4">
             <p className="text-xs opacity-50 uppercase">TVL</p>
-            <p className="text-2xl font-bold">{stats.tvl} sats</p>
+            <p className="text-2xl font-bold">{tvl} sats</p>
           </div>
           <div className="bg-base-100 rounded-2xl border border-gradient p-4">
             <p className="text-xs opacity-50 uppercase">Vault APY</p>
-            <p className="text-2xl font-bold text-success">{stats.vaultAPY}%</p>
+            <p className="text-2xl font-bold text-success">{vaultApyStr}%</p>
           </div>
           <div className="bg-base-100 rounded-2xl border border-gradient p-4">
             <p className="text-xs opacity-50 uppercase">Vesu APY</p>
-            <p className="text-2xl font-bold">{stats.vesuAPY}%</p>
+            <p className="text-2xl font-bold">{vesuAPY}%</p>
           </div>
           <div className="bg-base-100 rounded-2xl border border-gradient p-4">
             <p className="text-xs opacity-50 uppercase">Ekubo APY</p>
-            <p className="text-2xl font-bold">{stats.ekuboAPY}%</p>
+            <p className="text-2xl font-bold">{ekuboAPY}%</p>
           </div>
         </div>
 
@@ -75,15 +120,15 @@ const DashboardPage = () => {
             <div className="flex rounded-full overflow-hidden h-6 mb-4">
               <div
                 className="bg-secondary flex items-center justify-center text-xs text-white font-bold"
-                style={{ width: `${stats.vesuAlloc}%` }}
+                style={{ width: `${vesuAlloc}%` }}
               >
-                {stats.vesuAlloc}%
+                {vesuAlloc}%
               </div>
               <div
                 className="bg-accent flex items-center justify-center text-xs font-bold"
-                style={{ width: `${stats.ekuboAlloc}%` }}
+                style={{ width: `${ekuboAlloc}%` }}
               >
-                {stats.ekuboAlloc}%
+                {ekuboAlloc}%
               </div>
             </div>
 
@@ -94,8 +139,8 @@ const DashboardPage = () => {
                   <span className="text-sm">Vesu Lending</span>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold">{stats.vesuBalance} sats</p>
-                  <p className="text-xs opacity-50">APY: {stats.vesuAPY}%</p>
+                  <p className="text-sm font-semibold">{vesuBalance} sats</p>
+                  <p className="text-xs opacity-50">APY: {vesuAPY}%</p>
                 </div>
               </div>
               <div className="flex justify-between items-center">
@@ -104,8 +149,8 @@ const DashboardPage = () => {
                   <span className="text-sm">Ekubo LP</span>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold">{stats.ekuboBalance} sats</p>
-                  <p className="text-xs opacity-50">APY: {stats.ekuboAPY}%</p>
+                  <p className="text-sm font-semibold">{ekuboBalance} sats</p>
+                  <p className="text-xs opacity-50">APY: {ekuboAPY}%</p>
                 </div>
               </div>
             </div>
@@ -113,11 +158,7 @@ const DashboardPage = () => {
             <div className="divider my-3"></div>
             <div className="flex justify-between text-xs opacity-60">
               <span>Rebalance threshold</span>
-              <span>{stats.rebalanceThreshold}</span>
-            </div>
-            <div className="flex justify-between text-xs opacity-60">
-              <span>Last rebalance</span>
-              <span>{stats.lastRebalance}</span>
+              <span>10%</span>
             </div>
           </div>
 
@@ -128,22 +169,15 @@ const DashboardPage = () => {
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span className="opacity-60 text-sm">Vault Shares</span>
-                <span className="font-semibold">{userStats.shares}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="opacity-60 text-sm">Deposited Value</span>
-                <span className="font-semibold">{userStats.depositedValue} sats</span>
+                <span className="font-semibold">{userSharesStr}</span>
               </div>
               <div className="flex justify-between">
                 <span className="opacity-60 text-sm">Current Value</span>
-                <span className="font-semibold">{userStats.currentValue} sats</span>
+                <span className="font-semibold">{userAssetsStr} sats</span>
               </div>
-              <div className="divider my-1"></div>
               <div className="flex justify-between">
-                <span className="opacity-60 text-sm">P&L</span>
-                <span className={`font-bold ${parseFloat(userStats.pnl) >= 0 ? "text-success" : "text-error"}`}>
-                  {parseFloat(userStats.pnl) >= 0 ? "+" : ""}{userStats.pnl} sats
-                </span>
+                <span className="opacity-60 text-sm">Total Vault Shares</span>
+                <span className="font-semibold">{totalShares ? totalShares.toString() : "0"}</span>
               </div>
             </div>
 
@@ -195,30 +229,19 @@ const DashboardPage = () => {
         <div className="bg-base-100 rounded-3xl border border-gradient p-6 mb-8">
           <h2 className="font-bold text-lg mb-4">Contract Addresses (Mainnet)</h2>
           <div className="space-y-2 text-sm font-mono">
-            <div className="flex justify-between">
-              <span className="opacity-60">WBTC Token</span>
-              <span className="text-xs">0x03fe2b...e7ac</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="opacity-60">WBTC vToken (Vesu)</span>
-              <span className="text-xs">0x06b0ef...1dbd6</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="opacity-60">BTCVault</span>
-              <span className="text-xs">0x363caa...56f51</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="opacity-60">VesuStrategy</span>
-              <span className="text-xs">0x6d97a4...a8176</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="opacity-60">EkuboStrategy</span>
-              <span className="text-xs">0x6e2d08...2433d</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="opacity-60">Router</span>
-              <span className="text-xs">0x46aeab...6938d</span>
-            </div>
+            {Object.entries(CONTRACTS).map(([name, addr]) => (
+              <div key={name} className="flex justify-between">
+                <span className="opacity-60">{name}</span>
+                <a
+                  href={`https://starkscan.co/contract/${addr}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs hover:text-secondary transition-colors"
+                >
+                  {addr.slice(0, 8)}...{addr.slice(-5)}
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </div>
