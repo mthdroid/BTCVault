@@ -68,7 +68,7 @@
   }
 
   .bg-gradient-nav {
-    background-image: linear-gradient(90deg, #F7931A 0%, #ffffff 50%, #5B8DEF 100%);
+    background: #0C0C4F;
   }
 
   .my-btn-z {
@@ -149,7 +149,7 @@
   }
 
   .bg-gradient-nav {
-    background-image: linear-gradient(90deg, #F7931A 0%, #ffffff 50%, #5B8DEF 100%);
+    background: #0C0C4F;
   }
 
   .bg-main {
@@ -194,15 +194,15 @@
 
 @layer utilities {
   [data-theme="light"] .hover\:bg-gradient-nav:hover {
-    background-image: linear-gradient(90deg, #F7931A 0%, #ffffff 50%, #5B8DEF 100%);
+    background: #0C0C4F;
   }
 
   [data-theme="dark"] .hover\:bg-gradient-nav:hover {
-    background-image: linear-gradient(90deg, #F7931A 0%, #ffffff 50%, #5B8DEF 100%);
+    background: #0C0C4F;
   }
 
   .bg-gradient-dark {
-    background-image: linear-gradient(90deg, #F7931A 0%, #ffffff 50%, #5B8DEF 100%);
+    background: #0C0C4F;
   }
 }
 
