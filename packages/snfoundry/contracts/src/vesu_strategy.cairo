@@ -15,13 +15,13 @@
 ///   WBTC Token:  0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac
 #[starknet::contract]
 pub mod VesuStrategy {
-    use starknet::{ContractAddress, get_caller_address, get_contract_address};
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
     use btcvault::interfaces::{
-        IStrategy, IERC20Dispatcher, IERC20DispatcherTrait, IVTokenDispatcher,
+        IERC20Dispatcher, IERC20DispatcherTrait, IStrategy, IVTokenDispatcher,
         IVTokenDispatcherTrait,
     };
     use openzeppelin_access::ownable::OwnableComponent;
+    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+    use starknet::{ContractAddress, get_caller_address, get_contract_address};
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 

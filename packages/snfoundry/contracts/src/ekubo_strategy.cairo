@@ -25,10 +25,10 @@
 ///   5. Withdraw via Positions.withdraw()
 #[starknet::contract]
 pub mod EkuboStrategy {
-    use starknet::{ContractAddress, get_caller_address, get_contract_address};
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
-    use btcvault::interfaces::{IStrategy, IERC20Dispatcher, IERC20DispatcherTrait};
+    use btcvault::interfaces::{IERC20Dispatcher, IERC20DispatcherTrait, IStrategy};
     use openzeppelin_access::ownable::OwnableComponent;
+    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+    use starknet::{ContractAddress, get_caller_address, get_contract_address};
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 
@@ -201,9 +201,7 @@ pub mod EkuboStrategy {
 
         #[external(v0)]
         fn set_ekubo_contracts(
-            ref self: ContractState,
-            positions: ContractAddress,
-            router: ContractAddress,
+            ref self: ContractState, positions: ContractAddress, router: ContractAddress,
         ) {
             self.ownable.assert_only_owner();
             self.ekubo_positions.write(positions);

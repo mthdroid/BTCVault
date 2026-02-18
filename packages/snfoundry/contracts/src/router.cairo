@@ -3,13 +3,13 @@
 /// Implements keeper-incentivized rebalancing
 #[starknet::contract]
 pub mod Router {
-    use starknet::{ContractAddress, get_caller_address};
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
     use btcvault::interfaces::{
-        IRouter, IStrategyDispatcher, IStrategyDispatcherTrait, IERC20Dispatcher,
-        IERC20DispatcherTrait,
+        IERC20Dispatcher, IERC20DispatcherTrait, IRouter, IStrategyDispatcher,
+        IStrategyDispatcherTrait,
     };
     use openzeppelin_access::ownable::OwnableComponent;
+    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+    use starknet::{ContractAddress, get_caller_address};
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 
@@ -258,16 +258,16 @@ pub mod Router {
             let current_vesu_target = self.target_vesu_alloc.read();
 
             // Vesu has 10%+ advantage but we're not maxed on Vesu
-            if vesu_apy * APY_ADVANTAGE_DENOMINATOR
-                > ekubo_apy * APY_ADVANTAGE_NUMERATOR
-                && current_vesu_target < MAX_ALLOCATION {
+            if vesu_apy
+                * APY_ADVANTAGE_DENOMINATOR > ekubo_apy
+                * APY_ADVANTAGE_NUMERATOR && current_vesu_target < MAX_ALLOCATION {
                 return true;
             }
 
             // Ekubo has 10%+ advantage but we're not maxed on Ekubo
-            if ekubo_apy * APY_ADVANTAGE_DENOMINATOR
-                > vesu_apy * APY_ADVANTAGE_NUMERATOR
-                && current_vesu_target > MIN_ALLOCATION {
+            if ekubo_apy
+                * APY_ADVANTAGE_DENOMINATOR > vesu_apy
+                * APY_ADVANTAGE_NUMERATOR && current_vesu_target > MIN_ALLOCATION {
                 return true;
             }
 
@@ -275,19 +275,17 @@ pub mod Router {
         }
 
         /// Update target allocation based on APY comparison
-        fn _update_target_allocation(
-            ref self: ContractState, vesu_apy: u256, ekubo_apy: u256,
-        ) {
+        fn _update_target_allocation(ref self: ContractState, vesu_apy: u256, ekubo_apy: u256) {
             if vesu_apy == 0 && ekubo_apy == 0 {
                 return;
             }
 
-            let (new_vesu, _new_ekubo) = if vesu_apy * APY_ADVANTAGE_DENOMINATOR
-                > ekubo_apy * APY_ADVANTAGE_NUMERATOR {
+            let (new_vesu, _new_ekubo) = if vesu_apy
+                * APY_ADVANTAGE_DENOMINATOR > ekubo_apy
+                * APY_ADVANTAGE_NUMERATOR {
                 // Vesu significantly better -> shift to 70/30
                 (7000_u256, 3000_u256)
-            } else if ekubo_apy * APY_ADVANTAGE_DENOMINATOR
-                > vesu_apy * APY_ADVANTAGE_NUMERATOR {
+            } else if ekubo_apy * APY_ADVANTAGE_DENOMINATOR > vesu_apy * APY_ADVANTAGE_NUMERATOR {
                 // Ekubo significantly better -> shift to 30/70
                 (3000_u256, 7000_u256)
             } else {

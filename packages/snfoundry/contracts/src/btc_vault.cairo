@@ -3,16 +3,16 @@
 /// Allocates to Vesu (lending) and Ekubo (LP) strategies
 #[starknet::contract]
 pub mod BTCVault {
-    use starknet::{ContractAddress, get_caller_address, get_contract_address};
+    use btcvault::interfaces::{
+        IBTCVault, IERC20Dispatcher, IERC20DispatcherTrait, IRouterDispatcher,
+        IRouterDispatcherTrait, IStrategyDispatcher, IStrategyDispatcherTrait,
+    };
+    use openzeppelin_access::ownable::OwnableComponent;
     use starknet::storage::{
         Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess,
         StoragePointerWriteAccess,
     };
-    use btcvault::interfaces::{
-        IBTCVault, IERC20Dispatcher, IERC20DispatcherTrait, IStrategyDispatcher,
-        IStrategyDispatcherTrait, IRouterDispatcher, IRouterDispatcherTrait,
-    };
-    use openzeppelin_access::ownable::OwnableComponent;
+    use starknet::{ContractAddress, get_caller_address, get_contract_address};
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 
@@ -228,12 +228,7 @@ pub mod BTCVault {
                 self.vesu_allocation.write(vesu_alloc);
                 self.ekubo_allocation.write(ekubo_alloc);
 
-                self
-                    .emit(
-                        Rebalance {
-                            vesu_allocation: vesu_alloc, ekubo_allocation: ekubo_alloc,
-                        },
-                    );
+                self.emit(Rebalance { vesu_allocation: vesu_alloc, ekubo_allocation: ekubo_alloc });
             }
         }
 

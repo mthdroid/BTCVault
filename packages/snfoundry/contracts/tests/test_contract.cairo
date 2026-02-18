@@ -133,7 +133,8 @@ mod tests {
         // Remaining
         let remaining_shares = total_shares - withdraw_shares;
         let remaining_assets = total_assets - assets_out;
-        let remaining_value = (remaining_shares * remaining_assets) / (total_shares - withdraw_shares);
+        let remaining_value = (remaining_shares * remaining_assets)
+            / (total_shares - withdraw_shares);
         assert(remaining_value == 7500, 'Remaining value wrong');
     }
 
@@ -229,12 +230,24 @@ mod tests {
 
         // Cap high
         let over: u256 = 9000;
-        let capped = if over > max { max } else if over < min { min } else { over };
+        let capped = if over > max {
+            max
+        } else if over < min {
+            min
+        } else {
+            over
+        };
         assert(capped == 8000, 'Should cap at 80%');
 
         // Floor low
         let under: u256 = 1000;
-        let floored = if under > max { max } else if under < min { min } else { under };
+        let floored = if under > max {
+            max
+        } else if under < min {
+            min
+        } else {
+            under
+        };
         assert(floored == 2000, 'Should floor at 20%');
 
         // Complement must always sum to 10000
@@ -247,7 +260,11 @@ mod tests {
     #[test]
     fn test_zero_total_shares_withdraw() {
         let total_shares: u256 = 0;
-        let result = if total_shares == 0 { 0_u256 } else { 100_u256 };
+        let result = if total_shares == 0 {
+            0_u256
+        } else {
+            100_u256
+        };
         assert(result == 0, 'Zero shares should return 0');
     }
 
@@ -288,7 +305,7 @@ mod tests {
             total_shares += shares;
             total_assets += deposit;
             i += 1;
-        };
+        }
 
         assert(total_assets == 1000, 'Total assets 1000');
         // All shares should be equal, total = 1000 * PRECISION
