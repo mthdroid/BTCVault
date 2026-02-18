@@ -39,13 +39,13 @@
   --color-neutral: #1a1a2e;
   --color-primary: #F7931A;
   --color-primary-content: #ffffff;
-  --color-secondary: #0C0C4F;
+  --color-secondary: #5B8DEF;
   --color-secondary-content: #ffffff;
-  --color-accent: #0C0C4F;
+  --color-accent: #5B8DEF;
   --color-accent-content: #ffffff;
   --color-neutral: #1a1a2e;
   --color-neutral-content: #ffffff;
-  --color-info: #0C0C4F;
+  --color-info: #5B8DEF;
   --color-success: #27AE60;
   --color-warning: #F7931A;
   --color-error: #EB5757;
@@ -109,7 +109,7 @@
   }
 
   .text-function {
-    color: #0C0C4F;
+    color: #5B8DEF;
   }
 
   .text-network {
@@ -149,7 +149,7 @@
   }
 
   .bg-gradient-nav {
-    background: #F7931A;
+    background: #5B8DEF;
   }
 
   .bg-main {
@@ -198,7 +198,7 @@
   }
 
   [data-theme="dark"] .hover\:bg-gradient-nav:hover {
-    background: #F7931A;
+    background: #5B8DEF;
   }
 
   .bg-gradient-dark {
@@ -354,13 +354,13 @@
 
   .card-starknet {
     background: var(--color-base-100);
-    border: 1px solid rgba(12, 12, 79, 0.2);
+    border: 1px solid rgba(91, 141, 239, 0.2);
     border-radius: 1rem;
     padding: 1.5rem;
     transition: border-color 0.2s;
   }
   .card-starknet:hover {
-    border-color: rgba(12, 12, 79, 0.5);
+    border-color: rgba(91, 141, 239, 0.5);
   }
 
   [data-theme="dark"] .card-starknet {

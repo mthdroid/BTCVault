@@ -79,7 +79,7 @@ export const Footer = () => {
               </span>
             </div>
             <p className="text-sm opacity-40 leading-relaxed">
-              Non-custodial Bitcoin yield vault on <span style={{ color: "#0C0C4F" }}>Starknet</span>. Automated DeFi strategies with Vesu & Ekubo.
+              Non-custodial Bitcoin yield vault on <span style={{ color: "#5B8DEF" }}>Starknet</span>. Automated DeFi strategies with Vesu & Ekubo.
             </p>
           </div>
 

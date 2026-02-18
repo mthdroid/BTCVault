@@ -172,7 +172,7 @@ const VaultPage = () => {
         </div>
 
         <div className="text-center mt-5 text-xs opacity-25 font-mono">
-          {VAULT_ADDRESS.slice(0, 14)}...{VAULT_ADDRESS.slice(-8)} | <span style={{ color: "#0C0C4F" }}>Starknet Mainnet</span>
+          {VAULT_ADDRESS.slice(0, 14)}...{VAULT_ADDRESS.slice(-8)} | <span style={{ color: "#5B8DEF" }}>Starknet Mainnet</span>
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ module.exports = {
       light: {
         primary: "#F7931A",
         "primary-content": "#ffffff",
-        secondary: "#0C0C4F",
+        secondary: "#5B8DEF",
         "secondary-content": "#ffffff",
         accent: "#29296E",
         "accent-content": "#ffffff",
@@ -39,7 +39,7 @@ module.exports = {
           border: "1px solid #E8ECFB",
         },
         ".bg-gradient-nav": {
-          background: "#0C0C4F",
+          background: "#F7931A",
         },
         ".bg-main": {
           background: "#F7F8FA",
@@ -66,7 +66,7 @@ module.exports = {
             "linear-gradient(135deg, #FFF5E6 0%, #E8ECFB 100%)",
         },
         ".text-function": {
-          color: "#0C0C4F",
+          color: "#5B8DEF",
         },
         ".text-network": {
           color: "#F7931A",
