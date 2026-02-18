@@ -193,31 +193,31 @@ const DashboardPage = () => {
 
         {/* Contract Addresses */}
         <div className="bg-base-100 rounded-3xl border border-gradient p-6 mb-8">
-          <h2 className="font-bold text-lg mb-4">Contract Addresses (Sepolia)</h2>
+          <h2 className="font-bold text-lg mb-4">Contract Addresses (Mainnet)</h2>
           <div className="space-y-2 text-sm font-mono">
             <div className="flex justify-between">
               <span className="opacity-60">WBTC Token</span>
-              <span className="text-xs">0x63d32a...ff8ca</span>
+              <span className="text-xs">0x03fe2b...e7ac</span>
             </div>
             <div className="flex justify-between">
               <span className="opacity-60">WBTC vToken (Vesu)</span>
-              <span className="text-xs">0x5868ed...bf186</span>
+              <span className="text-xs">0x06b0ef...1dbd6</span>
             </div>
             <div className="flex justify-between">
               <span className="opacity-60">BTCVault</span>
-              <span className="text-xs opacity-40">Not deployed yet</span>
+              <span className="text-xs">0x363caa...56f51</span>
             </div>
             <div className="flex justify-between">
               <span className="opacity-60">VesuStrategy</span>
-              <span className="text-xs opacity-40">Not deployed yet</span>
+              <span className="text-xs">0x6d97a4...a8176</span>
             </div>
             <div className="flex justify-between">
               <span className="opacity-60">EkuboStrategy</span>
-              <span className="text-xs opacity-40">Not deployed yet</span>
+              <span className="text-xs">0x6e2d08...2433d</span>
             </div>
             <div className="flex justify-between">
               <span className="opacity-60">Router</span>
-              <span className="text-xs opacity-40">Not deployed yet</span>
+              <span className="text-xs">0x46aeab...6938d</span>
             </div>
           </div>
         </div>

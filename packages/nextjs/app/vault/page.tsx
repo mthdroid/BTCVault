@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useAccount } from "@starknet-react/core";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
 
-const VAULT_ADDRESS: string = "0x0"; // Will be set after deployment
-const WBTC_ADDRESS: string = "0x63d32a3fa6074e72e7a1e06fe78c46a0c8473217773e19f11d8c8cbfc4ff8ca";
+const VAULT_ADDRESS: string = "0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51";
+const WBTC_ADDRESS: string = "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac";
 
 const VaultPage = () => {
   const { address, status } = useAccount();
@@ -173,7 +173,7 @@ const VaultPage = () => {
         {/* Info */}
         <div className="text-center mt-6 text-xs opacity-40">
           <p>Contract: {VAULT_ADDRESS === "0x0" ? "Not deployed yet" : VAULT_ADDRESS.slice(0, 10) + "..."}</p>
-          <p>Network: Starknet Sepolia</p>
+          <p>Network: Starknet Mainnet</p>
         </div>
       </div>
     </div>

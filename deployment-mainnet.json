@@ -1,0 +1,27 @@
+{
+  "network": "mainnet",
+  "timestamp": "2026-02-18T11:57:06.396Z",
+  "contracts": {
+    "BTCVault": {
+      "address": "0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51",
+      "classHash": "0x37cb519bb4f2b6351f69dc692dcf1605807cbb06221957dadc424cc1986caad"
+    },
+    "VesuStrategy": {
+      "address": "0x6d97a47825783883bb9f714bf0994edbdf612454dd5ebe8468fb125d37a8176",
+      "classHash": "0x510f750f108f1e70ca85d45a5c86e8eabd51c434ebe8afd656adc78616bb3c1"
+    },
+    "EkuboStrategy": {
+      "address": "0x6e2d088601e64a29ddaa56312cb079f209b37b7123ab8c56a35c941ccd2433d",
+      "classHash": "0x2096a523c0a012e5decc376c7f8186c5292b2dbefa8d8558fe4e99647486d75"
+    },
+    "Router": {
+      "address": "0x46aeabf2ece1a737da603e768c75a44167693e6bb0d9bb5f5ef16713836938d",
+      "classHash": "0x5ed356d9a602534b6e60a5e8a3b680de272ffdedf232a43db3521c812bff091"
+    }
+  },
+  "externalAddresses": {
+    "WBTC": "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
+    "WBTC_vToken": "0x06b0ef784eb49c85f4d9447f30d7f7212be65ce1e553c18d516c87131e81dbd6",
+    "USDC": "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+  }
+}
