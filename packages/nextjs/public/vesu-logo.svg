@@ -1,4 +1,29 @@
 <svg width="134" height="134" viewBox="0 0 134 134" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="67" cy="67" r="67" fill="#0D9488"/>
-  <path d="M42 45L67 95L92 45" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect width="134" height="134" rx="24" fill="#0A0A0A"/>
+  <defs>
+    <linearGradient id="vesu_left" x1="30" y1="30" x2="55" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A8D8EA"/>
+      <stop offset="50%" stop-color="#7EC8E3"/>
+      <stop offset="100%" stop-color="#58B4D1"/>
+    </linearGradient>
+    <linearGradient id="vesu_right" x1="67" y1="25" x2="100" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4CAF50"/>
+      <stop offset="35%" stop-color="#8BC34A"/>
+      <stop offset="65%" stop-color="#FFC107"/>
+      <stop offset="100%" stop-color="#FF9800"/>
+    </linearGradient>
+    <linearGradient id="vesu_edge" x1="50" y1="30" x2="80" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E0E0E0"/>
+      <stop offset="50%" stop-color="#BDBDBD"/>
+      <stop offset="100%" stop-color="#9E9E9E"/>
+    </linearGradient>
+  </defs>
+  <!-- Left bar of V (light blue gradient) -->
+  <path d="M28 28L56 28L67 108L50 108Z" fill="url(#vesu_left)"/>
+  <!-- Right bar of V (green-orange gradient) -->
+  <path d="M78 28L106 28L84 108L67 108Z" fill="url(#vesu_right)"/>
+  <!-- Silver/metallic edge overlay left -->
+  <path d="M50 28L58 28L67 108L62 108Z" fill="url(#vesu_edge)" opacity="0.6"/>
+  <!-- Silver/metallic edge overlay right -->
+  <path d="M76 28L80 28L69 108L67 108Z" fill="url(#vesu_edge)" opacity="0.6"/>
 </svg>

@@ -63,9 +63,9 @@ export const HeaderMenuLinks = () => {
               passHref
               className={`${
                 isActive
-                  ? "bg-gradient-nav text-white! active:bg-gradient-nav shadow-md"
+                  ? "bg-gradient-nav text-neutral! active:bg-gradient-nav shadow-md font-semibold"
                   : ""
-              } py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col hover:bg-gradient-nav hover:text-white`}
+              } py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col hover:bg-gradient-nav hover:text-neutral hover:font-semibold`}
             >
               {icon}
               <span>{label}</span>

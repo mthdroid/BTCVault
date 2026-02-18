@@ -128,61 +128,37 @@ const Home = () => {
 
         {/* Powered By Section */}
         <div className="max-w-4xl mx-auto mt-20">
-          <h2 className="text-2xl font-bold text-center mb-10">Powered By</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="https://starknet.io" target="_blank" rel="noreferrer" className="card-starknet flex flex-col items-center justify-center py-6 hover:shadow-lg transition-shadow">
-              <Image src="/starknet-logo.svg" alt="Starknet" width={40} height={40} className="mb-3" />
-              <span className="font-semibold text-sm">Starknet</span>
-              <span className="text-xs opacity-30 mt-1">L2 Network</span>
+          <h2 className="text-2xl font-bold text-center mb-3">Powered By</h2>
+          <p className="text-center text-sm opacity-40 mb-10">The best protocols in the Starknet ecosystem</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <a href="https://starknet.io" target="_blank" rel="noreferrer" className="group relative overflow-hidden rounded-2xl bg-base-100 border border-accent/15 p-6 flex flex-col items-center justify-center text-center hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5 transition-all">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_center,_rgba(91,141,239,0.06)_0%,_transparent_70%)]"></div>
+              <Image src="/starknet-logo.svg" alt="Starknet" width={48} height={48} className="mb-4 relative z-10" />
+              <span className="font-bold text-sm relative z-10">Starknet</span>
+              <span className="text-xs opacity-30 mt-1 relative z-10">L2 Network</span>
             </a>
-            <a href="https://www.xverse.app" target="_blank" rel="noreferrer" className="card-btc flex flex-col items-center justify-center py-6 hover:shadow-lg transition-shadow">
-              <div className="w-10 h-10 bg-[#1a1a2e] rounded-lg flex items-center justify-center mb-3">
-                <Image src="/xverse-logo.svg" alt="Xverse" width={28} height={28} />
+            <a href="https://www.xverse.app" target="_blank" rel="noreferrer" className="group relative overflow-hidden rounded-2xl bg-base-100 border border-primary/15 p-6 flex flex-col items-center justify-center text-center hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_center,_rgba(247,147,26,0.06)_0%,_transparent_70%)]"></div>
+              <div className="w-12 h-12 bg-[#1a1a2e] rounded-xl flex items-center justify-center mb-4 relative z-10">
+                <Image src="/xverse-logo.svg" alt="Xverse" width={32} height={32} />
               </div>
-              <span className="font-semibold text-sm">Xverse</span>
-              <span className="text-xs opacity-30 mt-1">BTC Wallet</span>
+              <span className="font-bold text-sm relative z-10">Xverse</span>
+              <span className="text-xs opacity-30 mt-1 relative z-10">BTC Wallet</span>
             </a>
-            <a href="https://vesu.xyz" target="_blank" rel="noreferrer" className="card-btc flex flex-col items-center justify-center py-6 hover:shadow-lg transition-shadow">
-              <Image src="/vesu-logo.svg" alt="Vesu" width={40} height={40} className="rounded-xl mb-3" />
-              <span className="font-semibold text-sm">Vesu</span>
-              <span className="text-xs opacity-30 mt-1">Lending Protocol</span>
+            <a href="https://vesu.xyz" target="_blank" rel="noreferrer" className="group relative overflow-hidden rounded-2xl bg-base-100 border border-primary/15 p-6 flex flex-col items-center justify-center text-center hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_center,_rgba(247,147,26,0.06)_0%,_transparent_70%)]"></div>
+              <Image src="/vesu-logo.svg" alt="Vesu" width={48} height={48} className="rounded-xl mb-4 relative z-10" />
+              <span className="font-bold text-sm relative z-10">Vesu</span>
+              <span className="text-xs opacity-30 mt-1 relative z-10">Lending Protocol</span>
             </a>
-            <a href="https://ekubo.org" target="_blank" rel="noreferrer" className="card-starknet flex flex-col items-center justify-center py-6 hover:shadow-lg transition-shadow">
-              <Image src="/ekubo-logo.svg" alt="Ekubo" width={40} height={40} className="rounded-xl mb-3" />
-              <span className="font-semibold text-sm">Ekubo</span>
-              <span className="text-xs opacity-30 mt-1">DEX Protocol</span>
+            <a href="https://ekubo.org" target="_blank" rel="noreferrer" className="group relative overflow-hidden rounded-2xl bg-base-100 border border-accent/15 p-6 flex flex-col items-center justify-center text-center hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5 transition-all">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_center,_rgba(91,141,239,0.06)_0%,_transparent_70%)]"></div>
+              <Image src="/ekubo-logo.svg" alt="Ekubo" width={48} height={48} className="rounded-xl mb-4 relative z-10" />
+              <span className="font-bold text-sm relative z-10">Ekubo</span>
+              <span className="text-xs opacity-30 mt-1 relative z-10">DEX Protocol</span>
             </a>
           </div>
-        </div>
-
-        {/* Tech Stack */}
-        <div className="max-w-3xl mx-auto mt-20 text-center">
-          <h2 className="text-2xl font-bold mb-6">Built With</h2>
-          <div className="flex flex-wrap justify-center gap-2">
-            {[
-              { name: "Starknet", type: "blue" },
-              { name: "Cairo", type: "blue" },
-              { name: "Vesu V2", type: "orange" },
-              { name: "Ekubo", type: "blue" },
-              { name: "Xverse", type: "orange" },
-              { name: "Scaffold-Stark", type: "blue" },
-              { name: "Next.js", type: "neutral" },
-            ].map((tech) => (
-              <span
-                key={tech.name}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium border ${
-                  tech.type === "blue"
-                    ? "bg-accent/5 border-accent/20 text-accent"
-                    : tech.type === "orange"
-                    ? "bg-primary/5 border-primary/20 text-primary"
-                    : "bg-base-100 border-base-300/50 opacity-70"
-                }`}
-              >
-                {tech.name}
-              </span>
-            ))}
-          </div>
-          <p className="text-xs opacity-30 mt-8">
+          <p className="text-xs opacity-20 mt-10 text-center">
             4 smart contracts deployed on Starknet Mainnet | 22 tests passing
           </p>
         </div>
