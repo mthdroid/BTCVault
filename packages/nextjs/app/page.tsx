@@ -9,18 +9,18 @@ const Home = () => {
       <div className="w-full pt-8 pb-12 px-5 text-center relative overflow-hidden">
         {/* Dual glow: orange left + blue right */}
         <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(ellipse_at_top_left,_#F7931A_0%,_transparent_50%)]"></div>
-        <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(ellipse_at_top_right,_#5B8DEF_0%,_transparent_50%)]"></div>
+        <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(ellipse_at_top_right,_#0C0C4F_0%,_transparent_50%)]"></div>
         <div className="relative max-w-2xl mx-auto">
           {/* Powered by Starknet badge */}
           <div className="inline-flex items-center gap-2 mb-3 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
             <Image src="/starknet-logo.svg" alt="Starknet" width={18} height={18} />
-            <span className="text-sm font-medium" style={{ color: "#5B8DEF" }}>Live on Starknet Mainnet</span>
+            <span className="text-sm font-medium" style={{ color: "#0C0C4F" }}>Live on Starknet Mainnet</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-3">
             <span className="text-primary">BTC</span>Vault
           </h1>
           <p className="text-lg opacity-70 mb-2">
-            Non-custodial Bitcoin yield on <span style={{ color: "#5B8DEF" }}>Starknet</span>
+            Non-custodial Bitcoin yield on <span style={{ color: "#0C0C4F" }}>Starknet</span>
           </p>
           <p className="text-sm opacity-40 mb-6 max-w-lg mx-auto">
             Bridge your BTC via Xverse, earn optimized yield through automated
