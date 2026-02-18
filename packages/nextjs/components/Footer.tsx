@@ -119,15 +119,11 @@ export const Footer = () => {
                 <span className="text-sm font-medium">Xverse</span>
               </a>
               <a href="https://vesu.xyz" target="_blank" rel="noreferrer" className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="text-primary text-xs font-bold">V</span>
-                </div>
+                <Image src="/vesu-logo.svg" alt="Vesu" width={24} height={24} className="rounded" />
                 <span className="text-sm font-medium">Vesu</span>
               </a>
               <a href="https://ekubo.org" target="_blank" rel="noreferrer" className="flex items-center gap-2 opacity-50 hover:opacity-90 transition-opacity">
-                <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center">
-                  <span className="text-accent text-xs font-bold">E</span>
-                </div>
+                <Image src="/ekubo-logo.svg" alt="Ekubo" width={24} height={24} className="rounded" />
                 <span className="text-sm font-medium">Ekubo</span>
               </a>
             </div>

@@ -1,61 +1,48 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { useAccount } from "@starknet-react/core";
-import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
 
 const Home = () => {
-  const { status } = useAccount();
-  const isConnected = status === "connected";
 
   return (
     <div className="flex items-center flex-col grow">
       {/* Hero Section */}
-      <div className="w-full py-20 px-5 text-center relative overflow-hidden">
+      <div className="w-full pt-8 pb-12 px-5 text-center relative overflow-hidden">
         {/* Dual glow: orange left + blue right */}
         <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(ellipse_at_top_left,_#F7931A_0%,_transparent_50%)]"></div>
         <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(ellipse_at_top_right,_#5B8DEF_0%,_transparent_50%)]"></div>
         <div className="relative max-w-2xl mx-auto">
           {/* Powered by Starknet badge */}
-          <div className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
+          <div className="inline-flex items-center gap-2 mb-3 px-4 py-1.5 rounded-full bg-secondary/10 border border-secondary/20">
             <Image src="/starknet-logo.svg" alt="Starknet" width={18} height={18} />
             <span className="text-sm font-medium" style={{ color: "#5B8DEF" }}>Live on Starknet Mainnet</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold mb-3">
             <span className="text-primary">BTC</span>Vault
           </h1>
           <p className="text-lg opacity-70 mb-2">
             Non-custodial Bitcoin yield on <span style={{ color: "#5B8DEF" }}>Starknet</span>
           </p>
-          <p className="text-sm opacity-40 mb-10 max-w-lg mx-auto">
+          <p className="text-sm opacity-40 mb-6 max-w-lg mx-auto">
             Bridge your BTC via Xverse, earn optimized yield through automated
             allocation between Vesu lending and Ekubo LP strategies.
           </p>
 
-          {!isConnected ? (
-            <div className="flex flex-col items-center gap-4">
-              <p className="text-sm opacity-50">Connect your wallet to get started</p>
-              <CustomConnectButton />
-            </div>
-          ) : (
-            <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/bridge" className="btn btn-primary btn-lg text-white shadow-lg shadow-primary/20">
-                Bridge BTC
-              </Link>
-              <Link href="/vault" className="btn btn-outline border-primary/50 text-primary hover:bg-primary hover:text-white btn-lg">
-                Enter Vault
-              </Link>
-              <Link href="/dashboard" className="btn btn-ghost btn-lg opacity-70">
-                Dashboard
-              </Link>
-            </div>
-          )}
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/bridge" className="btn btn-primary btn-lg text-white shadow-lg shadow-primary/20">
+              Bridge BTC
+            </Link>
+            <Link href="/vault" className="btn btn-outline border-primary/50 text-primary hover:bg-primary hover:text-white btn-lg">
+              Enter Vault
+            </Link>
+            <Link href="/dashboard" className="btn btn-ghost btn-lg opacity-70">
+              Dashboard
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* How it works */}
-      <div className="bg-container grow w-full px-8 py-16">
+      <div className="bg-container grow w-full px-8 py-10">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-2">How it works</h2>
           <p className="text-center text-sm opacity-40 mb-10">From native BTC to DeFi yield in 4 steps</p>
@@ -84,9 +71,7 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="card-btc">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
-                  <span className="text-primary font-bold">V</span>
-                </div>
+                <Image src="/vesu-logo.svg" alt="Vesu" width={40} height={40} className="rounded-xl" />
                 <div>
                   <h3 className="font-bold text-lg">Vesu Lending</h3>
                   <p className="text-xs opacity-40">Low risk — Passive yield</p>
@@ -113,9 +98,7 @@ const Home = () => {
             </div>
             <div className="card-starknet">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center">
-                  <span className="text-accent font-bold">E</span>
-                </div>
+                <Image src="/ekubo-logo.svg" alt="Ekubo" width={40} height={40} className="rounded-xl" />
                 <div>
                   <h3 className="font-bold text-lg">Ekubo LP</h3>
                   <p className="text-xs opacity-40">Medium risk — Active yield</p>
@@ -160,16 +143,12 @@ const Home = () => {
               <span className="text-xs opacity-30 mt-1">BTC Wallet</span>
             </a>
             <a href="https://vesu.xyz" target="_blank" rel="noreferrer" className="card-btc flex flex-col items-center justify-center py-6 hover:shadow-lg transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center mb-3">
-                <span className="text-primary font-bold text-lg">V</span>
-              </div>
+              <Image src="/vesu-logo.svg" alt="Vesu" width={40} height={40} className="rounded-xl mb-3" />
               <span className="font-semibold text-sm">Vesu</span>
               <span className="text-xs opacity-30 mt-1">Lending Protocol</span>
             </a>
             <a href="https://ekubo.org" target="_blank" rel="noreferrer" className="card-starknet flex flex-col items-center justify-center py-6 hover:shadow-lg transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center mb-3">
-                <span className="text-accent font-bold text-lg">E</span>
-              </div>
+              <Image src="/ekubo-logo.svg" alt="Ekubo" width={40} height={40} className="rounded-xl mb-3" />
               <span className="font-semibold text-sm">Ekubo</span>
               <span className="text-xs opacity-30 mt-1">DEX Protocol</span>
             </a>

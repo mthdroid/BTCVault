@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Address } from "@starknet-react/chains";
 import { useGlobalState } from "~~/services/store/store";
 import useScaffoldStrkBalance from "~~/hooks/scaffold-stark/useScaffoldStrkBalance";
@@ -76,9 +77,9 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
               </span>
             </div>
           ) : (
-            <div className="flex">
+            <div className="flex items-center">
               <span>{parseFloat(strkFormatted).toFixed(4)}</span>
-              <span className="text-[0.8em] font-bold ml-1">{strkSymbol}</span>
+              <Image src="/starknet-logo.svg" alt="STRK" width={16} height={16} className="ml-1.5" />
             </div>
           )}
         </div>

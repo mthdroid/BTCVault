@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useAccount } from "@starknet-react/core";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
@@ -101,7 +102,7 @@ const DashboardPage = () => {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-primary"></div>
+                  <Image src="/vesu-logo.svg" alt="Vesu" width={20} height={20} className="rounded" />
                   <span className="text-sm">Vesu Lending</span>
                 </div>
                 <div className="text-right">
@@ -111,7 +112,7 @@ const DashboardPage = () => {
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-accent"></div>
+                  <Image src="/ekubo-logo.svg" alt="Ekubo" width={20} height={20} className="rounded" />
                   <span className="text-sm">Ekubo LP</span>
                 </div>
                 <div className="text-right">
