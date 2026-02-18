@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAccount, useReadContract } from "@starknet-react/core";
+import toast from "react-hot-toast";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
 import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
@@ -25,6 +26,7 @@ const VaultPage = () => {
   const isConnected = status === "connected";
   const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
   const [amount, setAmount] = useState("");
+  const [txStatus, setTxStatus] = useState<"idle" | "approving" | "depositing" | "withdrawing" | "success" | "error">("idle");
 
   const { data: totalAssets } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "total_assets" });
   const { data: totalShares } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "total_shares" });
@@ -32,7 +34,6 @@ const VaultPage = () => {
   const { data: vaultApy } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "get_vault_apy" });
   const { data: allocation } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "get_allocation" });
 
-  // Read user's WBTC balance
   const { data: wbtcBalanceRaw } = useReadContract({
     address: WBTC_ADDRESS,
     abi: WBTC_BALANCE_ABI,
@@ -77,16 +78,54 @@ const VaultPage = () => {
     contractName: "BTCVault", functionName: "withdraw", args: [amountBigInt],
   });
 
-  const isLoading = depositPending || withdrawPending;
+  const isLoading = depositPending || withdrawPending || txStatus === "approving" || txStatus === "depositing" || txStatus === "withdrawing";
 
   const handleDeposit = async () => {
     if (!amount || parseFloat(amount) < 100) return;
-    try { await sendDeposit(); setAmount(""); } catch (err) { console.error("Deposit failed:", err); }
+    if (parseFloat(amount) > Number(wbtcBalanceStr)) {
+      toast.error("Insufficient WBTC balance");
+      return;
+    }
+    setTxStatus("approving");
+    try {
+      toast.loading("Approve & deposit in wallet...", { id: "deposit-tx" });
+      await sendDeposit();
+      setTxStatus("success");
+      toast.success(`Deposited ${amount} sats into BTCVault!`, { id: "deposit-tx", duration: 5000 });
+      setAmount("");
+      setTimeout(() => setTxStatus("idle"), 3000);
+    } catch (err: any) {
+      setTxStatus("error");
+      const msg = err?.message?.includes("User abort") || err?.message?.includes("rejected")
+        ? "Transaction rejected by user"
+        : err?.message?.slice(0, 80) || "Transaction failed";
+      toast.error(msg, { id: "deposit-tx", duration: 4000 });
+      setTimeout(() => setTxStatus("idle"), 3000);
+    }
   };
 
   const handleWithdraw = async () => {
     if (!amount || parseFloat(amount) <= 0) return;
-    try { await sendWithdraw(); setAmount(""); } catch (err) { console.error("Withdraw failed:", err); }
+    if (parseFloat(amount) > Number(userSharesStr)) {
+      toast.error("Insufficient vault shares");
+      return;
+    }
+    setTxStatus("withdrawing");
+    try {
+      toast.loading("Confirm withdrawal in wallet...", { id: "withdraw-tx" });
+      await sendWithdraw();
+      setTxStatus("success");
+      toast.success(`Withdrew ${amount} shares from BTCVault!`, { id: "withdraw-tx", duration: 5000 });
+      setAmount("");
+      setTimeout(() => setTxStatus("idle"), 3000);
+    } catch (err: any) {
+      setTxStatus("error");
+      const msg = err?.message?.includes("User abort") || err?.message?.includes("rejected")
+        ? "Transaction rejected by user"
+        : err?.message?.slice(0, 80) || "Transaction failed";
+      toast.error(msg, { id: "withdraw-tx", duration: 4000 });
+      setTimeout(() => setTxStatus("idle"), 3000);
+    }
   };
 
   const handleMax = () => {
@@ -95,6 +134,22 @@ const VaultPage = () => {
     } else {
       setAmount(userSharesStr);
     }
+  };
+
+  const getButtonText = () => {
+    if (txStatus === "approving") return "Approving WBTC...";
+    if (txStatus === "depositing") return "Depositing...";
+    if (txStatus === "withdrawing") return "Withdrawing...";
+    if (txStatus === "success") return "Success!";
+    if (txStatus === "error") return "Try Again";
+    if (isLoading) return "Confirm in wallet...";
+    return activeTab === "deposit" ? "Deposit WBTC" : "Withdraw WBTC";
+  };
+
+  const getButtonClass = () => {
+    if (txStatus === "success") return "btn w-full text-white text-base shadow-lg bg-success border-success";
+    if (txStatus === "error") return "btn w-full text-white text-base shadow-lg bg-error border-error";
+    return `btn btn-primary w-full text-white text-base shadow-lg shadow-primary/20`;
   };
 
   if (!isConnected) {
@@ -156,13 +211,13 @@ const VaultPage = () => {
           <div className="flex gap-1 mb-6 bg-base-200 rounded-full p-1">
             <button
               className={`flex-1 py-2.5 text-sm font-medium rounded-full transition-all ${activeTab === "deposit" ? "bg-primary text-white shadow-sm" : "opacity-50 hover:opacity-80"}`}
-              onClick={() => { setActiveTab("deposit"); setAmount(""); }}
+              onClick={() => { setActiveTab("deposit"); setAmount(""); setTxStatus("idle"); }}
             >
               Deposit
             </button>
             <button
               className={`flex-1 py-2.5 text-sm font-medium rounded-full transition-all ${activeTab === "withdraw" ? "bg-primary text-white shadow-sm" : "opacity-50 hover:opacity-80"}`}
-              onClick={() => { setActiveTab("withdraw"); setAmount(""); }}
+              onClick={() => { setActiveTab("withdraw"); setAmount(""); setTxStatus("idle"); }}
             >
               Withdraw
             </button>
@@ -191,10 +246,12 @@ const VaultPage = () => {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   min={activeTab === "deposit" ? "100" : "1"}
+                  disabled={isLoading}
                 />
                 <button
                   className="btn btn-xs btn-outline border-primary/30 text-primary hover:bg-primary hover:text-white rounded-lg px-3 shrink-0"
                   onClick={handleMax}
+                  disabled={isLoading}
                 >
                   MAX
                 </button>
@@ -202,24 +259,51 @@ const VaultPage = () => {
             </div>
           </div>
 
-          {activeTab === "deposit" && amount && parseFloat(amount) > 0 && (
-            <div className="text-xs opacity-50 mb-4 px-1">
-              You will receive vault shares proportional to your deposit.
-              {parseFloat(amount) < 100 && (
-                <span className="text-error block mt-1">Minimum deposit is 100 satoshis</span>
+          {/* Validation messages */}
+          {amount && parseFloat(amount) > 0 && (
+            <div className="text-xs mb-4 px-1 space-y-1">
+              {activeTab === "deposit" && parseFloat(amount) < 100 && (
+                <p className="text-error">Minimum deposit is 100 satoshis</p>
               )}
-              {parseFloat(amount) > Number(wbtcBalanceStr) && (
-                <span className="text-error block mt-1">Insufficient WBTC balance</span>
+              {activeTab === "deposit" && parseFloat(amount) > Number(wbtcBalanceStr) && Number(wbtcBalanceStr) > 0 && (
+                <p className="text-error">Insufficient WBTC balance</p>
+              )}
+              {activeTab === "withdraw" && parseFloat(amount) > Number(userSharesStr) && (
+                <p className="text-error">Insufficient vault shares</p>
+              )}
+              {activeTab === "deposit" && parseFloat(amount) >= 100 && parseFloat(amount) <= Number(wbtcBalanceStr) && (
+                <p className="opacity-40">Approve + deposit in a single transaction. You will receive vault shares proportional to your deposit.</p>
+              )}
+              {activeTab === "withdraw" && parseFloat(amount) <= Number(userSharesStr) && parseFloat(amount) > 0 && (
+                <p className="opacity-40">You will receive WBTC proportional to your shares. Shares will be burned.</p>
               )}
             </div>
           )}
 
+          {/* Transaction steps indicator */}
+          {isLoading && (
+            <div className="flex items-center gap-3 mb-4 px-1">
+              <span className="loading loading-spinner loading-sm text-primary"></span>
+              <div className="text-xs">
+                {txStatus === "approving" && (
+                  <span className="opacity-60">Step 1/2: Approving WBTC spend + depositing...</span>
+                )}
+                {txStatus === "withdrawing" && (
+                  <span className="opacity-60">Withdrawing from vault strategies...</span>
+                )}
+                {txStatus !== "approving" && txStatus !== "withdrawing" && (
+                  <span className="opacity-60">Waiting for wallet confirmation...</span>
+                )}
+              </div>
+            </div>
+          )}
+
           <button
-            className={`btn btn-primary w-full text-white text-base shadow-lg shadow-primary/20 ${isLoading ? "loading" : ""}`}
+            className={`${getButtonClass()} ${isLoading ? "loading" : ""}`}
             onClick={activeTab === "deposit" ? handleDeposit : handleWithdraw}
             disabled={isLoading || !amount || parseFloat(amount) <= 0 || (activeTab === "deposit" && parseFloat(amount) < 100)}
           >
-            {isLoading ? "Processing..." : activeTab === "deposit" ? "Deposit WBTC" : "Withdraw WBTC"}
+            {getButtonText()}
           </button>
         </div>
 
