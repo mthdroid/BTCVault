@@ -43,9 +43,7 @@ describe("getRpcUrl", () => {
     expect(getRpcUrl("sepolia")).toBe(
       "https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_10/_hKu4IgnPgrF8O82GLuYU",
     );
-    expect(getRpcUrl("mainnet")).toBe(
-      "https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_10/_hKu4IgnPgrF8O82GLuYU",
-    );
+    expect(getRpcUrl("mainnet")).toBe("https://starknet-rpc.publicnode.com");
   });
 
   it("should return default devnet URL for unknown networks", () => {
