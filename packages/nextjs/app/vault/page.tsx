@@ -16,43 +16,18 @@ const VaultPage = () => {
   const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
   const [amount, setAmount] = useState("");
 
-  // === Contract Reads ===
-  const { data: totalAssets } = useScaffoldReadContract({
-    contractName: "BTCVault",
-    functionName: "total_assets",
-  });
+  const { data: totalAssets } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "total_assets" });
+  const { data: totalShares } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "total_shares" });
+  const { data: userShares } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "shares_of", args: [address ?? "0x0"] });
+  const { data: vaultApy } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "get_vault_apy" });
+  const { data: allocation } = useScaffoldReadContract({ contractName: "BTCVault", functionName: "get_allocation" });
 
-  const { data: totalShares } = useScaffoldReadContract({
-    contractName: "BTCVault",
-    functionName: "total_shares",
-  });
-
-  const { data: userShares } = useScaffoldReadContract({
-    contractName: "BTCVault",
-    functionName: "shares_of",
-    args: [address ?? "0x0"],
-  });
-
-  const { data: vaultApy } = useScaffoldReadContract({
-    contractName: "BTCVault",
-    functionName: "get_vault_apy",
-  });
-
-  const { data: allocation } = useScaffoldReadContract({
-    contractName: "BTCVault",
-    functionName: "get_allocation",
-  });
-
-  // === Format values ===
   const totalAssetsStr = totalAssets ? totalAssets.toString() : "0";
-  const totalSharesStr = totalShares ? totalShares.toString() : "0";
   const userSharesStr = userShares ? userShares.toString() : "0";
   const apyBps = vaultApy ? Number(vaultApy) : 418;
   const apyStr = (apyBps / 100).toFixed(2);
 
-  // Parse allocation tuple
-  let vesuAlloc = 60;
-  let ekuboAlloc = 40;
+  let vesuAlloc = 60, ekuboAlloc = 40;
   if (allocation) {
     const alloc = allocation as unknown as [bigint, bigint];
     if (Array.isArray(alloc) && alloc.length === 2) {
@@ -61,65 +36,40 @@ const VaultPage = () => {
     }
   }
 
-  // Calculate user position value from shares
   const userAssetsStr =
     userShares && totalShares && totalAssets && BigInt(totalShares.toString()) > 0n
       ? ((BigInt(userShares.toString()) * BigInt(totalAssets.toString())) / BigInt(totalShares.toString())).toString()
       : "0";
 
-  // === Deposit: multicall approve + deposit ===
   const amountBigInt = amount && parseFloat(amount) > 0 ? BigInt(Math.floor(parseFloat(amount))) : 0n;
 
   const { sendAsync: sendDeposit, isPending: depositPending } = useScaffoldMultiWriteContract({
     calls: [
-      {
-        contractAddress: WBTC_ADDRESS,
-        entrypoint: "approve",
-        calldata: [VAULT_ADDRESS, amountBigInt.toString(), "0"],
-      },
-      {
-        contractName: "BTCVault",
-        functionName: "deposit",
-        args: [amountBigInt],
-      },
+      { contractAddress: WBTC_ADDRESS, entrypoint: "approve", calldata: [VAULT_ADDRESS, amountBigInt.toString(), "0"] },
+      { contractName: "BTCVault", functionName: "deposit", args: [amountBigInt] },
     ],
   });
 
-  // === Withdraw ===
   const { sendAsync: sendWithdraw, isPending: withdrawPending } = useScaffoldWriteContract({
-    contractName: "BTCVault",
-    functionName: "withdraw",
-    args: [amountBigInt],
+    contractName: "BTCVault", functionName: "withdraw", args: [amountBigInt],
   });
 
   const isLoading = depositPending || withdrawPending;
 
   const handleDeposit = async () => {
     if (!amount || parseFloat(amount) < 100) return;
-    try {
-      await sendDeposit();
-      setAmount("");
-    } catch (err) {
-      console.error("Deposit failed:", err);
-    }
+    try { await sendDeposit(); setAmount(""); } catch (err) { console.error("Deposit failed:", err); }
   };
 
   const handleWithdraw = async () => {
     if (!amount || parseFloat(amount) <= 0) return;
-    try {
-      await sendWithdraw();
-      setAmount("");
-    } catch (err) {
-      console.error("Withdraw failed:", err);
-    }
+    try { await sendWithdraw(); setAmount(""); } catch (err) { console.error("Withdraw failed:", err); }
   };
 
   if (!isConnected) {
     return (
       <div className="flex flex-col items-center justify-center grow pt-20">
-        <h1 className="text-3xl font-bold mb-4">
-          <span className="text-primary">BTC</span>Vault
-        </h1>
+        <h1 className="text-3xl font-bold mb-4"><span className="text-primary">BTC</span>Vault</h1>
         <p className="opacity-50 mb-6 text-sm">Connect your wallet to access the vault</p>
         <CustomConnectButton />
       </div>
@@ -130,80 +80,57 @@ const VaultPage = () => {
     <div className="flex flex-col items-center grow pt-10 px-4">
       <div className="max-w-md w-full">
         {/* Vault Stats */}
-        <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
-          <div className="flex items-center justify-between mb-4">
+        <div className="card-btc mb-4">
+          <div className="flex items-center justify-between mb-5">
             <h2 className="font-bold text-lg">
               <span className="text-primary">BTC</span>Vault
             </h2>
-            <span className="text-sm font-semibold text-success bg-success/10 px-3 py-1 rounded-full">
+            <span className="text-sm font-semibold text-success bg-success/10 px-3 py-1 rounded-full border border-success/20">
               {apyStr}% APY
             </span>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-xs opacity-40 mb-1">Total Assets</p>
-              <p className="text-lg font-bold">{totalAssetsStr} <span className="text-xs opacity-50">sats</span></p>
+              <p className="text-xl font-bold">{totalAssetsStr} <span className="text-xs opacity-40">sats</span></p>
             </div>
             <div>
-              <p className="text-xs opacity-40 mb-1">Total Shares</p>
-              <p className="text-lg font-bold">{totalSharesStr}</p>
+              <p className="text-xs opacity-40 mb-1">Your Position</p>
+              <p className="text-xl font-bold">{userAssetsStr} <span className="text-xs opacity-40">sats</span></p>
             </div>
           </div>
         </div>
 
         {/* Strategy Allocation */}
-        <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
+        <div className="card-btc mb-4">
           <p className="text-xs font-medium opacity-50 mb-3">Strategy Allocation</p>
-          <div className="flex rounded-full overflow-hidden h-3 mb-3">
-            <div
-              className="bg-primary transition-all"
-              style={{ width: `${vesuAlloc}%` }}
-            />
-            <div
-              className="bg-accent transition-all"
-              style={{ width: `${ekuboAlloc}%` }}
-            />
+          <div className="flex rounded-full overflow-hidden h-3 mb-3 bg-base-300">
+            <div className="bg-primary transition-all" style={{ width: `${vesuAlloc}%` }} />
+            <div className="bg-accent transition-all" style={{ width: `${ekuboAlloc}%` }} />
           </div>
           <div className="flex justify-between text-xs">
             <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-primary"></div>
-              <span className="opacity-60">Vesu {vesuAlloc}%</span>
+              <div className="w-2 h-2 rounded-full bg-primary"></div>
+              <span className="opacity-50">Vesu {vesuAlloc}%</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-accent"></div>
-              <span className="opacity-60">Ekubo {ekuboAlloc}%</span>
+              <div className="w-2 h-2 rounded-full bg-accent"></div>
+              <span className="opacity-50">Ekubo {ekuboAlloc}%</span>
             </div>
           </div>
         </div>
 
-        {/* Your Position */}
-        {(userSharesStr !== "0") && (
-          <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
-            <p className="text-xs font-medium opacity-50 mb-3">Your Position</p>
-            <div className="flex justify-between">
-              <div>
-                <p className="text-xs opacity-40 mb-1">Shares</p>
-                <p className="font-semibold">{userSharesStr}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs opacity-40 mb-1">Value</p>
-                <p className="font-semibold">{userAssetsStr} <span className="text-xs opacity-50">sats</span></p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Deposit/Withdraw Card */}
-        <div className="bg-base-100 rounded-2xl shadow-sm p-6">
+        <div className="card-btc">
           <div className="flex gap-1 mb-5 bg-base-200 rounded-full p-1">
             <button
-              className={`flex-1 py-2 text-sm font-medium rounded-full transition-all ${activeTab === "deposit" ? "bg-primary text-white shadow-sm" : "opacity-60 hover:opacity-80"}`}
+              className={`flex-1 py-2.5 text-sm font-medium rounded-full transition-all ${activeTab === "deposit" ? "bg-primary text-white shadow-sm" : "opacity-50 hover:opacity-80"}`}
               onClick={() => setActiveTab("deposit")}
             >
               Deposit
             </button>
             <button
-              className={`flex-1 py-2 text-sm font-medium rounded-full transition-all ${activeTab === "withdraw" ? "bg-primary text-white shadow-sm" : "opacity-60 hover:opacity-80"}`}
+              className={`flex-1 py-2.5 text-sm font-medium rounded-full transition-all ${activeTab === "withdraw" ? "bg-primary text-white shadow-sm" : "opacity-50 hover:opacity-80"}`}
               onClick={() => setActiveTab("withdraw")}
             >
               Withdraw
@@ -211,7 +138,7 @@ const VaultPage = () => {
           </div>
 
           <div className="mb-4">
-            <div className="bg-base-200 rounded-xl p-4">
+            <div className="bg-base-200 rounded-xl p-4 border border-base-300/50">
               <label className="text-xs opacity-40 mb-2 block">
                 {activeTab === "deposit" ? "Amount (satoshis)" : "Shares to burn"}
               </label>
@@ -236,22 +163,16 @@ const VaultPage = () => {
           )}
 
           <button
-            className={`btn btn-primary w-full text-white text-base ${isLoading ? "loading" : ""}`}
+            className={`btn btn-primary w-full text-white text-base shadow-lg shadow-primary/20 ${isLoading ? "loading" : ""}`}
             onClick={activeTab === "deposit" ? handleDeposit : handleWithdraw}
             disabled={isLoading || !amount || parseFloat(amount) <= 0 || (activeTab === "deposit" && parseFloat(amount) < 100)}
           >
-            {isLoading
-              ? "Processing..."
-              : activeTab === "deposit"
-                ? "Deposit WBTC"
-                : "Withdraw WBTC"}
+            {isLoading ? "Processing..." : activeTab === "deposit" ? "Deposit WBTC" : "Withdraw WBTC"}
           </button>
         </div>
 
-        {/* Footer info */}
-        <div className="text-center mt-4 text-xs opacity-30">
-          <p className="font-mono">{VAULT_ADDRESS.slice(0, 14)}...{VAULT_ADDRESS.slice(-8)}</p>
-          <p>Starknet Mainnet</p>
+        <div className="text-center mt-5 text-xs opacity-25 font-mono">
+          {VAULT_ADDRESS.slice(0, 14)}...{VAULT_ADDRESS.slice(-8)} | Mainnet
         </div>
       </div>
     </div>

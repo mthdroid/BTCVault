@@ -8,19 +8,19 @@
   prefersdark: true;
   color-scheme: dark;
 
-  --color-base-content: #f9fbff;
-  --color-base-100: #191B1F;
-  --color-base-200: #212429;
-  --color-base-300: #2C2F36;
+  --color-base-content: #f0f0f5;
+  --color-base-100: #1C1E26;
+  --color-base-200: #252830;
+  --color-base-300: #2E313A;
   --color-primary: #F7931A;
   --color-primary-content: #ffffff;
   --color-secondary: #29296E;
   --color-secondary-content: #ffffff;
-  --color-accent: #4969A6;
-  --color-accent-content: #f9fbff;
-  --color-neutral: #f9fbff;
+  --color-accent: #5B8DEF;
+  --color-accent-content: #ffffff;
+  --color-neutral: #f0f0f5;
   --color-neutral-content: #8B92A5;
-  --color-info: #4969A6;
+  --color-info: #5B8DEF;
   --color-success: #27AE60;
   --color-warning: #F7931A;
   --color-error: #EB5757;
@@ -153,14 +153,14 @@
   }
 
   .bg-main {
-    background: #191B1F;
+    background: #12131A;
   }
 
   .bg-underline {
     background: #40444F;
   }
   .bg-container {
-    background: #191B1F;
+    background: #12131A;
   }
 
   .bg-btn-wallet {
@@ -339,6 +339,17 @@
 
   .border-gradient {
     border: 1px solid rgba(247, 147, 26, 0.2);
+  }
+
+  .card-btc {
+    background: var(--color-base-100);
+    border: 1px solid rgba(247, 147, 26, 0.12);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .card-btc:hover {
+    border-color: rgba(247, 147, 26, 0.3);
   }
 
   .bg-modal {

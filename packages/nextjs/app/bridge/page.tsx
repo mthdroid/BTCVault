@@ -26,21 +26,19 @@ const BridgePage = () => {
         <h1 className="text-3xl font-bold text-center mb-2">
           <span className="text-primary">Bridge</span>
         </h1>
-        <p className="text-center text-sm opacity-50 mb-8">
+        <p className="text-center text-sm opacity-40 mb-8">
           Bridge your native BTC to Starknet WBTC
         </p>
 
-        {/* Step 1: Connect Wallets */}
-        <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">1</div>
+        {/* Step 1 */}
+        <div className="card-btc mb-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">1</div>
             <h2 className="font-semibold">Connect Wallets</h2>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {/* Xverse / Bitcoin Wallet */}
-            <div className="bg-base-200 rounded-xl p-4">
-              <p className="text-xs font-medium opacity-50 uppercase tracking-wider mb-3">Bitcoin (Xverse)</p>
+            <div className="bg-base-200 rounded-xl p-4 border border-base-300/50">
+              <p className="text-xs font-medium opacity-40 uppercase tracking-wider mb-3">Bitcoin (Xverse)</p>
               {xverseConnected ? (
                 <div>
                   <div className="flex items-center gap-2 mb-2">
@@ -48,21 +46,16 @@ const BridgePage = () => {
                     <p className="text-sm font-medium text-success">Connected</p>
                   </div>
                   {btcAddress && (
-                    <p className="text-xs font-mono opacity-60 truncate">
+                    <p className="text-xs font-mono opacity-50 truncate">
                       {btcAddress.address.slice(0, 12)}...{btcAddress.address.slice(-8)}
                     </p>
                   )}
                   {xverseStarknet && (
-                    <p className="text-xs font-mono opacity-60 truncate mt-1">
+                    <p className="text-xs font-mono opacity-50 truncate mt-1">
                       SN: {xverseStarknet.address.slice(0, 10)}...{xverseStarknet.address.slice(-6)}
                     </p>
                   )}
-                  <button
-                    className="btn btn-ghost btn-xs mt-2 opacity-60"
-                    onClick={disconnectXverse}
-                  >
-                    Disconnect
-                  </button>
+                  <button className="btn btn-ghost btn-xs mt-2 opacity-50" onClick={disconnectXverse}>Disconnect</button>
                 </div>
               ) : (
                 <div>
@@ -73,97 +66,83 @@ const BridgePage = () => {
                   >
                     {isConnecting ? "Connecting..." : "Connect Xverse"}
                   </button>
-                  {xverseError && (
-                    <p className="text-xs text-error mt-2">{xverseError}</p>
-                  )}
-                  <p className="text-xs opacity-40 mt-2">
-                    BTC + Starknet in one wallet
-                  </p>
+                  {xverseError && <p className="text-xs text-error mt-2">{xverseError}</p>}
+                  <p className="text-xs opacity-30 mt-2">BTC + Starknet in one wallet</p>
                 </div>
               )}
             </div>
-
-            {/* Starknet Wallet */}
-            <div className="bg-base-200 rounded-xl p-4">
-              <p className="text-xs font-medium opacity-50 uppercase tracking-wider mb-3">Starknet</p>
+            <div className="bg-base-200 rounded-xl p-4 border border-base-300/50">
+              <p className="text-xs font-medium opacity-40 uppercase tracking-wider mb-3">Starknet</p>
               {starknetConnected ? (
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 rounded-full bg-success"></div>
                     <p className="text-sm font-medium text-success">Connected</p>
                   </div>
-                  <p className="text-xs font-mono opacity-60 truncate">
+                  <p className="text-xs font-mono opacity-50 truncate">
                     {starknetAddr?.slice(0, 10)}...{starknetAddr?.slice(-6)}
                   </p>
                 </div>
               ) : (
                 <div>
                   <CustomConnectButton />
-                  <p className="text-xs opacity-40 mt-2">
-                    Braavos, ArgentX, or Xverse
-                  </p>
+                  <p className="text-xs opacity-30 mt-2">Braavos, ArgentX, or Xverse</p>
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Step 2: Bridge */}
-        <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">2</div>
+        {/* Step 2 */}
+        <div className="card-btc mb-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">2</div>
             <h2 className="font-semibold">Bridge BTC to Starknet</h2>
           </div>
-          <p className="text-sm opacity-50 mb-4">
-            Use LayerSwap to bridge native BTC to WBTC on Starknet.
-          </p>
-
+          <p className="text-sm opacity-40 mb-4">Use LayerSwap to bridge native BTC to WBTC on Starknet.</p>
           <div className="flex flex-col gap-2">
             <a
               href={starknetAddr ? `${LAYERSWAP_URL}&destAddress=${starknetAddr}` : LAYERSWAP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-primary w-full text-white"
+              className="btn btn-primary w-full text-white shadow-lg shadow-primary/20"
             >
               Bridge via LayerSwap
             </a>
-
             <a
               href="https://starkgate.starknet.io"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-ghost btn-sm w-full opacity-60"
+              className="btn btn-ghost btn-sm w-full opacity-50"
             >
               Or use StarkGate (Official Bridge)
             </a>
           </div>
-
-          <div className="mt-4 bg-base-200 rounded-xl p-4">
-            <p className="text-xs font-medium mb-2 opacity-70">Bridge Options:</p>
-            <div className="space-y-1 text-xs opacity-50">
+          <div className="mt-4 bg-base-200 rounded-xl p-3 border border-base-300/50">
+            <p className="text-xs font-medium mb-1.5 opacity-50">Bridge Options:</p>
+            <div className="space-y-0.5 text-xs opacity-40">
               <p>LayerSwap - Fast (~10 min), direct BTC to Starknet</p>
               <p>StarkGate - Official bridge, ETH/WBTC from Ethereum</p>
             </div>
           </div>
         </div>
 
-        {/* Step 3: Deposit */}
-        <div className="bg-base-100 rounded-2xl shadow-sm p-6 mb-4">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">3</div>
+        {/* Step 3 */}
+        <div className="card-btc mb-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">3</div>
             <h2 className="font-semibold">Deposit into Vault</h2>
           </div>
-          <p className="text-sm opacity-50 mb-4">
+          <p className="text-sm opacity-40 mb-4">
             Once you have WBTC on Starknet, deposit into BTCVault to earn automated DeFi yield.
           </p>
-          <a href="/vault" className="btn btn-outline border-primary text-primary hover:bg-primary hover:text-white w-full">
+          <a href="/vault" className="btn btn-outline border-primary/50 text-primary hover:bg-primary hover:text-white w-full">
             Go to Vault
           </a>
         </div>
 
-        {/* Flow Summary */}
-        <div className="text-center text-xs opacity-40 space-y-1 mb-8 mt-6">
-          <p className="font-mono">BTC (Bitcoin) &rarr; LayerSwap &rarr; WBTC (Starknet) &rarr; BTCVault &rarr; Yield</p>
+        <div className="text-center text-xs opacity-25 space-y-1 mb-8 mt-6">
+          <p className="font-mono">BTC &rarr; LayerSwap &rarr; WBTC &rarr; BTCVault &rarr; Yield</p>
           <p>Your keys, your coins. Fully non-custodial.</p>
         </div>
       </div>
