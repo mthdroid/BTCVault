@@ -146,7 +146,7 @@ const BridgePage = () => {
           <p className="text-sm opacity-40 mb-4">
             Once you have WBTC on Starknet, deposit into BTCVault to earn automated DeFi yield.
           </p>
-          <a href="/vault" className="btn btn-outline border-primary/50 text-primary hover:bg-primary hover:text-white w-full">
+          <a href="/vault" className="btn btn-outline border-secondary/50 text-secondary hover:bg-secondary hover:text-white w-full">
             Go to Vault
           </a>
         </div>

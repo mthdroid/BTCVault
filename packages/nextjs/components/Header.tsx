@@ -66,8 +66,8 @@ export const HeaderMenuLinks = () => {
                   ? "bg-gradient-nav shadow-md font-semibold"
                   : ""
               } py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col hover:bg-gradient-nav`}
-              style={isActive ? { color: isDark ? "#ffffff" : "#5B8DEF" } : undefined}
-              onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.color = isDark ? "#ffffff" : "#5B8DEF"; }}
+              style={isActive ? { color: "#ffffff" } : undefined}
+              onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.color = "#ffffff"; }}
               onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.color = ""; }}
             >
               {icon}

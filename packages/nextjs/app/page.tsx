@@ -31,7 +31,7 @@ const Home = () => {
             <Link href="/bridge" className="btn btn-primary btn-lg text-white shadow-lg shadow-primary/20">
               Bridge BTC
             </Link>
-            <Link href="/vault" className="btn btn-outline border-primary/50 text-primary hover:bg-primary hover:text-white btn-lg">
+            <Link href="/vault" className="btn btn-outline border-secondary/50 text-secondary hover:bg-secondary hover:text-white btn-lg">
               Enter Vault
             </Link>
             <Link href="/dashboard" className="btn btn-ghost btn-lg opacity-70">

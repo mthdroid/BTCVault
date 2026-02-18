@@ -39,7 +39,7 @@ module.exports = {
           border: "1px solid #E8ECFB",
         },
         ".bg-gradient-nav": {
-          background: "#F7931A",
+          background: "#5B8DEF",
         },
         ".bg-main": {
           background: "#F7F8FA",
