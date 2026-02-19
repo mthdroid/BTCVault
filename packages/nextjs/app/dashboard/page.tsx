@@ -31,7 +31,10 @@ function toU256BigInt(value: unknown): bigint {
   if (typeof value === "object") {
     const v = value as Record<string, unknown>;
     if ("low" in v && "high" in v) {
-      return BigInt(v.low as string | bigint) + (BigInt(v.high as string | bigint) << 128n);
+      return (
+        BigInt(v.low as string | bigint) +
+        (BigInt(v.high as string | bigint) << 128n)
+      );
     }
     if (Array.isArray(value) && value.length >= 1) {
       const low = BigInt(value[0]);
@@ -39,7 +42,11 @@ function toU256BigInt(value: unknown): bigint {
       return low + (high << 128n);
     }
   }
-  try { return BigInt(String(value)); } catch { return 0n; }
+  try {
+    return BigInt(String(value));
+  } catch {
+    return 0n;
+  }
 }
 
 const SHARES_DECIMALS = 18n;
@@ -49,7 +56,10 @@ function formatShares(raw: bigint): string {
   const whole = raw / 10n ** SHARES_DECIMALS;
   const frac = raw % 10n ** SHARES_DECIMALS;
   if (frac === 0n) return whole.toString();
-  const fracStr = frac.toString().padStart(Number(SHARES_DECIMALS), "0").replace(/0+$/, "");
+  const fracStr = frac
+    .toString()
+    .padStart(Number(SHARES_DECIMALS), "0")
+    .replace(/0+$/, "");
   return `${whole}.${fracStr.slice(0, 4)}`;
 }
 
