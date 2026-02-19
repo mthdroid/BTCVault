@@ -183,7 +183,7 @@ const VaultPage = () => {
 
   // Direct useReadContract calls - bypasses useDeployedContractInfo which
   // silently fails on getClassHashAt with publicnode RPC provider
-  const { data: totalAssets } = useReadContract({
+  const { data: totalAssets, refetch: refetchTotalAssets } = useReadContract({
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "total_assets",
@@ -191,7 +191,7 @@ const VaultPage = () => {
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
-  const { data: totalShares } = useReadContract({
+  const { data: totalShares, refetch: refetchTotalShares } = useReadContract({
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "total_shares",
@@ -199,7 +199,7 @@ const VaultPage = () => {
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
-  const { data: userShares } = useReadContract({
+  const { data: userShares, refetch: refetchUserShares } = useReadContract({
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "shares_of",
@@ -233,14 +233,23 @@ const VaultPage = () => {
     blockIdentifier: "latest" as BlockNumber,
   });
 
-  const { data: wbtcBalanceRaw } = useReadContract({
-    address: WBTC_ADDRESS,
-    abi: WBTC_BALANCE_ABI,
-    functionName: "balance_of",
-    args: [address ?? "0x0"],
-    watch: true,
-    enabled: !!address,
-  });
+  const { data: wbtcBalanceRaw, refetch: refetchWbtcBalance } = useReadContract(
+    {
+      address: WBTC_ADDRESS,
+      abi: WBTC_BALANCE_ABI,
+      functionName: "balance_of",
+      args: [address ?? "0x0"],
+      watch: true,
+      enabled: !!address,
+    },
+  );
+
+  const refetchAll = () => {
+    refetchTotalAssets();
+    refetchTotalShares();
+    refetchUserShares();
+    refetchWbtcBalance();
+  };
 
   const wbtcBalance = toU256BigInt(wbtcBalanceRaw);
   const wbtcBalanceStr = wbtcBalance.toString();
@@ -345,6 +354,7 @@ const VaultPage = () => {
       );
       await sendDeposit();
       setTxStatus("success");
+      refetchAll();
       showTxToast(
         "deposit-tx",
         "success",
@@ -396,6 +406,7 @@ const VaultPage = () => {
       );
       await sendWithdraw();
       setTxStatus("success");
+      refetchAll();
       showTxToast(
         "withdraw-tx",
         "success",
