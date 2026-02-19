@@ -270,9 +270,17 @@ const VaultPage = () => {
       : 0n;
   const userAssetsStr = userAssetsVal.toString();
 
-  const amountBigInt =
+  const SHARES_PRECISION = 10n ** 18n;
+
+  // For deposit: amount is in satoshis (no conversion needed)
+  // For withdraw: user enters display shares (e.g. "500"), contract expects raw (500 * 10^18)
+  const depositAmountBigInt =
     amount && parseFloat(amount) > 0
       ? BigInt(Math.floor(parseFloat(amount)))
+      : 0n;
+  const withdrawAmountRaw =
+    amount && parseFloat(amount) > 0
+      ? BigInt(Math.floor(parseFloat(amount))) * SHARES_PRECISION
       : 0n;
 
   const { sendAsync: sendDeposit, isPending: depositPending } =
@@ -281,12 +289,12 @@ const VaultPage = () => {
         {
           contractAddress: WBTC_ADDRESS,
           entrypoint: "approve",
-          calldata: [VAULT_ADDRESS, amountBigInt.toString(), "0"],
+          calldata: [VAULT_ADDRESS, depositAmountBigInt.toString(), "0"],
         },
         {
           contractName: "BTCVault",
           functionName: "deposit",
-          args: [amountBigInt],
+          args: [depositAmountBigInt],
         },
       ],
     });
@@ -295,7 +303,7 @@ const VaultPage = () => {
     useScaffoldWriteContract({
       contractName: "BTCVault",
       functionName: "withdraw",
-      args: [amountBigInt],
+      args: [withdrawAmountRaw],
     });
 
   const { sendAsync: sendSetStrategies } = useScaffoldWriteContract({
@@ -366,7 +374,7 @@ const VaultPage = () => {
 
   const handleWithdraw = async () => {
     if (!amount || parseFloat(amount) <= 0) return;
-    if (BigInt(amount) > userSharesVal) {
+    if (withdrawAmountRaw > userSharesVal) {
       showTxToast(
         "withdraw-tx",
         "error",
@@ -377,7 +385,7 @@ const VaultPage = () => {
     }
     setTxStatus("withdrawing");
     try {
-      const displayAmount = formatShares(BigInt(amount));
+      const displayAmount = amount;
       showTxToast(
         "withdraw-tx",
         "loading",
@@ -447,7 +455,9 @@ const VaultPage = () => {
     if (activeTab === "deposit") {
       setAmount(wbtcBalanceStr);
     } else {
-      setAmount(userSharesVal.toString());
+      // Show formatted shares (e.g. "700") not raw (700000000000000000000)
+      const whole = userSharesVal / SHARES_PRECISION;
+      setAmount(whole.toString());
     }
   };
 
@@ -621,7 +631,9 @@ const VaultPage = () => {
                 )}
               {activeTab === "withdraw" &&
                 amount &&
-                BigInt(amount || "0") > userSharesVal && (
+                parseFloat(amount) > 0 &&
+                BigInt(Math.floor(parseFloat(amount))) * SHARES_PRECISION >
+                  userSharesVal && (
                   <p className="text-error">Insufficient vault shares</p>
                 )}
               {activeTab === "deposit" &&
@@ -634,8 +646,9 @@ const VaultPage = () => {
                 )}
               {activeTab === "withdraw" &&
                 amount &&
-                BigInt(amount || "0") <= userSharesVal &&
-                BigInt(amount || "0") > 0n && (
+                parseFloat(amount) > 0 &&
+                BigInt(Math.floor(parseFloat(amount))) * SHARES_PRECISION <=
+                  userSharesVal && (
                   <p className="opacity-40">
                     You will receive WBTC proportional to your shares. Shares
                     will be burned.
