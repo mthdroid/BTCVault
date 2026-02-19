@@ -2,13 +2,12 @@ import { useAccount } from "~~/hooks/useAccount";
 import {
   AccountInterface,
   InvokeFunctionResponse,
-  constants,
   Call,
   ETransactionVersion,
 } from "starknet";
-import { getBlockExplorerTxLink, notification } from "~~/utils/scaffold-stark";
+import { notification } from "~~/utils/scaffold-stark";
 import { useTargetNetwork } from "./useTargetNetwork";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   useSendTransaction,
   UseSendTransactionResult,
@@ -26,30 +25,6 @@ interface UseTransactorReturn {
   transactionReceiptInstance: UseTransactionReceiptResult;
   sendTransactionInstance: UseSendTransactionResult;
 }
-
-const TxnNotification = ({
-  message,
-  blockExplorerLink,
-}: {
-  message: string;
-  blockExplorerLink?: string;
-}) => {
-  return (
-    <div className={`flex flex-col ml-1 cursor-default`}>
-      <p className="my-0">{message}</p>
-      {blockExplorerLink && blockExplorerLink.length > 0 ? (
-        <a
-          href={blockExplorerLink}
-          target="_blank"
-          rel="noreferrer"
-          className="block link text-md"
-        >
-          check out transaction
-        </a>
-      ) : null}
-    </div>
-  );
-};
 
 /**
  * Handles sending transactions to Starknet contracts with comprehensive UI feedback and state management.
@@ -75,10 +50,6 @@ export const useTransactor = (
   }
   const sendTransactionInstance = useSendTransaction({});
 
-  const [notificationId, setNotificationId] = useState<string | null>(null);
-  const [blockExplorerTxURL, setBlockExplorerTxURL] = useState<
-    string | undefined
-  >(undefined);
   const [transactionHash, setTransactionHash] = useState<string | undefined>(
     undefined,
   );
@@ -87,29 +58,10 @@ export const useTransactor = (
     enabled: !!transactionHash,
     watch: true,
   });
-  const { data: txResult, status: txStatus } = transactionReceiptInstance;
 
   const resetStates = () => {
     setTransactionHash(undefined);
-    setBlockExplorerTxURL(undefined);
   };
-
-  useEffect(() => {
-    if (notificationId && txStatus && txStatus !== "pending") {
-      notification.remove(notificationId);
-    }
-    if (txStatus === "success") {
-      notification.success(
-        <TxnNotification
-          message="Transaction completed successfully!"
-          blockExplorerLink={blockExplorerTxURL}
-        />,
-        {
-          icon: "🎉",
-        },
-      );
-    }
-  }, [txResult]);
 
   const writeTransaction = async (
     tx: Call[],
@@ -122,15 +74,10 @@ export const useTransactor = (
       return;
     }
 
-    let notificationId = null;
     let transactionHash:
       | Awaited<InvokeFunctionResponse>["transaction_hash"]
       | undefined = undefined;
     try {
-      const networkId = await walletClient.getChainId();
-      notificationId = notification.loading(
-        <TxnNotification message="Awaiting for user confirmation" />,
-      );
       if (tx != null && withSendTransaction) {
         // Tx is already prepared by the caller
         const result = await sendTransactionInstance.sendAsync(tx);
@@ -194,33 +141,12 @@ export const useTransactor = (
       }
 
       setTransactionHash(transactionHash);
-
-      notification.remove(notificationId);
-
-      const blockExplorerTxURL = networkId
-        ? getBlockExplorerTxLink(targetNetwork.network, transactionHash)
-        : "";
-      setBlockExplorerTxURL(blockExplorerTxURL);
-
-      notificationId = notification.loading(
-        <TxnNotification
-          message="Waiting for transaction to complete."
-          blockExplorerLink={blockExplorerTxURL}
-        />,
-      );
-      setNotificationId(notificationId);
     } catch (error: any) {
-      if (notificationId) {
-        notification.remove(notificationId);
-      }
-
       const errorPattern = /Contract (.*?)"}/;
       const match = errorPattern.exec(error.message);
       const message = match ? match[1] : error.message;
 
       console.error("⚡️ ~ file: useTransactor.tsx ~ error", message);
-
-      notification.error(message);
       throw error;
     }
 
