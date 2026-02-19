@@ -51,7 +51,8 @@ export const useScaffoldReadContract = <
     watch: true,
     args: args || [],
     enabled:
-      args && (!Array.isArray(args) || !args.some((arg) => arg === undefined)),
+      !!deployedContract?.address &&
+      (!args || !Array.isArray(args) || !args.some((arg) => arg === undefined)),
     blockIdentifier: "pending" as BlockNumber,
     ...(readConfig as any),
   }) as Omit<ReturnType<typeof useReadContract>, "data"> & {
