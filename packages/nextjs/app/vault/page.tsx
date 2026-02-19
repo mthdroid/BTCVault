@@ -8,6 +8,101 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldRead
 import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-stark/useScaffoldWriteContract";
 
+const TxToast = ({
+  type,
+  title,
+  message,
+  amount,
+  unit,
+}: {
+  type: "loading" | "success" | "error";
+  title: string;
+  message: string;
+  amount?: string;
+  unit?: string;
+}) => (
+  <div className="flex items-start gap-3 min-w-[280px]">
+    <div className="shrink-0 mt-0.5">
+      {type === "loading" && (
+        <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
+          <span className="loading loading-spinner loading-sm text-primary"></span>
+        </div>
+      )}
+      {type === "success" && (
+        <div className="w-8 h-8 rounded-full bg-success/15 flex items-center justify-center">
+          <svg
+            className="w-5 h-5 text-success"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12.75l6 6 9-13.5"
+            />
+          </svg>
+        </div>
+      )}
+      {type === "error" && (
+        <div className="w-8 h-8 rounded-full bg-error/15 flex items-center justify-center">
+          <svg
+            className="w-5 h-5 text-error"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </div>
+      )}
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="font-semibold text-sm">{title}</p>
+      <p className="text-xs opacity-60 mt-0.5">{message}</p>
+      {amount && (
+        <p className="text-xs font-mono font-semibold text-primary mt-1">
+          {amount} {unit}
+        </p>
+      )}
+    </div>
+  </div>
+);
+
+const showTxToast = (
+  id: string,
+  type: "loading" | "success" | "error",
+  title: string,
+  message: string,
+  amount?: string,
+  unit?: string,
+) => {
+  const duration =
+    type === "loading" ? Infinity : type === "success" ? 5000 : 4000;
+  toast.custom(
+    (t) => (
+      <div
+        className={`${t.visible ? "animate-enter" : "animate-leave"} max-w-sm w-full bg-base-200 shadow-lg shadow-black/10 rounded-2xl pointer-events-auto border border-base-300/50 p-4`}
+      >
+        <TxToast
+          type={type}
+          title={title}
+          message={message}
+          amount={amount}
+          unit={unit}
+        />
+      </div>
+    ),
+    { id, duration },
+  );
+};
+
 const VAULT_ADDRESS =
   "0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51";
 const WBTC_ADDRESS =
@@ -151,28 +246,49 @@ const VaultPage = () => {
   const handleDeposit = async () => {
     if (!amount || parseFloat(amount) < 100) return;
     if (parseFloat(amount) > Number(wbtcBalanceStr)) {
-      toast.error("Insufficient WBTC balance");
+      showTxToast(
+        "deposit-tx",
+        "error",
+        "Insufficient Balance",
+        "You don't have enough WBTC for this deposit",
+      );
       return;
     }
     setTxStatus("approving");
     try {
-      toast.loading("Approve & deposit in wallet...", { id: "deposit-tx" });
+      showTxToast(
+        "deposit-tx",
+        "loading",
+        "Waiting for Approval",
+        "Confirm the transaction in your wallet",
+        amount,
+        "sats",
+      );
       await sendDeposit();
       setTxStatus("success");
-      toast.success(`Deposited ${amount} sats into BTCVault!`, {
-        id: "deposit-tx",
-        duration: 5000,
-      });
+      showTxToast(
+        "deposit-tx",
+        "success",
+        "Deposit Successful",
+        "WBTC deposited into BTCVault. You received vault shares.",
+        amount,
+        "sats",
+      );
       setAmount("");
       setTimeout(() => setTxStatus("idle"), 3000);
     } catch (err: any) {
       setTxStatus("error");
-      const msg =
+      const isRejected =
         err?.message?.includes("User abort") ||
-        err?.message?.includes("rejected")
-          ? "Transaction rejected by user"
-          : err?.message?.slice(0, 80) || "Transaction failed";
-      toast.error(msg, { id: "deposit-tx", duration: 4000 });
+        err?.message?.includes("rejected");
+      showTxToast(
+        "deposit-tx",
+        "error",
+        isRejected ? "Transaction Rejected" : "Deposit Failed",
+        isRejected
+          ? "You rejected the transaction in your wallet"
+          : "Something went wrong. Please try again.",
+      );
       setTimeout(() => setTxStatus("idle"), 3000);
     }
   };
@@ -180,28 +296,49 @@ const VaultPage = () => {
   const handleWithdraw = async () => {
     if (!amount || parseFloat(amount) <= 0) return;
     if (parseFloat(amount) > Number(userSharesStr)) {
-      toast.error("Insufficient vault shares");
+      showTxToast(
+        "withdraw-tx",
+        "error",
+        "Insufficient Shares",
+        "You don't have enough vault shares to withdraw",
+      );
       return;
     }
     setTxStatus("withdrawing");
     try {
-      toast.loading("Confirm withdrawal in wallet...", { id: "withdraw-tx" });
+      showTxToast(
+        "withdraw-tx",
+        "loading",
+        "Withdrawing",
+        "Confirm the withdrawal in your wallet",
+        amount,
+        "shares",
+      );
       await sendWithdraw();
       setTxStatus("success");
-      toast.success(`Withdrew ${amount} shares from BTCVault!`, {
-        id: "withdraw-tx",
-        duration: 5000,
-      });
+      showTxToast(
+        "withdraw-tx",
+        "success",
+        "Withdrawal Successful",
+        "Shares burned and WBTC returned to your wallet.",
+        amount,
+        "shares",
+      );
       setAmount("");
       setTimeout(() => setTxStatus("idle"), 3000);
     } catch (err: any) {
       setTxStatus("error");
-      const msg =
+      const isRejected =
         err?.message?.includes("User abort") ||
-        err?.message?.includes("rejected")
-          ? "Transaction rejected by user"
-          : err?.message?.slice(0, 80) || "Transaction failed";
-      toast.error(msg, { id: "withdraw-tx", duration: 4000 });
+        err?.message?.includes("rejected");
+      showTxToast(
+        "withdraw-tx",
+        "error",
+        isRejected ? "Transaction Rejected" : "Withdrawal Failed",
+        isRejected
+          ? "You rejected the transaction in your wallet"
+          : "Something went wrong. Please try again.",
+      );
       setTimeout(() => setTxStatus("idle"), 3000);
     }
   };
@@ -209,19 +346,28 @@ const VaultPage = () => {
   const handleDisableStrategies = async () => {
     setAdminStatus("pending");
     try {
-      toast.loading("Disabling strategy allocation...", { id: "admin-tx" });
+      showTxToast(
+        "admin-tx",
+        "loading",
+        "Disabling Strategies",
+        "Confirm the transaction in your wallet",
+      );
       await sendSetStrategies();
       setAdminStatus("done");
-      toast.success("Strategies disabled! Deposits now work directly.", {
-        id: "admin-tx",
-        duration: 5000,
-      });
+      showTxToast(
+        "admin-tx",
+        "success",
+        "Strategies Disabled",
+        "Deposits will now hold WBTC directly in the vault.",
+      );
     } catch (err: any) {
       setAdminStatus("idle");
-      toast.error(err?.message?.slice(0, 80) || "Admin tx failed", {
-        id: "admin-tx",
-        duration: 4000,
-      });
+      showTxToast(
+        "admin-tx",
+        "error",
+        "Transaction Failed",
+        err?.message?.slice(0, 80) || "Could not disable strategies",
+      );
     }
   };
 
