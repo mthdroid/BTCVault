@@ -63,6 +63,7 @@ const DashboardPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "total_assets",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
@@ -70,6 +71,7 @@ const DashboardPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "total_shares",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
@@ -77,6 +79,7 @@ const DashboardPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "get_vault_apy",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
@@ -84,6 +87,7 @@ const DashboardPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "get_allocation",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });

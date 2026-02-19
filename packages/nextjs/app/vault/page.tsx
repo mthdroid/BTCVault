@@ -177,6 +177,7 @@ const VaultPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "total_assets",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
@@ -184,6 +185,7 @@ const VaultPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "total_shares",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
@@ -200,6 +202,7 @@ const VaultPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "get_vault_apy",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
@@ -207,6 +210,7 @@ const VaultPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "get_allocation",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
@@ -214,6 +218,7 @@ const VaultPage = () => {
     address: VAULT_ADDRESS,
     abi: VAULT_ABI,
     functionName: "owner",
+    args: [],
     watch: true,
     blockIdentifier: "latest" as BlockNumber,
   });
@@ -362,12 +367,13 @@ const VaultPage = () => {
     }
     setTxStatus("withdrawing");
     try {
+      const displayAmount = formatShares(BigInt(amount));
       showTxToast(
         "withdraw-tx",
         "loading",
         "Withdrawing",
         "Confirm the withdrawal in your wallet",
-        amount,
+        displayAmount,
         "shares",
       );
       await sendWithdraw();
@@ -377,7 +383,7 @@ const VaultPage = () => {
         "success",
         "Withdrawal Successful",
         "Shares burned and WBTC returned to your wallet.",
-        amount,
+        displayAmount,
         "shares",
       );
       setAmount("");
