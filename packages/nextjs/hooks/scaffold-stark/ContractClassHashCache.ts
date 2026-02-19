@@ -17,7 +17,7 @@ export class ContractClassHashCache {
   public async getClassHash(
     publicClient: ProviderInterface,
     address: string,
-    blockIdentifier: BlockIdentifier = "pending",
+    blockIdentifier: BlockIdentifier = "latest",
   ): Promise<string | undefined> {
     const cacheKey = `${address}-${blockIdentifier}`;
 

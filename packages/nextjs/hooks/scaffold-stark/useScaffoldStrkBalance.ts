@@ -36,7 +36,7 @@ const useScaffoldStrkBalance = ({ address }: UseScaffoldStrkBalanceProps) => {
     watch: true,
     enabled: !!deployedContract?.address && !!address,
     args: address ? [address] : [],
-    blockIdentifier: "pending" as BlockNumber,
+    blockIdentifier: "latest" as BlockNumber,
   });
 
   return {
