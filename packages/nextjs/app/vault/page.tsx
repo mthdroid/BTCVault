@@ -113,6 +113,37 @@ const WBTC_ADDRESS =
 // fails silently on getClassHashAt with publicnode.com RPC
 const VAULT_ABI = deployedContracts.mainnet.BTCVault.abi;
 
+/** Parse a u256 value from starknet-react (BigInt, struct {low,high}, or array) */
+function toU256BigInt(value: unknown): bigint {
+  if (value === null || value === undefined) return 0n;
+  if (typeof value === "bigint") return value;
+  if (typeof value === "number") return BigInt(value);
+  if (typeof value === "string") return BigInt(value);
+  if (typeof value === "object") {
+    const v = value as Record<string, unknown>;
+    if ("low" in v && "high" in v) {
+      return BigInt(v.low as string | bigint) + (BigInt(v.high as string | bigint) << 128n);
+    }
+    if (Array.isArray(value) && value.length >= 1) {
+      const low = BigInt(value[0]);
+      const high = value.length > 1 ? BigInt(value[1]) : 0n;
+      return low + (high << 128n);
+    }
+  }
+  try { return BigInt(String(value)); } catch { return 0n; }
+}
+
+const SHARES_DECIMALS = 18n;
+
+function formatShares(raw: bigint): string {
+  if (raw === 0n) return "0";
+  const whole = raw / 10n ** SHARES_DECIMALS;
+  const frac = raw % 10n ** SHARES_DECIMALS;
+  if (frac === 0n) return whole.toString();
+  const fracStr = frac.toString().padStart(Number(SHARES_DECIMALS), "0").replace(/0+$/, "");
+  return `${whole}.${fracStr.slice(0, 4)}`;
+}
+
 const WBTC_BALANCE_ABI = [
   {
     type: "function",
@@ -196,12 +227,16 @@ const VaultPage = () => {
     enabled: !!address,
   });
 
-  const wbtcBalance = wbtcBalanceRaw ? BigInt(wbtcBalanceRaw.toString()) : 0n;
+  const wbtcBalance = toU256BigInt(wbtcBalanceRaw);
   const wbtcBalanceStr = wbtcBalance.toString();
 
-  const totalAssetsStr = totalAssets ? totalAssets.toString() : "0";
-  const userSharesStr = userShares ? userShares.toString() : "0";
-  const apyBps = vaultApy ? Number(vaultApy) : 418;
+  const totalAssetsVal = toU256BigInt(totalAssets);
+  const totalSharesVal = toU256BigInt(totalShares);
+  const userSharesVal = toU256BigInt(userShares);
+
+  const totalAssetsStr = totalAssetsVal.toString();
+  const userSharesDisplay = formatShares(userSharesVal);
+  const apyBps = vaultApy ? Number(toU256BigInt(vaultApy)) : 418;
   const apyStr = (apyBps / 100).toFixed(2);
 
   let vesuAlloc = 60,
@@ -214,16 +249,11 @@ const VaultPage = () => {
     }
   }
 
-  const userAssetsStr =
-    userShares &&
-    totalShares &&
-    totalAssets &&
-    BigInt(totalShares.toString()) > 0n
-      ? (
-          (BigInt(userShares.toString()) * BigInt(totalAssets.toString())) /
-          BigInt(totalShares.toString())
-        ).toString()
-      : "0";
+  const userAssetsVal =
+    totalSharesVal > 0n
+      ? (userSharesVal * totalAssetsVal) / totalSharesVal
+      : 0n;
+  const userAssetsStr = userAssetsVal.toString();
 
   const amountBigInt =
     amount && parseFloat(amount) > 0
@@ -260,7 +290,7 @@ const VaultPage = () => {
   });
 
   const isOwner =
-    vaultOwner && address && BigInt(vaultOwner.toString()) === BigInt(address);
+    vaultOwner && address && toU256BigInt(vaultOwner) === BigInt(address);
 
   const isLoading =
     depositPending ||
@@ -321,7 +351,7 @@ const VaultPage = () => {
 
   const handleWithdraw = async () => {
     if (!amount || parseFloat(amount) <= 0) return;
-    if (parseFloat(amount) > Number(userSharesStr)) {
+    if (BigInt(amount) > userSharesVal) {
       showTxToast(
         "withdraw-tx",
         "error",
@@ -401,7 +431,7 @@ const VaultPage = () => {
     if (activeTab === "deposit") {
       setAmount(wbtcBalanceStr);
     } else {
-      setAmount(userSharesStr);
+      setAmount(userSharesVal.toString());
     }
   };
 
@@ -525,7 +555,7 @@ const VaultPage = () => {
               {activeTab === "deposit" ? "WBTC Balance" : "Your Shares"}
             </span>
             <span className="text-xs font-mono opacity-50">
-              {activeTab === "deposit" ? wbtcBalanceStr : userSharesStr}{" "}
+              {activeTab === "deposit" ? wbtcBalanceStr : userSharesDisplay}{" "}
               {activeTab === "deposit" ? "sats" : "shares"}
             </span>
           </div>
@@ -574,7 +604,7 @@ const VaultPage = () => {
                   <p className="text-error">Insufficient WBTC balance</p>
                 )}
               {activeTab === "withdraw" &&
-                parseFloat(amount) > Number(userSharesStr) && (
+                amount && BigInt(amount || "0") > userSharesVal && (
                   <p className="text-error">Insufficient vault shares</p>
                 )}
               {activeTab === "deposit" &&
@@ -586,8 +616,8 @@ const VaultPage = () => {
                   </p>
                 )}
               {activeTab === "withdraw" &&
-                parseFloat(amount) <= Number(userSharesStr) &&
-                parseFloat(amount) > 0 && (
+                amount && BigInt(amount || "0") <= userSharesVal &&
+                BigInt(amount || "0") > 0n && (
                   <p className="opacity-40">
                     You will receive WBTC proportional to your shares. Shares
                     will be burned.

@@ -22,6 +22,37 @@ const VAULT_ADDRESS =
   "0x363caa24d01b66327a26426e69c7f1feaf41c170a7e9e74ab0d6b4b7d156f51";
 const VAULT_ABI = deployedContracts.mainnet.BTCVault.abi;
 
+/** Parse a u256 value from starknet-react (BigInt, struct {low,high}, or array) */
+function toU256BigInt(value: unknown): bigint {
+  if (value === null || value === undefined) return 0n;
+  if (typeof value === "bigint") return value;
+  if (typeof value === "number") return BigInt(value);
+  if (typeof value === "string") return BigInt(value);
+  if (typeof value === "object") {
+    const v = value as Record<string, unknown>;
+    if ("low" in v && "high" in v) {
+      return BigInt(v.low as string | bigint) + (BigInt(v.high as string | bigint) << 128n);
+    }
+    if (Array.isArray(value) && value.length >= 1) {
+      const low = BigInt(value[0]);
+      const high = value.length > 1 ? BigInt(value[1]) : 0n;
+      return low + (high << 128n);
+    }
+  }
+  try { return BigInt(String(value)); } catch { return 0n; }
+}
+
+const SHARES_DECIMALS = 18n;
+
+function formatShares(raw: bigint): string {
+  if (raw === 0n) return "0";
+  const whole = raw / 10n ** SHARES_DECIMALS;
+  const frac = raw % 10n ** SHARES_DECIMALS;
+  if (frac === 0n) return whole.toString();
+  const fracStr = frac.toString().padStart(Number(SHARES_DECIMALS), "0").replace(/0+$/, "");
+  return `${whole}.${fracStr.slice(0, 4)}`;
+}
+
 const DashboardPage = () => {
   const { address, status } = useAccount();
   const isConnected = status === "connected";
@@ -66,8 +97,12 @@ const DashboardPage = () => {
     blockIdentifier: "latest" as BlockNumber,
   });
 
-  const tvl = totalAssets ? totalAssets.toString() : "0";
-  const apyBps = vaultApy ? Number(vaultApy) : 0;
+  const totalAssetsVal = toU256BigInt(totalAssets);
+  const totalSharesVal = toU256BigInt(totalShares);
+  const userSharesVal = toU256BigInt(userShares);
+
+  const tvl = totalAssetsVal.toString();
+  const apyBps = vaultApy ? Number(toU256BigInt(vaultApy)) : 418;
   const vaultApyStr = (apyBps / 100).toFixed(2);
   const vesuAPY = "3.50";
   const ekuboAPY = "5.20";
@@ -82,19 +117,14 @@ const DashboardPage = () => {
     }
   }
 
-  const userSharesStr = userShares ? userShares.toString() : "0";
-  const userAssetsStr =
-    userShares &&
-    totalShares &&
-    totalAssets &&
-    BigInt(totalShares.toString()) > 0n
-      ? (
-          (BigInt(userShares.toString()) * BigInt(totalAssets.toString())) /
-          BigInt(totalShares.toString())
-        ).toString()
-      : "0";
+  const userSharesStr = formatShares(userSharesVal);
+  const userAssetsVal =
+    totalSharesVal > 0n
+      ? (userSharesVal * totalAssetsVal) / totalSharesVal
+      : 0n;
+  const userAssetsStr = userAssetsVal.toString();
 
-  const tvlNum = totalAssets ? Number(totalAssets) : 0;
+  const tvlNum = Number(totalAssetsVal);
   const vesuBalance = Math.floor((tvlNum * vesuAlloc) / 100).toString();
   const ekuboBalance = Math.floor((tvlNum * ekuboAlloc) / 100).toString();
 
@@ -216,7 +246,7 @@ const DashboardPage = () => {
               <div className="flex justify-between">
                 <span className="opacity-40 text-sm">Total Vault Shares</span>
                 <span className="font-semibold">
-                  {totalShares ? totalShares.toString() : "0"}
+                  {formatShares(totalSharesVal)}
                 </span>
               </div>
             </div>
