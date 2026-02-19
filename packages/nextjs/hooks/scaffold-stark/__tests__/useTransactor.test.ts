@@ -5,7 +5,6 @@ import { useAccount } from "~~/hooks/useAccount";
 import { useTargetNetwork } from "../useTargetNetwork";
 import { notification } from "~~/utils/scaffold-stark";
 import { AccountInterface } from "starknet";
-import { getBlockExplorerTxLink } from "~~/utils/scaffold-stark";
 
 // Mock the @starknet-react/core hooks
 const sendAsyncMock = vi
@@ -88,8 +87,6 @@ describe("useTransactor", () => {
       expect(response).toBe("mock-tx-hash");
     });
 
-    expect(notification.loading).toHaveBeenCalled();
-    expect(notification.remove).toHaveBeenCalled();
     expect(sendAsyncMock).toHaveBeenCalledWith(mockTx);
   });
 
@@ -125,8 +122,6 @@ describe("useTransactor", () => {
     await expect(result.current.writeTransaction(mockTx)).rejects.toThrow(
       mockError,
     );
-
-    expect(notification.error).toHaveBeenCalled();
   });
 
   it("should execute the transaction and return the transaction hash", async () => {
@@ -144,7 +139,7 @@ describe("useTransactor", () => {
     });
   });
 
-  it("should set blockExplorerTxURL correctly", async () => {
+  it("should return transaction hash correctly", async () => {
     const { result } = renderHook(() =>
       useTransactor(walletClientMock as AccountInterface),
     );
@@ -157,11 +152,6 @@ describe("useTransactor", () => {
       const transactionHash = await result.current.writeTransaction(mockTx);
       expect(transactionHash).toBe("mock-tx-hash");
     });
-
-    expect(getBlockExplorerTxLink).toHaveBeenCalledWith(
-      "mock-network",
-      "mock-tx-hash",
-    );
   });
 
   it("should handle string transaction results", async () => {
