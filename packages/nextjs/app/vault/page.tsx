@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useAccount, useReadContract } from "@starknet-react/core";
 import toast from "react-hot-toast";
+import { BlockNumber } from "starknet";
 import { CustomConnectButton } from "~~/components/scaffold-stark/CustomConnectButton";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
 import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-stark/useScaffoldWriteContract";
+import deployedContracts from "~~/contracts/deployedContracts";
 
 const TxToast = ({
   type,
@@ -108,6 +109,10 @@ const VAULT_ADDRESS =
 const WBTC_ADDRESS =
   "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac";
 
+// Use the deployed ABI directly - bypasses useDeployedContractInfo which
+// fails silently on getClassHashAt with publicnode.com RPC
+const VAULT_ABI = deployedContracts.mainnet.BTCVault.abi;
+
 const WBTC_BALANCE_ABI = [
   {
     type: "function",
@@ -135,30 +140,51 @@ const VaultPage = () => {
     "idle",
   );
 
-  const { data: totalAssets } = useScaffoldReadContract({
-    contractName: "BTCVault",
+  // Direct useReadContract calls - bypasses useDeployedContractInfo which
+  // silently fails on getClassHashAt with publicnode RPC provider
+  const { data: totalAssets } = useReadContract({
+    address: VAULT_ADDRESS,
+    abi: VAULT_ABI,
     functionName: "total_assets",
+    watch: true,
+    blockIdentifier: "latest" as BlockNumber,
   });
-  const { data: totalShares } = useScaffoldReadContract({
-    contractName: "BTCVault",
+  const { data: totalShares } = useReadContract({
+    address: VAULT_ADDRESS,
+    abi: VAULT_ABI,
     functionName: "total_shares",
+    watch: true,
+    blockIdentifier: "latest" as BlockNumber,
   });
-  const { data: userShares } = useScaffoldReadContract({
-    contractName: "BTCVault",
+  const { data: userShares } = useReadContract({
+    address: VAULT_ADDRESS,
+    abi: VAULT_ABI,
     functionName: "shares_of",
     args: [address ?? "0x0"],
+    watch: true,
+    enabled: !!address,
+    blockIdentifier: "latest" as BlockNumber,
   });
-  const { data: vaultApy } = useScaffoldReadContract({
-    contractName: "BTCVault",
+  const { data: vaultApy } = useReadContract({
+    address: VAULT_ADDRESS,
+    abi: VAULT_ABI,
     functionName: "get_vault_apy",
+    watch: true,
+    blockIdentifier: "latest" as BlockNumber,
   });
-  const { data: allocation } = useScaffoldReadContract({
-    contractName: "BTCVault",
+  const { data: allocation } = useReadContract({
+    address: VAULT_ADDRESS,
+    abi: VAULT_ABI,
     functionName: "get_allocation",
+    watch: true,
+    blockIdentifier: "latest" as BlockNumber,
   });
-  const { data: vaultOwner } = useScaffoldReadContract({
-    contractName: "BTCVault",
+  const { data: vaultOwner } = useReadContract({
+    address: VAULT_ADDRESS,
+    abi: VAULT_ABI,
     functionName: "owner",
+    watch: true,
+    blockIdentifier: "latest" as BlockNumber,
   });
 
   const { data: wbtcBalanceRaw } = useReadContract({

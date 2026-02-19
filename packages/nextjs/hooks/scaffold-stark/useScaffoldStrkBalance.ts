@@ -1,9 +1,26 @@
 import { Address } from "@starknet-react/chains";
-import { useDeployedContractInfo } from "./useDeployedContractInfo";
 import { useReadContract } from "@starknet-react/core";
 import { BlockNumber } from "starknet";
-import { Abi } from "abi-wan-kanabi";
 import { formatUnits } from "ethers";
+
+// STRK token address on Starknet mainnet (universal across all networks)
+const STRK_ADDRESS =
+  "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d";
+
+const STRK_BALANCE_ABI = [
+  {
+    type: "function",
+    name: "balance_of",
+    inputs: [
+      {
+        name: "account",
+        type: "core::starknet::contract_address::ContractAddress",
+      },
+    ],
+    outputs: [{ type: "core::integer::u256" }],
+    state_mutability: "view",
+  },
+] as const;
 
 type UseScaffoldStrkBalanceProps = {
   address?: Address | string;
@@ -11,30 +28,17 @@ type UseScaffoldStrkBalanceProps = {
 
 /**
  * Fetches STRK token balance for a given address.
- * This hook reads the balance_of function from the STRK token contract
- * and provides both raw and formatted balance values.
- *
- * @param config - Configuration object for the hook
- * @param config.address - The address to check STRK balance for (optional)
- * @returns {Object} An object containing:
- *   - value: bigint - The raw balance as bigint
- *   - decimals: number - Token decimals (18)
- *   - symbol: string - Token symbol ("STRK")
- *   - formatted: string - Formatted balance as string, defaults to "0" if no data
- *   - error: Error | null - Any error encountered during the read operation
- *   - (All other properties from useReadContract)
- * @see {@link https://scaffoldstark.com/docs/hooks/useScaffoldStrkBalance}
+ * Uses direct useReadContract call instead of useDeployedContractInfo
+ * to avoid getClassHashAt failures with publicnode RPC.
  */
 
 const useScaffoldStrkBalance = ({ address }: UseScaffoldStrkBalanceProps) => {
-  const { data: deployedContract } = useDeployedContractInfo("Strk");
-
   const { data, ...props } = useReadContract({
     functionName: "balance_of",
-    address: deployedContract?.address,
-    abi: deployedContract?.abi as Abi as any[],
+    address: STRK_ADDRESS,
+    abi: STRK_BALANCE_ABI,
     watch: true,
-    enabled: !!deployedContract?.address && !!address,
+    enabled: !!address,
     args: address ? [address] : [],
     blockIdentifier: "latest" as BlockNumber,
   });
